@@ -61,3 +61,5 @@ TypeScript strict checks and production build pass. Browser verification in the 
 Muted Prism is the default global component finish. The material selector switches the whole canvas between Muted Prism, Obsidian, Smoke and Frost. Exported presets include the selected finish; resetting restores Muted Prism. Refraction uses CSS gradients and existing pointer illumination, with no raster assets or extra animation loops.
 
 Nine additional studies extend the canvas with compact tabs, workspace navigation, contextual view actions, searchable property selection, inline filters, OKLCH tokens, inbox, comments and bulk actions. The generated Muted Prism hero is self-hosted and respects reduced-motion. See HERO-PROMPT.md for artwork provenance.
+
+Muted Prism controls have a slow pearl-white traveling edge on hover and focus, with a quieter selected-state reflection. CSS masks isolate it to the border. Reduced-motion and the motion setting keep a static highlight.

@@ -1,0 +1,251 @@
+/* Pearl-white traveling reflection. Only the 1px rim is painted. */
+@property --rim-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.finish-muted-prism ::before {
+  --rim-beam: conic-gradient(
+    from var(--rim-angle),
+    transparent 0deg 218deg,
+    #b0abb910 245deg,
+    #c7c4d06b 273deg,
+    #eeeae4d9 294deg,
+    #c0c7ce73 312deg,
+    #b1bcb51c 331deg,
+    transparent 350deg
+  );
+}
+.textarea-shell {
+  position: relative;
+  border-radius: 9px;
+}
+.textarea-shell textarea {
+  display: block;
+}
+.select-shell {
+  border-radius: 8px;
+}
+@keyframes rim-travel {
+  to {
+    --rim-angle: 360deg;
+  }
+}
+.finish-muted-prism
+  :is(
+    .button:not(.ghost):not(.danger),
+    .round-button,
+    .input-shell:not(.has-error),
+    .select-shell,
+    .textarea-shell,
+    .comment-composer,
+    .choice-chips button,
+    .material-picker button,
+    .segmented button,
+    .switch,
+    .player-play,
+    .compact-tab,
+    .view-tabs button,
+    .filter-token,
+    .floating-dock nav > button,
+    .demo-navbar nav > button,
+    .pagination button,
+    .sort-trigger,
+    .study-popover button
+  ) {
+  position: relative;
+  --rim-opacity: 0;
+  --rim-play: paused;
+  --rim-period: 6.4s;
+}
+.finish-muted-prism
+  :is(
+    .button:not(.ghost):not(.danger),
+    .round-button,
+    .input-shell:not(.has-error),
+    .select-shell,
+    .textarea-shell,
+    .comment-composer,
+    .choice-chips button,
+    .material-picker button,
+    .segmented button,
+    .switch,
+    .player-play,
+    .compact-tab,
+    .view-tabs button,
+    .filter-token,
+    .floating-dock nav > button,
+    .demo-navbar nav > button,
+    .pagination button,
+    .sort-trigger,
+    .study-popover button
+  )::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--rim-beam);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  opacity: var(--rim-opacity);
+  pointer-events: none;
+  z-index: 6;
+  animation: rim-travel var(--rim-period) linear infinite;
+  animation-play-state: var(--rim-play);
+  transition: opacity 280ms ease;
+}
+.finish-muted-prism
+  :is(
+    .button:not(.ghost):not(.danger),
+    .round-button,
+    .input-shell:not(.has-error),
+    .select-shell,
+    .textarea-shell,
+    .comment-composer,
+    .choice-chips button,
+    .material-picker button,
+    .segmented button,
+    .switch,
+    .player-play,
+    .compact-tab,
+    .view-tabs button,
+    .filter-token,
+    .floating-dock nav > button,
+    .demo-navbar nav > button,
+    .pagination button,
+    .sort-trigger,
+    .study-popover button
+  ):is(
+    [aria-pressed="true"],
+    [aria-selected="true"],
+    [aria-checked="true"],
+    [aria-current="page"],
+    .active,
+    .selected,
+    .applied
+  ):not(:disabled) {
+  --rim-opacity: 0.48;
+  --rim-play: running;
+  --rim-period: 8s;
+}
+@media (hover: hover) and (pointer: fine) {
+  .finish-muted-prism
+    :is(
+      .button:not(.ghost):not(.danger),
+      .round-button,
+      .input-shell:not(.has-error),
+      .select-shell,
+      .textarea-shell,
+      .comment-composer,
+      .choice-chips button,
+      .material-picker button,
+      .segmented button,
+      .switch,
+      .player-play,
+      .compact-tab,
+      .view-tabs button,
+      .filter-token,
+      .floating-dock nav > button,
+      .demo-navbar nav > button,
+      .pagination button,
+      .sort-trigger,
+      .study-popover button
+    ):hover:not(:disabled) {
+    --rim-opacity: 0.86;
+    --rim-play: running;
+    --rim-period: 6.4s;
+  }
+}
+.finish-muted-prism
+  :is(
+    .button:not(.ghost):not(.danger),
+    .round-button,
+    .input-shell:not(.has-error),
+    .select-shell,
+    .textarea-shell,
+    .comment-composer,
+    .choice-chips button,
+    .material-picker button,
+    .segmented button,
+    .switch,
+    .player-play,
+    .compact-tab,
+    .view-tabs button,
+    .filter-token,
+    .floating-dock nav > button,
+    .demo-navbar nav > button,
+    .pagination button,
+    .sort-trigger,
+    .study-popover button
+  ):is(:focus-visible, :focus-within, :active):not(:disabled) {
+  --rim-opacity: 1;
+  --rim-play: running;
+  --rim-period: 5.2s;
+}
+/* Edge surfaces already have a masked optical border; reuse that layer. */
+.finish-muted-prism
+  .edge:is(
+    .surface-control,
+    .hold-edge,
+    .floating-dock,
+    .property-picker
+  )::before {
+  animation: rim-travel 6.4s linear infinite paused;
+}
+.finish-muted-prism
+  .edge:is(.surface-control, .hold-edge, .floating-dock, .property-picker):is(
+    :hover,
+    :focus-within
+  )::before,
+.finish-muted-prism .illuminated .surface-control::before {
+  background: var(--rim-beam), var(--prism-rim);
+  animation-play-state: running;
+  opacity: 1;
+}
+.finish-muted-prism
+  input[type="range"]:is(:hover, :focus-visible)::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 3px #080809,
+    0 0 0 4px #d8d5dd55,
+    0 0 13px #c1b8cb26;
+}
+.finish-muted-prism
+  input[type="range"]:is(:hover, :focus-visible)::-moz-range-thumb {
+  box-shadow:
+    0 0 0 3px #080809,
+    0 0 0 4px #d8d5dd55,
+    0 0 13px #c1b8cb26;
+}
+@media (prefers-reduced-motion: reduce) {
+  .finish-muted-prism ::before {
+    animation: none !important;
+    transition: none;
+  }
+}
+.motion-off.finish-muted-prism ::before {
+  animation: none !important;
+}
+/* Keep keyboard focus explicit without overpowering the traveling reflection. */
+.finish-muted-prism
+  :is(
+    .button:not(.ghost):not(.danger),
+    .round-button,
+    .choice-chips button,
+    .material-picker button,
+    .segmented button,
+    .switch,
+    .player-play,
+    .view-tabs button,
+    .pagination button,
+    .sort-trigger
+  ):focus-visible {
+  outline: 1px solid #c8c0d15c;
+  outline-offset: 3px;
+}

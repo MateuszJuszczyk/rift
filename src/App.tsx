@@ -1377,12 +1377,14 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
       <label htmlFor="demo-note" className="note-label">
         Message
       </label>
-      <textarea
-        id="demo-note"
-        rows={2}
-        placeholder="Add a message…"
-        aria-label="Message"
-      />
+      <div className="textarea-shell">
+        <textarea
+          id="demo-note"
+          rows={2}
+          placeholder="Add a message…"
+          aria-label="Message"
+        />
+      </div>
       <Button type="submit" className="input-submit">
         Validate form <ArrowUpRight size={14} />
       </Button>
