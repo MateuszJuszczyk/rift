@@ -75,6 +75,16 @@ Muted Prism controls have a slow pearl-white traveling edge on hover and focus, 
 
 Six more specimens use shared field, surface, icon-button and menu-option primitives. Searchable multiselect, date picker, local file input, document actions, inline editing and step navigation all inherit the same tokens, state treatments and animated rim.
 
-The project is being prepared for an open-source GitHub release. The current checkout is the component showcase, not yet a published npm package; package exports, consumer documentation and a license still need to be finalized before release.
+The source is open and MIT-licensed; see [License](#license) below. The current checkout is the component showcase, not yet a published npm package, so package exports and consumer documentation still need to be finalized before a release.
 
 The header sun/moon button switches the entire canvas between dark and light mode. Dark remains the initial default; the selected mode is stored locally and restored on the next visit. Shared theme tokens adapt the controls, floating tools, dialogs and Muted Prism material together.
+
+## License
+
+MIT — see [LICENSE](./LICENSE). Copyright (c) 2026 Mateusz Juszczyk.
+
+You may use, modify and redistribute the code, including commercially. The one condition is attribution: the copyright notice and the licence text must travel with every copy or substantial portion of the software, so credit stays with the original author. There is no warranty.
+
+If you prefer a licence with an explicit patent grant and NOTICE-based attribution (for example as part of a larger Apache-licensed product), Apache-2.0 is the drop-in alternative — say so and it can be swapped.
+
+Third-party notices for icons and fonts are listed under [Assets and attribution](#assets-and-attribution).
