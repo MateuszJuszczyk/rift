@@ -59,20 +59,6 @@
   animation-play-state: var(--rim-play);
   transition: opacity 280ms ease;
 }
-.finish-muted-prism
-  .ui-rim:not(.has-error):is(
-    [aria-pressed="true"],
-    [aria-selected="true"],
-    [aria-checked="true"],
-    [aria-current="page"],
-    .active,
-    .selected,
-    .applied
-  ):not(:disabled) {
-  --rim-opacity: var(--ui-rim-rest);
-  --rim-play: running;
-  --rim-period: 8s;
-}
 @media (hover: hover) and (pointer: fine) {
   .finish-muted-prism .ui-rim:not(.has-error):hover:not(:disabled) {
     --rim-opacity: var(--ui-rim-hover);
@@ -81,29 +67,29 @@
   }
 }
 .finish-muted-prism
-  .ui-rim:not(.has-error):is(:focus-visible, :focus-within, :active):not(
+  .ui-rim:not(.has-error):is(:focus-visible, :has(:focus-visible), :active):not(
     :disabled
   ) {
   --rim-opacity: var(--ui-rim-focus);
   --rim-play: running;
   --rim-period: 5.2s;
 }
-/* Edge surfaces already have a masked optical border; reuse that layer. */
-.finish-muted-prism
-  .edge:is(
-    .surface-control,
-    .hold-edge,
-    .floating-dock,
-    .property-picker
-  )::before {
+/* Only the two optical action controls animate; navigation/menu shells stay static. */
+.finish-muted-prism .edge:is(.surface-control, .hold-edge)::before {
   animation: rim-travel 6.4s linear infinite paused;
 }
+@media (hover: hover) and (pointer: fine) {
+  .finish-muted-prism .edge:is(.surface-control, .hold-edge):hover::before {
+    background: var(--rim-beam), var(--prism-rim);
+    animation-play-state: running;
+    opacity: 1;
+  }
+}
 .finish-muted-prism
-  .edge:is(.surface-control, .hold-edge, .floating-dock, .property-picker):is(
-    :hover,
-    :focus-within
-  )::before,
-.finish-muted-prism .illuminated .surface-control::before {
+  .edge:is(.surface-control, .hold-edge):is(
+    :has(:focus-visible),
+    :active
+  )::before {
   background: var(--rim-beam), var(--prism-rim);
   animation-play-state: running;
   opacity: 1;

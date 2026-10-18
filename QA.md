@@ -49,3 +49,7 @@ Responsive checks on all 28 specimens: 320×850, 390×844 and 768×1024 have no 
 ## Dark and light modes
 
 The header toggle changes all shared theme tokens, legacy neutral tokens, Muted Prism surfaces, hero treatment, dialogs and native color scheme. Browser probes checked dark → light → dark, persisted light mode after navigation/reload, matching browser theme color, keyboard Space activation, and an open About modal in light mode. All 28 specimens and header actions fit at 320×850, 390×844 and 768×1024; desktop light hero and older/newer control groups were inspected at 1440×1000. Saved mode is applied in the head before React renders. Dark remains the default with no saved preference. No Safari or physical-device verification.
+
+## Interaction-only traveling rims
+
+Removed animation triggers based on selected/pressed/current attributes and persistent active classes. Generic `Surface` wrappers, floating dock shells and property-menu shells no longer receive traveling rims. Optical illumination remains static until direct interaction. Browser checks verified selected controls idle with opacity 0 and animation paused; theme-button hover starts animation, clicking then moving away pauses and hides it despite retained pointer focus, keyboard focus restarts it, and generic panel pseudo-elements have animation-name none. Applies to both themes; reduced-motion rules remain authoritative.

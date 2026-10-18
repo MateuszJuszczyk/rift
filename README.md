@@ -65,7 +65,7 @@ Muted Prism is the default global component finish. The material selector switch
 
 Nine additional studies extend the canvas with compact tabs, workspace navigation, contextual view actions, searchable property selection, inline filters, OKLCH tokens, inbox, comments and bulk actions. The generated Muted Prism hero is self-hosted and respects reduced-motion. See HERO-PROMPT.md for artwork provenance.
 
-Muted Prism controls have a slow pearl-white traveling edge on hover and focus, with a quieter selected-state reflection. CSS masks isolate it to the border. Reduced-motion and the motion setting keep a static highlight.
+Muted Prism controls have a slow pearl-white traveling edge on hover and focus, only during direct interaction. Selected controls remain static when idle. CSS masks isolate it to the border. Reduced-motion and the motion setting keep a static highlight.
 
 Six more specimens use shared field, surface, icon-button and menu-option primitives. Searchable multiselect, date picker, local file input, document actions, inline editing and step navigation all inherit the same tokens, state treatments and animated rim.
 

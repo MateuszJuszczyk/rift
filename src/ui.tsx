@@ -432,7 +432,7 @@ export function Surface({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div {...props} className={`ui-surface ui-panel ui-rim ${className}`}>
+    <div {...props} className={`ui-surface ui-panel ${className}`}>
       {children}
     </div>
   );
