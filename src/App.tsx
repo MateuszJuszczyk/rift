@@ -402,7 +402,7 @@ export default function App() {
             <i />
           </span>
           <strong>rift</strong>
-          <span>interaction studies</span>
+          <span>React components</span>
         </button>
         <nav className="canvas-filters" aria-label="Canvas layers">
           {categories.map(({ id, label }) => (
@@ -506,9 +506,7 @@ export default function App() {
           panStart.current = null;
         }}
       >
-        <h1 className="sr-only">
-          RIFT — an open canvas of interactive components
-        </h1>
+        <h1 className="sr-only">RIFT — React component library</h1>
         <div
           key={resetKey}
           className={`component-grid freeform-board ${category !== "all" || savedOnly ? "filtered-grid" : ""}`}
@@ -532,12 +530,13 @@ export default function App() {
               decoding="async"
             />
             <p>
-              Interface
+              React
               <br />
-              <span>studies.</span>
+              <span>components.</span>
             </p>
             <small>
-              {specimens.length} interactive components. Built in React.
+              Muted Prism surfaces. Shared styles. Built with React and
+              TypeScript.
             </small>
           </div>
           {visible.map((item, visibleIndex) => (
@@ -799,11 +798,10 @@ export default function App() {
             <i />
           </span>
         </div>
-        <p className="about-lead">RIFT / Obsidian</p>
+        <p className="about-lead">RIFT — React components</p>
         <p className="modal-description">
-          A collection of interactive controls in React and TypeScript. The
-          material uses a recessed surface, a double rim and pointer-controlled
-          reflections.
+          A React component library with shared styles, Muted Prism surfaces and
+          keyboard interactions. Explore the components on this canvas.
         </p>
         <p className="modal-description">
           Use the keyboard or pointer, bookmark components and adjust the
@@ -811,7 +809,7 @@ export default function App() {
         </p>
         <div className="credits">
           <span>Interface & interaction</span>
-          <strong>Original RIFT study</strong>
+          <strong>RIFT component library</strong>
           <span>Interface icons</span>
           <a href="https://lucide.dev" target="_blank" rel="noreferrer">
             Lucide · ISC <ExternalLink size={11} />
@@ -943,7 +941,7 @@ function Buttons({ notify }: { notify: (text: string) => void }) {
   useEffect(() => () => clearTimeout(timeout.current), []);
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText("RIFT — Interface studies");
+      await navigator.clipboard.writeText("RIFT — React components");
       setCopied(true);
       notify("Copied to clipboard.");
       timeout.current = setTimeout(() => setCopied(false), 2000);

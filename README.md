@@ -1,6 +1,6 @@
-# RIFT — a study in interaction
+# RIFT — React components
 
-A mobile-first React/TypeScript component canvas. An obsidian palette, silver reflections and restrained motion, with an optical material inspired by the physical edge of a screen: a machined rim, a recessed surface, and selective reflected light.
+A React/TypeScript component library in development, presented on a mobile-first interactive canvas. An obsidian palette, silver reflections and restrained motion, with an optical material inspired by the physical edge of a screen: a machined rim, a recessed surface, and selective reflected light.
 
 ## Run
 
@@ -68,3 +68,5 @@ Nine additional studies extend the canvas with compact tabs, workspace navigatio
 Muted Prism controls have a slow pearl-white traveling edge on hover and focus, with a quieter selected-state reflection. CSS masks isolate it to the border. Reduced-motion and the motion setting keep a static highlight.
 
 Six more specimens use shared field, surface, icon-button and menu-option primitives. Searchable multiselect, date picker, local file input, document actions, inline editing and step navigation all inherit the same tokens, state treatments and animated rim.
+
+The project is being prepared for an open-source GitHub release. The current checkout is the component showcase, not yet a published npm package; package exports, consumer documentation and a license still need to be finalized before release.
