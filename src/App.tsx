@@ -1,0 +1,1943 @@
+import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
+import {
+  ArrowDownToLine,
+  ArrowRight,
+  ArrowUpRight,
+  AudioLines,
+  Bell,
+  Bookmark,
+  Box,
+  Check,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  CircleHelp,
+  Compass,
+  Copy,
+  ExternalLink,
+  Eye,
+  Fingerprint,
+  Focus,
+  Grid2X2,
+  Headphones,
+  Hand,
+  Heart,
+  Home,
+  Layers,
+  LayoutGrid,
+  Link,
+  LoaderCircle,
+  Minus,
+  MousePointer2,
+  PanelLeft,
+  Pause,
+  Play,
+  Plus,
+  RotateCcw,
+  Search,
+  Settings2,
+  ShieldCheck,
+  SlidersHorizontal,
+  Snowflake,
+  Sun,
+  Volume2,
+  X,
+} from "lucide-react";
+import {
+  ActionButton,
+  Button,
+  Edge,
+  Modal,
+  Range,
+  Segmented,
+  Specimen,
+  Toggle,
+} from "./ui";
+
+type Category = "all" | "controls" | "navigation" | "surfaces" | "feedback";
+const categories: { id: Category; label: string; icon: typeof Grid2X2 }[] = [
+  { id: "all", label: "Overview", icon: Grid2X2 },
+  { id: "controls", label: "Controls", icon: SlidersHorizontal },
+  { id: "navigation", label: "Navigation", icon: Compass },
+  { id: "surfaces", label: "Surfaces", icon: Layers },
+  { id: "feedback", label: "Feedback", icon: AudioLines },
+];
+const specimens = [
+  { id: "optical", title: "Optical edge", category: "surfaces" },
+  { id: "precision", title: "Precision controls", category: "controls" },
+  {
+    id: "buttons",
+    title: "Small actions. Good reactions.",
+    category: "controls",
+  },
+  { id: "segments", title: "A change of perspective", category: "controls" },
+  { id: "dock", title: "A place to land", category: "navigation" },
+  {
+    id: "header",
+    title: "A quieter kind of navigation",
+    category: "navigation",
+  },
+  { id: "player", title: "In the moment", category: "surfaces" },
+  { id: "inputs", title: "Room for a little input", category: "controls" },
+  {
+    id: "selection",
+    title: "The details are the design",
+    category: "controls",
+  },
+  {
+    id: "disclosure",
+    title: "A little more, when you need it",
+    category: "navigation",
+  },
+  { id: "feedback", title: "Every state, considered", category: "feedback" },
+  {
+    id: "dialog",
+    title: "Something worth your attention",
+    category: "feedback",
+  },
+  {
+    id: "commit",
+    title: "A little intention goes a long way",
+    category: "controls",
+  },
+] as const;
+
+const positions = {
+  optical: { x: 440, y: 110, w: 390 },
+  precision: { x: 90, y: 320, w: 270 },
+  buttons: { x: 465, y: 550, w: 300 },
+  segments: { x: 885, y: 770, w: 310 },
+  dock: { x: 940, y: 260, w: 320 },
+  header: { x: 85, y: 910, w: 575 },
+  player: { x: 795, y: 1180, w: 345 },
+  inputs: { x: 90, y: 1370, w: 320 },
+  selection: { x: 540, y: 1560, w: 305 },
+  disclosure: { x: 935, y: 1590, w: 355 },
+  feedback: { x: 90, y: 1970, w: 300 },
+  dialog: { x: 545, y: 2060, w: 300 },
+  commit: { x: 970, y: 2090, w: 300 },
+};
+
+function defaultCamera() {
+  const zoom = innerWidth >= 900 ? Math.min(1, (innerWidth - 80) / 1320) : 1;
+  return {
+    x: innerWidth >= 900 ? Math.max(0, (innerWidth - 1400 * zoom) / 2) : 0,
+    y: innerWidth >= 900 ? 20 : 0,
+    zoom,
+  };
+}
+
+function readSaved(): string[] {
+  try {
+    const value = JSON.parse(localStorage.getItem("rift-saved") || "[]");
+    return Array.isArray(value)
+      ? value.filter((v) => typeof v === "string")
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+export default function App() {
+  const [category, setCategory] = useState<Category>("all");
+  const [saved, setSaved] = useState<string[]>(readSaved);
+  const [savedOnly, setSavedOnly] = useState(false);
+  const [inspector, setInspector] = useState(false);
+  const [command, setCommand] = useState(false);
+  const [query, setQuery] = useState("");
+  const [tool, setTool] = useState<"select" | "hand">("select");
+  const [camera, setCamera] = useState(defaultCamera);
+  const viewport = useRef<HTMLElement>(null);
+  const cameraRef = useRef(camera);
+  cameraRef.current = camera;
+  const panStart = useRef<{
+    x: number;
+    y: number;
+    cx: number;
+    cy: number;
+  } | null>(null);
+  const fitCanvas = () => setCamera(defaultCamera());
+  const changeZoom = (delta: number) => {
+    const current = cameraRef.current;
+    const zoom = Math.max(0.4, Math.min(1.6, current.zoom + delta));
+    const x = innerWidth / 2;
+    const y = innerHeight / 2;
+    setCamera({
+      x: x - ((x - current.x) / current.zoom) * zoom,
+      y: y - ((y - current.y) / current.zoom) * zoom,
+      zoom,
+    });
+  };
+  useEffect(() => {
+    const element = viewport.current;
+    if (!element) return;
+    const wheel = (event: WheelEvent) => {
+      if (innerWidth < 900) return;
+      event.preventDefault();
+      const current = cameraRef.current;
+      if (event.ctrlKey || event.metaKey) {
+        const zoom = Math.max(
+          0.4,
+          Math.min(1.6, current.zoom - event.deltaY * 0.003),
+        );
+        const rect = element.getBoundingClientRect();
+        const x = event.clientX - rect.left,
+          y = event.clientY - rect.top;
+        setCamera({
+          x: x - ((x - current.x) / current.zoom) * zoom,
+          y: y - ((y - current.y) / current.zoom) * zoom,
+          zoom,
+        });
+      } else
+        setCamera({
+          ...current,
+          x: current.x - event.deltaX,
+          y: current.y - event.deltaY,
+        });
+    };
+    element.addEventListener("wheel", wheel, { passive: false });
+    return () => element.removeEventListener("wheel", wheel);
+  }, []);
+  const [about, setAbout] = useState(false);
+  const [toast, setToast] = useState("");
+  const [edge, setEdge] = useState(70);
+  const [frost, setFrost] = useState(45);
+  const [accent, setAccent] = useState("ice");
+  const [motion, setMotion] = useState(true);
+  const [resetKey, setResetKey] = useState(0);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+  const notify = (message: string) => {
+    clearTimeout(toastTimer.current);
+    setToast(message);
+    toastTimer.current = setTimeout(() => setToast(""), 4500);
+  };
+  useEffect(() => () => clearTimeout(toastTimer.current), []);
+  useEffect(() => {
+    try {
+      localStorage.setItem("rift-saved", JSON.stringify(saved));
+    } catch {
+      /* Storage may be unavailable in private browsing. */
+    }
+  }, [saved]);
+  useEffect(() => {
+    const keydown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setCommand((v) => !v);
+      }
+    };
+    window.addEventListener("keydown", keydown);
+    return () => window.removeEventListener("keydown", keydown);
+  }, []);
+  const pickCategory = (next: Category) => {
+    setCategory(next);
+    setSavedOnly(false);
+    if (innerWidth >= 900) {
+      const first = specimens.find(
+        (item) => next === "all" || item.category === next,
+      );
+      if (next === "all") fitCanvas();
+      else if (first) {
+        const position = positions[first.id];
+        setCamera({
+          x: 100 - position.x * 0.9,
+          y: 75 - position.y * 0.9,
+          zoom: 0.9,
+        });
+      }
+    }
+  };
+  const toggleSave = (id: string) =>
+    setSaved((previous) =>
+      previous.includes(id)
+        ? previous.filter((value) => value !== id)
+        : [...previous, id],
+    );
+  const reset = () => {
+    setEdge(70);
+    setFrost(45);
+    setAccent("ice");
+    setMotion(true);
+    setResetKey((value) => value + 1);
+    setCategory('all');setSavedOnly(false);setTool('select');
+    setCamera(defaultCamera());
+    notify("Canvas reset. Back to a fresh start.");
+  };
+  const download = () => {
+    const data = {
+      name: "RIFT material preset",
+      version: 1,
+      edge,
+      frost,
+      accent,
+      motion,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "rift-material.json";
+    link.click();
+    URL.revokeObjectURL(url);
+    notify("Material preset exported as JSON.");
+  };
+  const visible = specimens.filter(
+    (item) =>
+      (category === "all" || item.category === category) &&
+      (!savedOnly || saved.includes(item.id)),
+  );
+  const searchResults = specimens.filter((item) =>
+    `${item.title} ${item.category}`
+      .toLowerCase()
+      .includes(query.toLowerCase()),
+  );
+  const chooseResult = (id: string) => {
+    setCategory("all");
+    setSavedOnly(false);
+    setCommand(false);
+    setQuery("");
+    requestAnimationFrame(() => {
+      const item = document.getElementById(id);
+      if (innerWidth >= 900) {
+        const position = positions[id as keyof typeof positions];
+        if (position)
+          setCamera({
+            x: innerWidth / 2 - (position.x + position.w / 2) * 0.95,
+            y: innerHeight / 2 - (position.y + 170) * 0.95,
+            zoom: 0.95,
+          });
+      } else
+        item?.scrollIntoView({
+          behavior:
+            motion &&
+            !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+              ? "smooth"
+              : "instant",
+          block: "center",
+        });
+      if (item) {
+        item.tabIndex = -1;
+        item.focus({ preventScroll: true });
+      }
+      item?.classList.add("highlight-specimen");
+      setTimeout(() => item?.classList.remove("highlight-specimen"), 1800);
+    });
+  };
+  const style = {
+    "--edge-strength": edge / 100,
+    "--frost": `${frost / 3}px`,
+    "--accent":
+      accent === "ice" ? "#a8c9ed" : accent === "lilac" ? "#c3b2eb" : "#d5d8c5",
+    "--accent-rgb":
+      accent === "ice"
+        ? "168,201,237"
+        : accent === "lilac"
+          ? "195,178,235"
+          : "213,216,197",
+  } as CSSProperties;
+  return (
+    <div className={`app ${!motion ? "motion-off" : ""}`} style={style}>
+      <a className="skip-link" href="#canvas">
+        Skip to components
+      </a>
+      <header className="canvas-chrome">
+        <button
+          className="canvas-wordmark"
+          onClick={() => {
+            pickCategory("all");
+            fitCanvas();
+          }}
+          aria-label="RIFT canvas home"
+        >
+          <span className="brand-symbol">
+            <i />
+            <i />
+            <i />
+          </span>
+          <strong>rift</strong>
+          <span>interaction studies</span>
+        </button>
+        <nav className="canvas-filters" aria-label="Canvas layers">
+          {categories.map(({ id, label }) => (
+            <button
+              key={id}
+              aria-pressed={category === id && !savedOnly}
+              className={category === id && !savedOnly ? "active" : ""}
+              onClick={() => pickCategory(id)}
+            >
+              {id === "all" ? "Everything" : label}
+            </button>
+          ))}
+        </nav>
+        <button
+          className="canvas-info icon-button"
+          aria-label="About RIFT"
+          onClick={() => setAbout(true)}
+        >
+          <CircleHelp size={17} />
+        </button>
+      </header>
+      <main
+        id="canvas"
+        ref={viewport}
+        onFocusCapture={(event) => {
+          if (innerWidth < 900 || !(event.target as Element).matches(':focus-visible')) return;
+          const target = (event.target as Element).closest<HTMLElement>(
+            ".specimen",
+          );
+          if (!target) return;
+          const rect = target.getBoundingClientRect();
+          const container = event.currentTarget;
+          const scrollX = container.scrollLeft,
+            scrollY = container.scrollTop;
+          container.scrollTo({ top: 0, left: 0, behavior: "instant" });
+          if (
+            rect.top < 100 ||
+            rect.bottom > innerHeight - 95 ||
+            rect.left < 20 ||
+            rect.right > innerWidth - 20
+          ) {
+            const current = cameraRef.current;
+            setCamera({
+              ...current,
+              x:
+                current.x +
+                innerWidth / 2 -
+                (rect.left + rect.width / 2) -
+                scrollX,
+              y:
+                current.y +
+                innerHeight / 2 -
+                (rect.top + Math.min(rect.height, innerHeight - 220) / 2) -
+                scrollY,
+            });
+          }
+        }}
+        className={`canvas-view tool-${tool}`}
+        onPointerDown={(event) => {
+          if (innerWidth < 900 || event.button !== 0) return;
+          if (
+            tool === "hand" ||
+            event.target === event.currentTarget ||
+            (event.target as Element).classList.contains("component-grid")
+          ) {
+            event.currentTarget.setPointerCapture(event.pointerId);
+            panStart.current = {
+              x: event.clientX,
+              y: event.clientY,
+              cx: camera.x,
+              cy: camera.y,
+            };
+            event.preventDefault();
+          }
+        }}
+        onPointerMove={(event) => {
+          if (panStart.current) {
+            const start = panStart.current;
+            setCamera({
+              ...cameraRef.current,
+              x: start.cx + event.clientX - start.x,
+              y: start.cy + event.clientY - start.y,
+            });
+          }
+        }}
+        onPointerUp={() => {
+          panStart.current = null;
+        }}
+        onPointerCancel={() => {
+          panStart.current = null;
+        }}
+      >
+        <h1 className="sr-only">
+          RIFT — an open canvas of interactive components
+        </h1>
+        <div
+          key={resetKey}
+          className={`component-grid freeform-board ${category !== "all" || savedOnly ? "filtered-grid" : ""}`}
+          style={
+            {
+              "--camera-x": `${camera.x}px`,
+              "--camera-y": `${camera.y}px`,
+              "--camera-zoom": camera.zoom,
+            } as CSSProperties
+          }
+        >
+          <div className="canvas-note">
+            <span>MATERIAL EXPLORATIONS / VOL. 01</span>
+            <p>
+              Light. Touch.
+              <br />
+              <em>A little feeling.</em>
+            </p>
+            <small>Interactive objects. No wrong way to explore.</small>
+          </div>
+          {visible.map((item) => (
+            <Specimen
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              index={String(specimens.indexOf(item) + 1).padStart(2, "0")}
+              category={item.category}
+              zoom={camera.zoom}
+              style={
+                {
+                  "--node-x": `${positions[item.id].x}px`,
+                  "--node-y": `${positions[item.id].y}px`,
+                  "--node-width": `${positions[item.id].w}px`,
+                } as CSSProperties
+              }
+              className={`specimen-${item.id}`}
+              saved={saved.includes(item.id)}
+              onSave={() => toggleSave(item.id)}
+            >
+              {item.id === "optical" ? (
+                <Optical notify={notify} />
+              ) : item.id === "precision" ? (
+                <Precision />
+              ) : item.id === "buttons" ? (
+                <Buttons notify={notify} />
+              ) : item.id === "segments" ? (
+                <Segments />
+              ) : item.id === "dock" ? (
+                <Dock />
+              ) : item.id === "player" ? (
+                <Player />
+              ) : item.id === "inputs" ? (
+                <Inputs notify={notify} />
+              ) : item.id === "header" ? (
+                <HeaderDemo notify={notify} />
+              ) : item.id === "selection" ? (
+                <Selection />
+              ) : item.id === "disclosure" ? (
+                <Disclosure />
+              ) : item.id === "feedback" ? (
+                <Feedback notify={notify} />
+              ) : item.id === "commit" ? (
+                <Commit notify={notify} />
+              ) : (
+                <DialogDemo notify={notify} />
+              )}
+            </Specimen>
+          ))}
+        </div>
+        {!visible.length && (
+          <div className="empty-state">
+            <Bookmark size={26} />
+            <h2>A space for the good things.</h2>
+            <p>Bookmark an object to keep it here.</p>
+            <Button onClick={() => pickCategory("all")}>
+              Back to everything <ArrowRight size={14} />
+            </Button>
+          </div>
+        )}
+      </main>
+      <div className="canvas-caption">
+        <span className="live-mark">
+          <i /> {visible.length} interactive studies
+        </span>
+        <span>Drag a grip to rearrange · Scroll to explore</span>
+      </div>
+      <Edge className="canvas-tools">
+        <div className="tool-selection">
+          <button
+            className={tool === "select" ? "active" : ""}
+            onClick={() => setTool("select")}
+            aria-label="Interact with components"
+            aria-pressed={tool === "select"}
+          >
+            <MousePointer2 size={17} />
+          </button>
+          <button
+            className={`desktop-canvas-tool ${tool === "hand" ? "active" : ""}`}
+            onClick={() => setTool("hand")}
+            aria-label="Pan canvas"
+            aria-pressed={tool === "hand"}
+          >
+            <Hand size={17} />
+          </button>
+        </div>
+        <span className="tool-separator desktop-canvas-tool" />
+        <button
+          className="desktop-canvas-tool"
+          aria-label="Zoom out"
+          onClick={() => changeZoom(-0.1)}
+          disabled={camera.zoom <= 0.4}
+        >
+          <Minus size={15} />
+        </button>
+        <button
+          className="canvas-zoom desktop-canvas-tool"
+          aria-label="Reset canvas view"
+          onClick={fitCanvas}
+        >
+          {Math.round(camera.zoom * 100)}%
+        </button>
+        <button
+          className="desktop-canvas-tool"
+          aria-label="Zoom in"
+          onClick={() => changeZoom(0.1)}
+          disabled={camera.zoom >= 1.6}
+        >
+          <Plus size={15} />
+        </button>
+        <span className="tool-separator" />
+        <button aria-label="Find a component" onClick={() => setCommand(true)}>
+          <Search size={17} />
+        </button>
+        <button
+          aria-label="Show saved components"
+          aria-pressed={savedOnly}
+          className={savedOnly ? "active" : ""}
+          onClick={() => {
+            const next = !savedOnly;
+            setSavedOnly(next);
+            setCategory("all");
+            if (next && saved.length && innerWidth >= 900) {
+              const position = positions[saved[0] as keyof typeof positions];
+              if (position)
+                setCamera({
+                  x: 100 - position.x * 0.9,
+                  y: 75 - position.y * 0.9,
+                  zoom: 0.9,
+                });
+            } else fitCanvas();
+          }}
+        >
+          <Bookmark size={16} />
+          {saved.length > 0 && <i className="saved-dot" />}
+        </button>
+        <button
+          aria-label="Tune the material"
+          onClick={() => setInspector(true)}
+        >
+          <Settings2 size={17} />
+        </button>
+        <span className="tool-separator" />
+        <button aria-label="Reset all components and canvas" onClick={reset}>
+          <RotateCcw size={16} />
+        </button>
+      </Edge>
+      <Modal
+        open={inspector}
+        onClose={() => setInspector(false)}
+        title="Material studio"
+        className="inspector-modal"
+      >
+        <p className="modal-description">
+          One material. Your own expression.
+          <br />
+          Changes apply across the entire canvas.
+        </p>
+        <div className="inspector-preview">
+          <Edge className="inspector-edge">
+            <Fingerprint size={44} />
+            <span>Touch the edge.</span>
+          </Edge>
+        </div>
+        <Range label="Edge illumination" value={edge} onChange={setEdge} />
+        <Range label="Surface frost" value={frost} onChange={setFrost} />
+        <div className="inspector-color">
+          <span>Color temperature</span>
+          <div className="color-options">
+            {[
+              { id: "ice", name: "Ice", color: "#a8c9ed" },
+              { id: "lilac", name: "Dusk", color: "#c3b2eb" },
+              { id: "stone", name: "Stone", color: "#d5d8c5" },
+            ].map((color) => (
+              <button
+                key={color.id}
+                aria-label={color.name}
+                aria-pressed={accent === color.id}
+                className={accent === color.id ? "selected" : ""}
+                style={{ "--swatch": color.color } as CSSProperties}
+                onClick={() => setAccent(color.id)}
+              >
+                <span />
+                {color.name}
+              </button>
+            ))}
+          </div>
+        </div>
+        <Toggle
+          label="Expressive motion"
+          description="System reduced-motion preferences always apply."
+          checked={motion}
+          onChange={setMotion}
+        />
+        <div className="modal-actions">
+          <Button onClick={reset} icon={<RotateCcw size={14} />}>
+            Reset
+          </Button>
+          <Button
+            variant="primary"
+            onClick={download}
+            icon={<ArrowDownToLine size={14} />}
+          >
+            Export preset
+          </Button>
+        </div>
+      </Modal>
+      <Modal
+        open={command}
+        onClose={() => {
+          setCommand(false);
+          setQuery("");
+        }}
+        title="Find your next detail"
+        className="command-modal"
+      >
+        <div className="command-search">
+          <Search size={18} />
+          <input
+            aria-label="Search components"
+            placeholder="Search components…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            autoFocus
+          />
+        </div>
+        <div className="command-results">
+          {searchResults.map((item) => (
+            <button key={item.id} onClick={() => chooseResult(item.id)}>
+              <span>
+                <Box size={16} />
+                {item.title}
+              </span>
+              <small>{item.category}</small>
+              <ArrowUpRight size={14} />
+            </button>
+          ))}
+          {!searchResults.length && (
+            <p className="no-results">
+              No matching components. Try “edge” or “controls”.
+            </p>
+          )}
+        </div>
+        <div className="command-footer">
+          <span>
+            <kbd>tab</kbd> to move
+          </span>
+          <span>
+            <kbd>esc</kbd> to close
+          </span>
+        </div>
+      </Modal>
+      <Modal
+        open={about}
+        onClose={() => setAbout(false)}
+        title="The thinking behind the feeling"
+      >
+        <div className="about-mark">
+          <span className="brand-symbol">
+            <i />
+            <i />
+            <i />
+          </span>
+        </div>
+        <p className="about-lead">
+          Less noise.
+          <br />
+          More nuance.
+        </p>
+        <p className="modal-description">
+          RIFT is an original React interface experiment. Its optical edge takes
+          a cue from physical screens: a dark machined rim, a recessed surface,
+          and a fine line of reflected light.
+        </p>
+        <p className="modal-description">
+          Every example is interactive. Explore with a keyboard, save your
+          favorites, or tune the material. Your collection is stored only in
+          this browser.
+        </p>
+        <div className="credits">
+          <span>Interface & interaction</span>
+          <strong>Original RIFT study</strong>
+          <span>3D accents</span>
+          <a href="https://3dicons.co" target="_blank" rel="noreferrer">
+            3dicons by Vijay Verma · CC0 <ExternalLink size={11} />
+          </a>
+          <span>Interface icons</span>
+          <a href="https://lucide.dev" target="_blank" rel="noreferrer">
+            Lucide · ISC <ExternalLink size={11} />
+          </a>
+        </div>
+      </Modal>
+      <div
+        className={`toast ${toast ? "visible" : ""}`}
+        role="status"
+        aria-live="polite"
+      >
+        <span className="toast-icon">
+          <Check size={14} />
+        </span>
+        <span>{toast}</span>
+        <button
+          className="icon-button"
+          aria-label="Dismiss notification"
+          onClick={() => setToast("")}
+        >
+          <X size={14} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Optical({ notify }: { notify: (text: string) => void }) {
+  const [material, setMaterial] = useState("Frost");
+  const [pressed, setPressed] = useState(false);
+  return (
+    <div className={`optical-stage material-${material.toLowerCase()}`}>
+      <div className="stage-grid" />
+      <div className="optical-aura" />
+      <div className="optical-arc" aria-hidden="true" />
+      <div className="stage-coordinate">
+        R / 01<span>OPTICAL STUDY</span>
+      </div>
+      <Edge className="optical-object">
+        <div className="object-shine" />
+        <button
+          className="object-core"
+          aria-label="Activate optical surface"
+          aria-pressed={pressed}
+          onClick={() => {
+            setPressed(!pressed);
+            notify(
+              pressed
+                ? "Surface at rest."
+                : "A fine line between light and matter.",
+            );
+          }}
+        >
+          {pressed ? (
+            <Fingerprint size={44} strokeWidth={1} />
+          ) : (
+            <Snowflake size={44} strokeWidth={1} />
+          )}
+        </button>
+        <div className="object-caption">
+          <span>
+            {pressed ? "A little closer." : "Between light & matter."}
+          </span>
+          <small>{material.toUpperCase()} / RIFT MATERIAL 001</small>
+        </div>
+      </Edge>
+      <div className="stage-bottom">
+        <span className="stage-note">
+          <i /> Reactive edge
+        </span>
+        <div
+          className="material-picker"
+          role="group"
+          aria-label="Optical material"
+        >
+          {["Frost", "Smoke", "Obsidian"].map((name) => (
+            <button
+              key={name}
+              onClick={() => setMaterial(name)}
+              aria-pressed={material === name}
+              className={material === name ? "active" : ""}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Precision() {
+  const [brightness, setBrightness] = useState(68);
+  const [volume, setVolume] = useState(42);
+  const [focus, setFocus] = useState(true);
+  const [ambient, setAmbient] = useState(false);
+  return (
+    <div className={`precision-content ${ambient ? "ambient-light-on" : ""}`}>
+      <div className="precision-heading">
+        <span className="control-symbol">
+          <SlidersHorizontal size={19} />
+        </span>
+        <div>
+          Find your balance.<small>Just enough. Just right.</small>
+        </div>
+      </div>
+      <Range
+        label="Luminance"
+        value={brightness}
+        onChange={setBrightness}
+        icon={<Sun size={14} />}
+      />
+      <Range
+        label="Resonance"
+        value={volume}
+        onChange={setVolume}
+        icon={<Volume2 size={14} />}
+      />
+      <div className="control-divider" />
+      <Toggle label="Focus mode" checked={focus} onChange={setFocus} />
+      <Toggle label="Edge lighting" checked={ambient} onChange={setAmbient} />
+      <div
+        className={`precision-status ${focus ? "focused" : ""}`}
+        aria-live="polite"
+      >
+        <span />
+        {focus ? "A little less distraction." : "Open to the world."}
+        {ambient && " Light on."}
+      </div>
+    </div>
+  );
+}
+
+function Buttons({ notify }: { notify: (text: string) => void }) {
+  const [liked, setLiked] = useState(false);
+  const [count, setCount] = useState(1);
+  const [copied, setCopied] = useState(false);
+  const timeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(timeout.current), []);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        "A little less interface. A lot more feeling.",
+      );
+      setCopied(true);
+      notify("A small thought, copied to your clipboard.");
+      timeout.current = setTimeout(() => setCopied(false), 2000);
+    } catch {
+      notify("Clipboard access unavailable in this browser.");
+    }
+  };
+  return (
+    <div className="button-examples">
+      <div className="button-line">
+        <ActionButton notify={notify} />
+        <button
+          className={`round-button heart-button ${liked ? "liked" : ""}`}
+          onClick={() => setLiked(!liked)}
+          aria-label={liked ? "Unlike" : "Like"}
+          aria-pressed={liked}
+        >
+          <Heart size={18} fill={liked ? "currentColor" : "none"} />
+        </button>
+      </div>
+      <div className="button-line">
+        <Button
+          onClick={copy}
+          icon={copied ? <Check size={15} /> : <Copy size={15} />}
+        >
+          {copied ? "Copied" : "Copy a little thought"}
+        </Button>
+        <button
+          className="round-button arrow-button"
+          aria-label="Show a detail"
+          onClick={() => notify("Every pixel has a purpose. Even this one.")}
+        >
+          <ArrowUpRight size={18} />
+        </button>
+      </div>
+      <div className="button-line button-minor-actions">
+        <Button
+          variant="danger"
+          onClick={() => {
+            setLiked(false);
+            setCount(1);
+            notify("Choices cleared. A fresh little start.");
+          }}
+        >
+          Clear choices
+        </Button>
+        <Button disabled>Unavailable</Button>
+      </div>
+      <div className="button-divider" />
+      <div className="button-line">
+        <div className="stepper" role="group" aria-label="Quantity">
+          <button
+            disabled={count === 0}
+            onClick={() => setCount(Math.max(0, count - 1))}
+            aria-label="Decrease quantity"
+          >
+            <Minus size={14} />
+          </button>
+          <output aria-live="polite">
+            {count.toString().padStart(2, "0")}
+          </output>
+          <button
+            disabled={count === 9}
+            onClick={() => setCount(Math.min(9, count + 1))}
+            aria-label="Increase quantity"
+          >
+            <Plus size={14} />
+          </button>
+        </div>
+        <Button
+          variant="ghost"
+          onClick={() => notify("You found the quietest button.")}
+          icon={<ArrowRight size={13} />}
+        >
+          Quiet action
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function Segments() {
+  const [view, setView] = useState("grid");
+  const [period, setPeriod] = useState("monthly");
+  return (
+    <div className="segments-demo">
+      <Segmented
+        options={[
+          {
+            value: "grid",
+            label: (
+              <>
+                <LayoutGrid size={14} />
+                Canvas
+              </>
+            ),
+          },
+          {
+            value: "list",
+            label: (
+              <>
+                <PanelLeft size={14} />
+                List
+              </>
+            ),
+          },
+          {
+            value: "focus",
+            label: (
+              <>
+                <Focus size={14} />
+                Focus
+              </>
+            ),
+          },
+        ]}
+        value={view}
+        onChange={setView}
+        label="Preview arrangement"
+      />
+      <div
+        className={`layout-preview layout-${view}`}
+        aria-label={`${view} layout preview`}
+      >
+        <span />
+        <span />
+        <span />
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="segments-bottom">
+        <span>A different point of view.</span>
+        <Segmented
+          options={[
+            { value: "monthly", label: "Month" },
+            { value: "yearly", label: "Year" },
+          ]}
+          value={period}
+          onChange={setPeriod}
+          label="Billing period"
+        />
+      </div>
+      <div className="price-preview" aria-live="polite">
+        <strong>{period === "monthly" ? "$12" : "$108"}</strong>
+        <span>
+          / {period === "monthly" ? "month" : "year"} · illustrative plan
+        </span>
+        {period === "yearly" && <small>Save 25%</small>}
+      </div>
+    </div>
+  );
+}
+
+function Dock() {
+  const [active, setActive] = useState("Home");
+  const [notification, setNotification] = useState(true);
+  const actions = [
+    { label: "Home", icon: Home },
+    { label: "Explore", icon: Compass },
+    { label: "Library", icon: Layers },
+    { label: "Activity", icon: AudioLines },
+  ];
+  return (
+    <div className="dock-stage">
+      <div className="dock-orbit orbit-one" />
+      <div className="dock-orbit orbit-two" />
+      <div className="dock-context" aria-live="polite">
+        <span className="dock-context-symbol">
+          {active === "Home" ? (
+            <Home size={23} strokeWidth={1.2} />
+          ) : active === "Explore" ? (
+            <Compass size={23} strokeWidth={1.2} />
+          ) : active === "Library" ? (
+            <Layers size={23} strokeWidth={1.2} />
+          ) : (
+            <AudioLines size={23} strokeWidth={1.2} />
+          )}
+        </span>
+        <span>
+          {active === "Home"
+            ? "Somewhere familiar."
+            : active === "Explore"
+              ? "A little room to wander."
+              : active === "Library"
+                ? "Keep the good things close."
+                : "A sense of what’s happening."}
+        </span>
+      </div>
+      <Edge className="floating-dock">
+        <nav aria-label="Floating dock">
+          {actions.map(({ label, icon: Icon }) => (
+            <button
+              className={active === label ? "active" : ""}
+              key={label}
+              onClick={() => setActive(label)}
+              aria-label={label}
+              aria-current={active === label ? "page" : undefined}
+            >
+              <Icon size={19} />
+              <span className="dock-tooltip">{label}</span>
+              <i />
+            </button>
+          ))}
+          <span className="dock-separator" />
+          <button
+            onClick={() => setNotification(!notification)}
+            aria-label={
+              notification ? "Mute notifications" : "Enable notifications"
+            }
+            aria-pressed={notification}
+          >
+            <Bell size={18} />
+            {notification && <b className="notification-dot" />}
+            <span className="dock-tooltip">
+              {notification ? "Notifications on" : "Notifications off"}
+            </span>
+          </button>
+        </nav>
+      </Edge>
+      <span className="dock-caption">
+        A navigation that gives the content room.
+      </span>
+    </div>
+  );
+}
+
+function Player() {
+  const [playing, setPlaying] = useState(false);
+  const [progress, setProgress] = useState(27);
+  const [track, setTrack] = useState(0);
+  const [liked, setLiked] = useState(false);
+  const tracks = [
+    { name: "A moment of stillness", artist: "RIFT Radio · Ambient 001" },
+    { name: "Between the spaces", artist: "RIFT Radio · Ambient 002" },
+    { name: "Softly, into focus", artist: "RIFT Radio · Ambient 003" },
+  ];
+  const audio = useRef<AudioContext | null>(null);
+  const voices = useRef<OscillatorNode[]>([]);
+  useEffect(() => {
+    if (!playing) return;
+    const context = new AudioContext();
+    audio.current = context;
+    const gain = context.createGain();
+    gain.gain.setValueAtTime(0, context.currentTime);
+    gain.gain.linearRampToValueAtTime(0.028, context.currentTime + 1.5);
+    gain.connect(context.destination);
+    const frequencies = [
+      [130.81, 196, 261.63],
+      [146.83, 220, 293.66],
+      [110, 164.81, 220],
+    ][track];
+    voices.current = frequencies.map((frequency, index) => {
+      const oscillator = context.createOscillator();
+      oscillator.type = "sine";
+      oscillator.frequency.value = frequency;
+      oscillator.detune.value = index * 2;
+      oscillator.connect(gain);
+      oscillator.start();
+      return oscillator;
+    });
+    const tick = setInterval(
+      () => setProgress((value) => (value >= 100 ? 0 : value + 0.4)),
+      1000,
+    );
+    return () => {
+      clearInterval(tick);
+      voices.current.forEach((voice) => {
+        try {
+          voice.stop();
+        } catch {
+          /* Already stopped. */
+        }
+      });
+      void context.close();
+      audio.current = null;
+    };
+  }, [playing, track]);
+  const next = () => {
+    setTrack((value) => (value + 1) % tracks.length);
+    setProgress(0);
+  };
+  return (
+    <div className="player">
+      <div className="player-top">
+        <div className={`album-art ${playing ? "playing" : ""}`}>
+          <div />
+          <div />
+          <div />
+          <span>
+            <AudioLines size={19} />
+          </span>
+        </div>
+        <div className="track-info">
+          <span className="eyebrow">A LITTLE SPACE TO BREATHE</span>
+          <h3>{tracks[track].name}</h3>
+          <p>{tracks[track].artist}</p>
+        </div>
+        <button
+          className={`icon-button ${liked ? "is-saved" : ""}`}
+          aria-label={liked ? "Unsave track" : "Save track"}
+          aria-pressed={liked}
+          onClick={() => setLiked(!liked)}
+        >
+          <Heart size={16} fill={liked ? "currentColor" : "none"} />
+        </button>
+      </div>
+      <div
+        className={`waveform ${playing ? "is-playing" : ""}`}
+        aria-hidden="true"
+      >
+        {Array.from({ length: 55 }, (_, i) => (
+          <i
+            key={i}
+            style={
+              {
+                height: `${12 + Math.sin(i * 0.67) * Math.sin(i * 0.23) * 35 + Math.cos(i * 1.2) * 8}px`,
+                "--delay": `${(i % 7) * -0.16}s`,
+              } as CSSProperties
+            }
+          />
+        ))}
+      </div>
+      <label className="sr-only" htmlFor="track-progress">
+        Track progress
+      </label>
+      <input
+        id="track-progress"
+        className="track-progress"
+        type="range"
+        min="0"
+        max="100"
+        value={progress}
+        onChange={(e) => setProgress(Number(e.target.value))}
+        style={{ "--fill": `${progress}%` } as CSSProperties}
+      />
+      <div className="player-bottom">
+        <span className="track-time">
+          {Math.floor((progress * 2.4) / 60)}:
+          {String(Math.floor((progress * 2.4) % 60)).padStart(2, "0")}{" "}
+          <small>/ 4:00</small>
+        </span>
+        <div>
+          <button
+            className="icon-button"
+            aria-label="Previous track"
+            onClick={() => {
+              setTrack((value) => (value + 2) % 3);
+              setProgress(0);
+            }}
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            className="player-play"
+            aria-label={playing ? "Pause ambient audio" : "Play ambient audio"}
+            onClick={() => setPlaying(!playing)}
+          >
+            {playing ? (
+              <Pause size={16} fill="currentColor" />
+            ) : (
+              <Play size={16} fill="currentColor" />
+            )}
+          </button>
+          <button
+            className="icon-button"
+            aria-label="Next track"
+            onClick={next}
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+        <Headphones size={15} />
+      </div>
+    </div>
+  );
+}
+
+function Inputs({ notify }: { notify: (message: string) => void }) {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [role, setRole] = useState("Designer");
+  return (
+    <form
+      className="input-demo"
+      noValidate
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          setError("A valid email helps us find you.");
+          return;
+        }
+        setError("");
+        notify("Looking good. This is a local demo — nothing was sent.");
+      }}
+    >
+      <label htmlFor="demo-name">What should we call you?</label>
+      <div className="input-shell">
+        <span className="input-avatar">M</span>
+        <input
+          id="demo-name"
+          placeholder="Your name"
+          defaultValue="Morgan"
+          autoComplete="off"
+        />
+        <Check size={14} />
+      </div>
+      <div className="form-two">
+        <div>
+          <label htmlFor="demo-role">Your perspective</label>
+          <div className="select-shell">
+            <select
+              id="demo-role"
+              value={role}
+              onChange={(event) => setRole(event.target.value)}
+            >
+              <option>Designer</option>
+              <option>Engineer</option>
+              <option>Curious human</option>
+            </select>
+            <ChevronDown size={13} />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="demo-team">Workspace</label>
+          <div className="select-shell">
+            <select id="demo-team" defaultValue="Personal">
+              <option>Personal</option>
+              <option>Studio</option>
+              <option>Team</option>
+            </select>
+            <ChevronDown size={13} />
+          </div>
+        </div>
+      </div>
+      <label htmlFor="demo-email">
+        A place to reach you <span>Optional experiment</span>
+      </label>
+      <div className={`input-shell ${error ? "has-error" : ""}`}>
+        <span className="at-symbol">@</span>
+        <input
+          type="email"
+          id="demo-email"
+          placeholder="you@somewhere.nice"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (error) setError("");
+          }}
+          aria-invalid={!!error}
+          aria-describedby={error ? "email-error" : undefined}
+        />
+      </div>
+      {error && (
+        <p className="field-error" id="email-error" role="alert">
+          {error}
+        </p>
+      )}
+      <label htmlFor="demo-note" className="note-label">
+        A little context
+      </label>
+      <textarea
+        id="demo-note"
+        rows={2}
+        placeholder="An idea worth keeping…"
+        aria-label="A little context"
+      />
+      <Button type="submit" className="input-submit">
+        Give it a try <ArrowUpRight size={14} />
+      </Button>
+    </form>
+  );
+}
+
+function HeaderDemo({ notify }: { notify: (message: string) => void }) {
+  const [tab, setTab] = useState("Overview");
+  const [menu, setMenu] = useState(false);
+  return (
+    <div className="header-demo">
+      <div className="mini-browser">
+        <span />
+        <span />
+        <span />
+        <div>studio.rift / workspace</div>
+        <Link size={11} />
+      </div>
+      <div className="demo-navbar">
+        <span className="demo-brand">
+          <span className="tiny-brand" />
+          form<span>®</span>
+        </span>
+        <nav aria-label="Header specimen navigation">
+          {["Overview", "Projects", "People"].map((name) => (
+            <button
+              key={name}
+              className={tab === name ? "active" : ""}
+              onClick={() => setTab(name)}
+            >
+              {name}
+            </button>
+          ))}
+        </nav>
+        <button
+          className="mini-profile"
+          aria-label="Open workspace menu"
+          aria-expanded={menu}
+          onClick={() => setMenu(!menu)}
+        >
+          M
+        </button>
+        {menu && (
+          <div className="dropdown-menu">
+            <span>Personal workspace</span>
+            <button
+              onClick={() => {
+                setMenu(false);
+                navigator.clipboard
+                  .writeText(location.href.split("#")[0] + "#header")
+                  .then(() => notify("Workspace specimen link copied."))
+                  .catch(() =>
+                    notify(
+                      "Clipboard is unavailable. Use the address bar to share this canvas.",
+                    ),
+                  );
+              }}
+            >
+              <Link size={14} />
+              Share workspace
+            </button>
+            <button
+              onClick={() => {
+                setMenu(false);
+                notify("You’re viewing the original RIFT navigation study.");
+              }}
+            >
+              <Eye size={14} />
+              View details
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="header-content">
+        <div className="mini-breadcrumb">
+          Workspace <ChevronRight size={10} /> {tab}
+        </div>
+        <div className="mini-content-heading">
+          <div>
+            <h3>
+              {tab === "Overview"
+                ? "Good things take shape."
+                : tab === "Projects"
+                  ? "A little work in progress."
+                  : "Good people. Better together."}
+            </h3>
+            <p>
+              {tab === "Overview"
+                ? "A clear view of what matters."
+                : tab === "Projects"
+                  ? "Space for the next good idea."
+                  : "A considered space for your team."}
+            </p>
+          </div>
+          <button
+            className="round-button small"
+            aria-label="Create a project"
+            onClick={() => notify("A new idea starts with a little space.")}
+          >
+            <Plus size={16} />
+          </button>
+        </div>
+        <div className="ghost-content" aria-hidden="true">
+          <div />
+          <div />
+          <div />
+        </div>
+      </div>
+      <div className="navbar-bottom">
+        <span className="avatar-stack">
+          <i>M</i>
+          <i>J</i>
+          <i>A</i>
+        </span>
+        <span>A shared space, without the noise.</span>
+        <button
+          className="icon-button"
+          aria-label="Invite a collaborator"
+          onClick={() => notify("Invite preview. No invitation has been sent.")}
+        >
+          <Plus size={13} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Selection() {
+  const [tags, setTags] = useState(["Interface", "Motion"]);
+  const [choice, setChoice] = useState("Balanced");
+  const [check, setCheck] = useState(true);
+  return (
+    <div className="selection-demo">
+      <div className="mini-label">A FEW THINGS YOU’RE INTO</div>
+      <div className="choice-chips">
+        {["Interface", "Motion", "Objects", "Code"].map((tag) => (
+          <button
+            key={tag}
+            aria-pressed={tags.includes(tag)}
+            className={tags.includes(tag) ? "selected" : ""}
+            onClick={() =>
+              setTags((value) =>
+                value.includes(tag)
+                  ? value.filter((item) => item !== tag)
+                  : [...value, tag],
+              )
+            }
+          >
+            {tags.includes(tag) ? <Check size={12} /> : <Plus size={12} />}{" "}
+            {tag}
+          </button>
+        ))}
+      </div>
+      <div className="control-divider" />
+      <fieldset className="radio-group">
+        <legend>A little character</legend>
+        {["Quiet", "Balanced", "Expressive"].map((name) => (
+          <label key={name}>
+            <input
+              type="radio"
+              name="character"
+              checked={choice === name}
+              onChange={() => setChoice(name)}
+            />
+            <span className="custom-radio" />
+            <span>{name}</span>
+            {name === "Balanced" && <small>Just right</small>}
+          </label>
+        ))}
+      </fieldset>
+      <label className="checkbox-label">
+        <input
+          type="checkbox"
+          checked={check}
+          onChange={(event) => setCheck(event.target.checked)}
+        />
+        <span>
+          <Check size={11} />
+        </span>
+        Leave room for the unexpected.
+      </label>
+      <p className="selection-summary" aria-live="polite">
+        {tags.length} interests · {choice.toLowerCase()} by nature.
+      </p>
+    </div>
+  );
+}
+
+function Disclosure() {
+  const [open, setOpen] = useState<number | null>(0);
+  const [page, setPage] = useState(1);
+  const questions = [
+    {
+      title: "What makes a surface feel real?",
+      body: "Not more effects. The right contrast, a little depth, and light that knows where to stop.",
+    },
+    {
+      title: "Does it work without motion?",
+      body: "Of course. Reduced motion keeps every function intact, with a quieter transition between states.",
+    },
+    {
+      title: "What happens on a smaller screen?",
+      body: "The canvas rearranges. Every control stays within reach, with space for your fingers.",
+    },
+  ];
+  return (
+    <div className="disclosure-demo">
+      <div className="accordion">
+        {questions.map((question, index) => (
+          <div className={open === index ? "open" : ""} key={question.title}>
+            <h3>
+              <button
+                id={`accordion-button-${index}`}
+                aria-expanded={open === index}
+                aria-controls={`accordion-panel-${index}`}
+                onClick={() => setOpen(open === index ? null : index)}
+              >
+                {question.title}
+                <Plus size={14} />
+              </button>
+            </h3>
+            <div
+              id={`accordion-panel-${index}`}
+              role="region"
+              aria-labelledby={`accordion-button-${index}`}
+              hidden={open !== index}
+            >
+              <p>{question.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="pagination">
+        <span>Chapter {page} of 3</span>
+        <div>
+          <button
+            className="icon-button"
+            disabled={page === 1}
+            aria-label="Previous chapter"
+            onClick={() => {
+              const previous = Math.max(1, page - 1);
+              setPage(previous);
+              setOpen(previous - 1);
+            }}
+          >
+            <ChevronLeft size={16} />
+          </button>
+          {[1, 2, 3].map((value) => (
+            <button
+              className={page === value ? "active" : ""}
+              aria-label={`Chapter ${value}`}
+              aria-current={page === value ? "page" : undefined}
+              onClick={() => {
+                setPage(value);
+                setOpen(value - 1);
+              }}
+              key={value}
+            >
+              {value}
+            </button>
+          ))}
+          <button
+            className="icon-button"
+            disabled={page === 3}
+            aria-label="Next chapter"
+            onClick={() => {
+              const next = Math.min(3, page + 1);
+              setPage(next);
+              setOpen(next - 1);
+            }}
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Feedback({ notify }: { notify: (message: string) => void }) {
+  const [state, setState] = useState("Ready");
+  return (
+    <div className="feedback-demo">
+      <Segmented
+        label="Feedback preview state"
+        value={state}
+        onChange={setState}
+        options={["Ready", "Loading", "Done"].map((value) => ({
+          value,
+          label: value,
+        }))}
+      />
+      <div
+        className={`feedback-preview state-${state.toLowerCase()}`}
+        aria-live="polite"
+      >
+        {state === "Loading" ? (
+          <div className="skeleton-content">
+            <div />
+            <span />
+            <span />
+          </div>
+        ) : (
+          <>
+            <div className="feedback-asset">
+              {state === "Done" ? (
+                <img src="/tick.webp" alt="" width="72" height="72" />
+              ) : (
+                <img src="/rocket.webp" alt="" width="72" height="72" />
+              )}
+            </div>
+            <h3>
+              {state === "Done"
+                ? "Right where it belongs."
+                : "Ready when you are."}
+            </h3>
+            <p>
+              {state === "Done"
+                ? "Your little idea has landed."
+                : "Good things are a small action away."}
+            </p>
+          </>
+        )}
+      </div>
+      <div className="status-chips">
+        <span>
+          <i /> In sync
+        </span>
+        <span>
+          <LoaderCircle
+            size={10}
+            className={state === "Loading" ? "spin" : ""}
+          />{" "}
+          Processing
+        </span>
+        <span>
+          <Check size={10} /> Saved
+        </span>
+      </div>
+      <button
+        className="notification-preview"
+        onClick={() => notify("All saved. Your changes feel right at home.")}
+      >
+        <span>
+          <Check size={13} />
+        </span>
+        <div>
+          All the little things, saved.<small>Just now · Tap to replay</small>
+        </div>
+        <ChevronRight size={13} />
+      </button>
+    </div>
+  );
+}
+
+function DialogDemo({ notify }: { notify: (message: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+  const [tooltip, setTooltip] = useState(false);
+  return (
+    <div className="dialog-demo">
+      <div className="dialog-visual">
+        <Edge className="dialog-visual-edge">
+          <ShieldCheck size={30} strokeWidth={1.1} />
+        </Edge>
+        <span className="dialog-halo" />
+      </div>
+      <h3>A pause with a purpose.</h3>
+      <p>A little clarity before the next step.</p>
+      <Button
+        onClick={() => {
+          setConfirmed(false);
+          setOpen(true);
+        }}
+      >
+        Open a little dialog <ArrowUpRight size={14} />
+      </Button>
+      <div className="tooltip-example">
+        <span>A little context, too.</span>
+        <button
+          className="icon-button tooltip-target"
+          onMouseEnter={() => setTooltip(true)}
+          onMouseLeave={() => setTooltip(false)}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") setTooltip(false);
+          }}
+          onFocus={() => setTooltip(true)}
+          onBlur={() => setTooltip(false)}
+          onClick={() => setTooltip(!tooltip)}
+          aria-label="About this dialog"
+          aria-describedby={tooltip ? "dialog-tip" : undefined}
+        >
+          <CircleHelp size={14} />
+          {tooltip && (
+            <span id="dialog-tip" className="custom-tooltip" role="tooltip">
+              Small interruption. Clear intention.
+            </span>
+          )}
+        </button>
+      </div>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title={confirmed ? "A good place to start." : "Make a little room."}
+      >
+        <div className="confirm-image">
+          <img
+            src={confirmed ? "/tick.webp" : "/shield.webp"}
+            width="100"
+            height="100"
+            alt=""
+          />
+        </div>
+        <p className="confirm-title">
+          {confirmed ? "Consider it done." : "Keep what matters."}
+        </p>
+        <p className="modal-description centered">
+          {confirmed
+            ? "Your choice is saved for this session. A small interaction, all the way through."
+            : "A considered confirmation. No surprises, no irreversible actions. Just a small moment of clarity."}
+        </p>
+        <div className="modal-actions">
+          {confirmed ? (
+            <Button variant="primary" onClick={() => setOpen(false)}>
+              Back to the canvas <ArrowRight size={14} />
+            </Button>
+          ) : (
+            <>
+              <Button onClick={() => setOpen(false)}>Not right now</Button>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  setConfirmed(true);
+                  notify("A small decision. Beautifully resolved.");
+                }}
+              >
+                Sounds good <Check size={14} />
+              </Button>
+            </>
+          )}
+        </div>
+      </Modal>
+    </div>
+  );
+}
+
+function Commit({ notify }: { notify: (message: string) => void }) {
+  const [progress, setProgress] = useState(0);
+  const [complete, setComplete] = useState(false);
+  const [holding, setHolding] = useState(false);
+  const frame = useRef<number>(0);
+  const finished = useRef(false);
+  const start = useRef<number>(0);
+  const held = useRef(false);
+  useEffect(() => () => cancelAnimationFrame(frame.current), []);
+  const begin = () => {
+    if (held.current || finished.current) return;
+    held.current = true;
+    start.current = performance.now();
+    setHolding(true);
+    const advance = (now: number) => {
+      const value = Math.min(100, (now - start.current) / 11);
+      setProgress(value);
+      if (value >= 100) {
+        finished.current = true;
+        held.current = false;
+        setHolding(false);
+        setComplete(true);
+        notify(
+          "Committed with intention. A small interaction, fully resolved.",
+        );
+      } else if (held.current) frame.current = requestAnimationFrame(advance);
+    };
+    frame.current = requestAnimationFrame(advance);
+  };
+  const release = () => {
+    held.current = false;
+    setHolding(false);
+    cancelAnimationFrame(frame.current);
+    if (!finished.current) setProgress(0);
+  };
+  const reset = () => {
+    release();
+    finished.current = false;
+    setComplete(false);
+    setProgress(0);
+  };
+  return (
+    <div className="commit-demo">
+      <div
+        className={`commit-orbit ${holding ? "holding" : ""} ${complete ? "complete" : ""}`}
+      >
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="41" />
+          <circle
+            className="commit-progress"
+            cx="50"
+            cy="50"
+            r="41"
+            strokeDasharray="257.61"
+            strokeDashoffset={257.61 * (1 - progress / 100)}
+          />
+        </svg>
+        <span>
+          {complete ? (
+            <Check size={26} strokeWidth={1.4} />
+          ) : (
+            <Fingerprint size={30} strokeWidth={1} />
+          )}
+        </span>
+      </div>
+      <div className="commit-copy" aria-live="polite">
+        <h3>
+          {complete
+            ? "Intention, confirmed."
+            : holding
+              ? "Stay for a moment."
+              : "Some things deserve a moment."}
+        </h3>
+        <p>
+          {complete
+            ? "A little patience. A very clear outcome."
+            : "Press and hold. Release to change your mind."}
+        </p>
+      </div>
+      <Edge className="hold-edge">
+        <button
+          className="hold-button"
+          onPointerDown={(event) => {
+            if (event.button !== 0) return;
+            event.currentTarget.setPointerCapture(event.pointerId);
+            begin();
+          }}
+          onPointerUp={release}
+          onPointerCancel={release}
+          onLostPointerCapture={release}
+          onKeyDown={(event) => {
+            if (event.key === " " || event.key === "Enter") {
+              event.preventDefault();
+              begin();
+            }
+            if (event.key === "Escape") release();
+          }}
+          onKeyUp={(event) => {
+            if (event.key === " " || event.key === "Enter") release();
+          }}
+          onBlur={release}
+          disabled={complete}
+          aria-label={
+            complete ? "Action committed" : "Hold for one second to commit"
+          }
+        >
+          <span className="hold-fill" style={{ width: `${progress}%` }} />
+          {complete ? <Check size={14} /> : <Fingerprint size={15} />}
+          <span>{complete ? "Consider it done" : "Hold to commit"}</span>
+          <small>{complete ? "✓" : "1.1s"}</small>
+        </button>
+      </Edge>
+      <button
+        className="commit-reset"
+        disabled={!complete && progress === 0}
+        onClick={reset}
+      >
+        <RotateCcw size={10} /> Try it again
+      </button>
+    </div>
+  );
+}

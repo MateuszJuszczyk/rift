@@ -1,0 +1,1027 @@
+/* An open surface. Only the components themselves have containers. */
+html {
+  scroll-padding-top: 125px;
+}
+.app {
+  background: #0b0d11;
+}
+.canvas-chrome {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 23px 20px 18px;
+  background: linear-gradient(#0b0d11 50%, #0b0d1100);
+  pointer-events: none;
+}
+.canvas-chrome > * {
+  pointer-events: auto;
+}
+.canvas-wordmark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  flex-shrink: 0;
+}
+.canvas-wordmark strong {
+  font-family: Manrope, sans-serif;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: #d8dfe9;
+}
+.canvas-wordmark > span:last-child {
+  font-size: 9px;
+  color: #5f6b7d;
+  border-left: 1px solid #65738b26;
+  padding-left: 12px;
+  margin-left: 9px;
+  letter-spacing: 0.2px;
+}
+.canvas-wordmark .brand-symbol {
+  position: relative;
+  width: 21px;
+  height: 23px;
+  display: block;
+}
+.canvas-wordmark .brand-symbol i {
+  position: absolute;
+  left: 3px;
+  top: 2px;
+  width: 6px;
+  height: 20px;
+  border-radius: 1px;
+  background: linear-gradient(160deg, #dae5f7, #63748f);
+  transform: skew(-25deg);
+}
+.canvas-wordmark .brand-symbol i:nth-child(2) {
+  left: 11px;
+  height: 12px;
+  background: linear-gradient(160deg, #c4d4ed, #62738c);
+}
+.canvas-wordmark .brand-symbol i:nth-child(3) {
+  left: 13px;
+  top: 15px;
+  height: 7px;
+  transform: skew(25deg);
+}
+.canvas-info {
+  color: #64738b;
+}
+.canvas-filters {
+  position: absolute;
+  top: 75px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  gap: 16px;
+  overflow: auto;
+  scrollbar-width: none;
+  padding-bottom: 10px;
+  pointer-events: auto;
+}
+.canvas-filters button {
+  padding: 8px 0;
+  font-size: 10px;
+  color: #63718a;
+  white-space: nowrap;
+  flex-shrink: 0;
+  position: relative;
+}
+.canvas-filters button.active {
+  color: #b9cce7;
+}
+.canvas-filters button.active:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: #a2badc77;
+}
+.canvas-filters button:hover {
+  color: #d7e7fd;
+}
+.canvas-chrome .canvas-info {
+  width: 30px;
+  height: 30px;
+}
+.canvas-view {
+  position: relative;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  min-height: 100dvh;
+  padding: 145px 0 110px;
+  isolation: isolate;
+  background-image: radial-gradient(#7186a419 0.75px, transparent 0.75px);
+  background-size: 22px 22px;
+  background-position: center 0;
+}
+.component-grid.freeform-board {
+  display: flex;
+  flex-direction: column;
+  gap: 66px;
+  padding: 0 28px;
+  align-items: stretch;
+  position: relative;
+}
+.canvas-note {
+  margin: 0 0 8px 9px;
+}
+.canvas-note > span {
+  font-size: 7px;
+  letter-spacing: 1.8px;
+  color: #61718a;
+}
+.canvas-note > p {
+  font-family: Manrope, sans-serif;
+  font-size: 31px;
+  line-height: 1.25;
+  letter-spacing: -1.1px;
+  color: #c0ccdf;
+  margin: 15px 0 12px;
+}
+.canvas-note > p em {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-style: italic;
+  color: #8296b4;
+}
+.canvas-note > small {
+  font-size: 9px;
+  color: #536680;
+}
+.filtered-grid .canvas-note {
+  display: none;
+}
+.freeform-board .specimen {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  display: block;
+  min-width: 0;
+  position: relative;
+}
+.freeform-board .specimen:hover {
+  border: 0;
+  box-shadow: none;
+}
+.freeform-board .specimen-heading {
+  border: 0;
+  padding: 0 0 17px;
+  min-height: 25px;
+  gap: 8px;
+  opacity: 0.68;
+  transition: opacity 0.2s;
+}
+.freeform-board .specimen:hover > .specimen-heading,
+.freeform-board .specimen:focus-within > .specimen-heading {
+  opacity: 1;
+}
+.freeform-board .specimen-heading > div {
+  gap: 8px;
+}
+.freeform-board .specimen h2 {
+  font-size: 9px;
+  font-weight: 400;
+  color: #768ba8;
+  letter-spacing: 0.2px;
+  line-height: 1.5;
+}
+.freeform-board .index {
+  font-size: 8px;
+  color: #3c506c;
+}
+.freeform-board .save-button {
+  height: 23px;
+  width: 23px;
+  min-height: 23px;
+  min-width: 23px;
+  opacity: 0.55;
+  color: #687f9f;
+}
+.freeform-board .save-button.is-saved {
+  opacity: 1;
+  color: var(--accent);
+}
+.freeform-board .specimen-footer {
+  display: none;
+}
+.freeform-board .specimen-body {
+  display: block;
+}
+.freeform-board .specimen-body > * {
+  flex: none;
+}
+.drag-handle {
+  display: none;
+}
+.freeform-board .optical-stage {
+  height: 280px;
+  min-height: 280px;
+  background: none;
+  overflow: clip;
+}
+.freeform-board .stage-grid {
+  display: none;
+}
+.freeform-board .optical-arc {
+  opacity: 0.5;
+  width: 230px;
+  height: 230px;
+  top: 10px;
+  left: calc(50% - 115px);
+}
+.freeform-board .optical-object {
+  width: 245px;
+  height: 170px;
+  margin-top: -12px;
+}
+.freeform-board .optical-object:after {
+  border-radius: 25px;
+}
+.freeform-board .stage-coordinate {
+  display: none;
+}
+.freeform-board .stage-bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.freeform-board .object-core {
+  width: 66px;
+  height: 66px;
+  border-radius: 22px;
+}
+.freeform-board .object-caption > span {
+  font-size: 12px;
+}
+.freeform-board .object-caption small {
+  font-size: 6px;
+}
+.freeform-board .material-picker {
+  background: #121a27aa;
+  border-color: #b3cae815;
+}
+.freeform-board .material-picker button {
+  font-size: 9px;
+}
+.freeform-board .precision-content {
+  padding: 3px 10px 8px;
+}
+.freeform-board .precision-heading {
+  display: none;
+}
+.freeform-board .precision-content .range-field {
+  margin: 15px 0 29px;
+}
+.freeform-board .control-divider,
+.freeform-board .button-divider {
+  background: #7f9bbe13;
+}
+.freeform-board .precision-status {
+  color: #5d7392;
+}
+.freeform-board .button-examples {
+  padding: 4px 8px;
+  gap: 18px;
+}
+.freeform-board .segments-demo {
+  padding: 4px 8px;
+}
+.freeform-board .layout-preview {
+  height: 73px;
+  opacity: 0.8;
+}
+.freeform-board .segments-bottom > span {
+  color: #4e6584;
+  font-size: 8px;
+}
+.freeform-board .price-preview {
+  opacity: 0.7;
+}
+.freeform-board .dock-stage {
+  padding: 25px 0 5px;
+  background: none;
+  overflow: visible;
+  min-height: 190px;
+  gap: 22px;
+}
+.freeform-board .dock-orbit {
+  display: none;
+}
+.freeform-board .dock-context {
+  min-height: 38px;
+  gap: 10px;
+}
+.freeform-board .dock-context-symbol {
+  display: none;
+}
+.freeform-board .dock-context > span:last-child {
+  font-size: 10px;
+  color: #637d9e;
+}
+.freeform-board .dock-caption {
+  font-size: 8px;
+  color: #3e5576;
+  margin-top: 2px;
+}
+.freeform-board .floating-dock {
+  padding: 9px 10px;
+}
+.freeform-board .floating-dock nav {
+  gap: 4px;
+}
+.freeform-board .floating-dock nav > button {
+  height: 40px;
+  width: 39px;
+}
+.freeform-board .header-demo {
+  background: none;
+  padding: 15px 0;
+  display: block;
+  height: auto;
+}
+.freeform-board .mini-browser,
+.freeform-board .header-content,
+.freeform-board .navbar-bottom {
+  display: none;
+}
+.freeform-board .demo-navbar {
+  border-radius: 14px;
+  min-height: 62px;
+  padding: 0 17px;
+  box-shadow:
+    0 10px 25px #0005,
+    inset 0 1px 0 #dbe9ff18;
+  background:
+    linear-gradient(145deg, #576d8b32, #202b3c77 60%, #7890ae10), #111723;
+  backdrop-filter: blur(var(--frost));
+}
+.freeform-board .demo-navbar nav {
+  gap: 12px;
+}
+.freeform-board .demo-navbar nav > button {
+  font-size: 8px;
+}
+.freeform-board .player {
+  padding: 15px 6px;
+}
+.freeform-board .input-demo,
+.freeform-board .selection-demo {
+  padding: 8px;
+}
+.freeform-board .disclosure-demo,
+.freeform-board .feedback-demo {
+  padding: 5px 8px;
+}
+.freeform-board .dialog-demo {
+  padding: 8px;
+  min-height: 280px;
+}
+.freeform-board .commit-demo {
+  padding: 8px;
+  min-height: 290px;
+}
+.freeform-board .specimen.highlight-specimen {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.freeform-board .highlight-specimen .specimen-heading {
+  opacity: 1;
+  color: #bfd7f7;
+}
+.freeform-board .highlight-specimen:after {
+  content: "";
+  position: absolute;
+  inset: -18px;
+  border: 1px dashed #a3c6f139;
+  border-radius: 8px;
+  pointer-events: none;
+}
+.freeform-board .input-demo label {
+  font-size: 11px;
+}
+.freeform-board .pagination {
+  margin-top: 20px;
+}
+.freeform-board .notification-preview {
+  font-size: 10px;
+}
+.freeform-board .player .track-info h3 {
+  font-size: 12px;
+}
+.canvas-tools {
+  position: fixed;
+  left: 50%;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 40;
+  padding: 7px 9px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 18px;
+  background: linear-gradient(165deg, #62718a29, #111b2be8 70%);
+  box-shadow:
+    0 15px 40px #0009,
+    0 1px 0 #d1e4ff24 inset;
+  border-color: #b0c6e42e;
+  backdrop-filter: blur(24px);
+}
+.canvas-tools:after {
+  inset: 4px;
+  border-radius: 14px;
+}
+.canvas-tools > button,
+.tool-selection > button {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  height: 35px;
+  width: 35px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  padding: 0;
+  color: #7a91b0;
+}
+.canvas-tools > button:hover,
+.tool-selection > button:hover {
+  color: #d4e5ff;
+  background: #b6ceef0c;
+}
+.canvas-tools .active {
+  background: linear-gradient(#acbfdb20, #8da8cd0b);
+  color: #cee1fb;
+  box-shadow: 0 1px 0 #d7e6ff19 inset;
+}
+.tool-selection {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.canvas-tools .tool-separator {
+  width: 1px;
+  height: 20px;
+  background: #b6d3f51b;
+  margin: 0 4px;
+}
+.canvas-tools .desktop-canvas-tool {
+  display: none;
+}
+.saved-dot {
+  position: absolute;
+  right: 8px;
+  top: 7px;
+  width: 3px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+.canvas-caption {
+  display: none;
+}
+.canvas-view .empty-state {
+  padding-top: 70px;
+}
+.canvas-view:after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 110px;
+  background: linear-gradient(transparent, #0b0d11bb);
+  pointer-events: none;
+  z-index: 3;
+}
+.canvas-tools .canvas-zoom {
+  font-size: 9px;
+  width: 45px;
+  color: #8ba3c4;
+  font-variant-numeric: tabular-nums;
+}
+.canvas-tools button:focus-visible {
+  outline-offset: 1px;
+}
+@media (min-width: 560px) and (max-width: 899px) {
+  .component-grid.freeform-board {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 48px;
+    row-gap: 80px;
+    padding: 0 40px;
+  }
+  .freeform-board .canvas-note {
+    grid-column: span 2;
+    margin-bottom: 10px;
+  }
+  .freeform-board .specimen-optical {
+    grid-column: span 2;
+    max-width: 430px;
+    justify-self: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .freeform-board .specimen-header {
+    grid-column: span 2;
+    max-width: 600px;
+    justify-self: center;
+    width: 100%;
+  }
+  .freeform-board .optical-stage {
+    height: 320px;
+  }
+  .freeform-board .optical-object {
+    width: 300px;
+    height: 200px;
+  }
+  .freeform-board .optical-object:after {
+    border-radius: 30px;
+  }
+  .freeform-board .optical-arc {
+    width: 280px;
+    height: 280px;
+    left: calc(50% - 140px);
+  }
+  .freeform-board .specimen {
+    align-self: start;
+  }
+  .freeform-board .specimen-player {
+    margin-top: 40px;
+  }
+  .freeform-board .specimen-segments {
+    margin-top: 65px;
+  }
+  .freeform-board .specimen-commit {
+    margin-top: 50px;
+  }
+}
+@media (min-width: 900px) {
+  body {
+    overflow: hidden;
+  }
+  .canvas-chrome {
+    padding: 29px 38px;
+    background: none;
+  }
+  .canvas-wordmark > span:last-child {
+    font-size: 10px;
+    color: #6b7e9b;
+    padding-left: 17px;
+    margin-left: 13px;
+  }
+  .canvas-wordmark strong {
+    font-size: 29px;
+  }
+  .canvas-filters {
+    position: static;
+    gap: 3px;
+    padding: 4px;
+    background: #121925ae;
+    border: 1px solid #93afd51a;
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    margin-left: auto;
+    margin-right: 25px;
+    overflow: visible;
+    box-shadow: 0 4px 20px #0002;
+  }
+  .canvas-filters button {
+    padding: 8px 14px;
+    border-radius: 18px;
+    font-size: 10px;
+    letter-spacing: 0.05px;
+  }
+  .canvas-filters button.active {
+    color: #c5d7ef;
+    background: #93afd513;
+    box-shadow: 0 1px 0 #d6e6ff0a inset;
+  }
+  .canvas-filters button.active:after {
+    display: none;
+  }
+  .canvas-filters button:hover {
+    background: #93afd509;
+  }
+  .canvas-view {
+    height: 100dvh;
+    min-height: 0;
+    position: fixed;
+    inset: 0;
+    padding: 0;
+    overflow: hidden;
+    background-size: 24px 24px;
+    background-image: radial-gradient(#8da8cf1a 0.65px, transparent 0.65px);
+    background-position: 0 0;
+    touch-action: none;
+  }
+  .component-grid.freeform-board {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1400px;
+    height: 2550px;
+    display: block;
+    padding: 0;
+    transform: translate(var(--camera-x), var(--camera-y))
+      scale(var(--camera-zoom));
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+  .canvas-note {
+    position: absolute;
+    left: 90px;
+    top: 130px;
+    width: 300px;
+    margin: 0;
+    pointer-events: none;
+  }
+  .canvas-note > p {
+    font-size: 40px;
+    line-height: 1.2;
+    margin-top: 19px;
+    margin-bottom: 15px;
+  }
+  .canvas-note > span {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+  .canvas-note > small {
+    font-size: 10px;
+  }
+  .freeform-board .specimen {
+    position: absolute;
+    left: var(--node-x);
+    top: var(--node-y);
+    width: var(--node-width);
+    height: auto;
+    min-height: 0;
+    transform: translate(var(--node-dx, 0px), var(--node-dy, 0px));
+    z-index: 2;
+  }
+  .freeform-board .specimen.dragging {
+    z-index: 15;
+  }
+  .freeform-board .specimen-heading {
+    padding: 0 0 19px;
+    min-height: 26px;
+    opacity: 0.6;
+  }
+  .drag-handle {
+    display: grid;
+    place-items: center;
+    width: 17px;
+    height: 20px;
+    padding: 0;
+    color: #506988;
+    cursor: grab;
+    touch-action: none;
+    margin-left: -20px;
+    margin-right: 0;
+  }
+  .drag-handle:active {
+    cursor: grabbing;
+  }
+  .freeform-board .specimen-heading > div {
+    gap: 9px;
+  }
+  .freeform-board .specimen h2 {
+    font-size: 10px;
+    color: #7f97b8;
+  }
+  .freeform-board .index {
+    font-size: 8px;
+    color: #415b7f;
+  }
+  .freeform-board .optical-stage {
+    height: 330px;
+    min-height: 0;
+  }
+  .freeform-board .optical-object {
+    width: 295px;
+    height: 200px;
+    border-radius: 38px;
+    margin-top: -15px;
+  }
+  .freeform-board .optical-object:after {
+    border-radius: 30px;
+  }
+  .freeform-board .object-core {
+    width: 77px;
+    height: 77px;
+    border-radius: 25px;
+  }
+  .freeform-board .optical-arc {
+    height: 285px;
+    width: 285px;
+    top: 8px;
+    left: calc(50% - 142px);
+  }
+  .freeform-board .object-caption > span {
+    font-size: 14px;
+  }
+  .freeform-board .object-caption small {
+    font-size: 7px;
+  }
+  .freeform-board .stage-note {
+    font-size: 9px;
+  }
+  .freeform-board .stage-bottom {
+    bottom: 8px;
+  }
+  .freeform-board .precision-content {
+    padding: 0 5px;
+  }
+  .freeform-board .precision-content .range-field {
+    margin: 15px 0 33px;
+  }
+  .freeform-board .precision-content .toggle-row {
+    margin: 20px 0;
+  }
+  .freeform-board .precision-content .control-divider {
+    margin-top: 30px;
+  }
+  .freeform-board .specimen-buttons .button {
+    font-size: 11px;
+    padding: 0 15px;
+  }
+  .freeform-board .specimen-buttons .button.ghost {
+    font-size: 10px;
+  }
+  .freeform-board .button-examples {
+    gap: 22px;
+    padding: 10px 5px;
+  }
+  .freeform-board .specimen-buttons .round-button {
+    width: 37px;
+    height: 37px;
+  }
+  .freeform-board .segments-demo {
+    padding: 0 5px;
+  }
+  .freeform-board .dock-stage {
+    min-height: 190px;
+    gap: 26px;
+  }
+  .freeform-board .floating-dock nav > button {
+    width: 42px;
+    height: 42px;
+  }
+  .freeform-board .floating-dock {
+    border-radius: 21px;
+  }
+  .freeform-board .demo-navbar {
+    min-height: 65px;
+    border-radius: 16px;
+    padding: 0 23px;
+  }
+  .freeform-board .demo-navbar nav {
+    gap: 27px;
+  }
+  .freeform-board .demo-navbar nav > button {
+    font-size: 11px;
+  }
+  .freeform-board .demo-brand {
+    font-size: 20px;
+  }
+  .freeform-board .tiny-brand {
+    height: 20px;
+    width: 20px;
+  }
+  .freeform-board .mini-profile {
+    height: 29px;
+    width: 29px;
+    font-size: 10px;
+  }
+  .freeform-board .player {
+    padding: 7px 5px;
+  }
+  .freeform-board .track-info .eyebrow {
+    font-size: 7px;
+  }
+  .freeform-board .track-info h3 {
+    font-size: 13px;
+  }
+  .freeform-board .album-art {
+    height: 55px;
+    width: 55px;
+  }
+  .freeform-board .track-info p {
+    font-size: 9px;
+  }
+  .freeform-board .waveform {
+    margin: 24px 0 16px;
+  }
+  .freeform-board .player-bottom {
+    margin-top: 16px;
+  }
+  .freeform-board .input-demo {
+    padding: 0 5px;
+  }
+  .freeform-board .selection-demo,
+  .freeform-board .disclosure-demo,
+  .freeform-board .feedback-demo {
+    padding: 5px;
+  }
+  .canvas-tools {
+    bottom: 29px;
+    padding: 7px 9px;
+    gap: 3px;
+  }
+  .canvas-tools .desktop-canvas-tool {
+    display: grid;
+  }
+  .canvas-tools .tool-separator.desktop-canvas-tool {
+    display: block;
+  }
+  .canvas-tools > button,
+  .tool-selection > button {
+    height: 34px;
+    width: 34px;
+  }
+  .canvas-tools .canvas-zoom {
+    width: 45px;
+    font-size: 9px;
+  }
+  .canvas-caption {
+    display: flex;
+    position: fixed;
+    bottom: 35px;
+    left: 36px;
+    z-index: 10;
+    flex-direction: column;
+    gap: 7px;
+    color: #425d80;
+    font-size: 8px;
+    letter-spacing: 0.2px;
+    pointer-events: none;
+  }
+  .canvas-caption .live-mark {
+    color: #6d86a8;
+    font-size: 9px;
+  }
+  .canvas-caption .live-mark i {
+    width: 3px;
+    height: 3px;
+    background: #91b3a5;
+  }
+  .tool-hand {
+    cursor: grab;
+  }
+  .tool-hand:active {
+    cursor: grabbing;
+  }
+  .tool-hand .specimen {
+    pointer-events: none;
+  }
+  .canvas-view:after {
+    height: 75px;
+    background: linear-gradient(transparent, #0b0d1188);
+  }
+  .freeform-board .header-demo {
+    padding: 8px 0;
+  }
+  .freeform-board .segments-bottom > span {
+    font-size: 9px;
+  }
+  .freeform-board .specimen-body {
+    display: block;
+  }
+  .freeform-board .specimen-heading .save-button {
+    width: 25px;
+    height: 25px;
+  }
+  .freeform-board .specimen-dialog .dialog-demo,
+  .freeform-board .specimen-commit .commit-demo {
+    padding: 0;
+  }
+}
+@media (max-width: 370px) {
+  .canvas-chrome {
+    padding: 20px 17px;
+  }
+  .canvas-wordmark > span:last-child {
+    font-size: 8px;
+    margin-left: 6px;
+    padding-left: 9px;
+  }
+  .canvas-filters {
+    left: 18px;
+    right: 18px;
+    gap: 15px;
+  }
+  .canvas-filters button {
+    font-size: 9px;
+  }
+  .component-grid.freeform-board {
+    padding: 0 24px;
+    gap: 65px;
+  }
+  .freeform-board .specimen h2 {
+    font-size: 9px;
+  }
+  .freeform-board .material-picker button {
+    font-size: 8px;
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+  .freeform-board .stage-note {
+    font-size: 7px;
+  }
+  .freeform-board .optical-object {
+    width: 225px;
+    height: 165px;
+  }
+  .freeform-board .floating-dock nav {
+    gap: 2px;
+  }
+  .freeform-board .floating-dock nav > button {
+    width: 34px;
+    height: 39px;
+  }
+  .freeform-board .demo-navbar {
+    padding: 0 10px;
+  }
+  .freeform-board .demo-navbar nav {
+    gap: 8px;
+  }
+  .freeform-board .demo-navbar nav > button {
+    font-size: 7px;
+  }
+  .freeform-board .demo-brand {
+    font-size: 14px;
+  }
+  .freeform-board .mini-profile {
+    width: 22px;
+    height: 22px;
+  }
+  .canvas-note > p {
+    font-size: 30px;
+  }
+  .canvas-wordmark strong {
+    font-size: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .freeform-board .optical-object:hover {
+    transform: rotate(-9deg) skewY(1deg);
+  }
+}
+
+.ambient-light-on {
+  background: radial-gradient(
+    ellipse at 0 30%,
+    rgba(var(--accent-rgb), 0.06),
+    transparent 70%
+  );
+  box-shadow: -1px 0 0 rgba(var(--accent-rgb), 0.2);
+  border-radius: 3px;
+}
+@media (max-width: 559px) {
+  .canvas-note > p,
+  .canvas-note > small {
+    display: none;
+  }
+  .canvas-note {
+    margin: 0 0 -30px 8px;
+  }
+  .component-grid.freeform-board {
+    gap: 60px;
+  }
+  .canvas-view {
+    padding-top: 146px;
+  }
+  .canvas-tools > button,
+  .tool-selection > button {
+    height: 40px;
+    width: 38px;
+  }
+  .freeform-board .specimen-heading {
+    opacity: 0.85;
+  }
+  .freeform-board .specimen h2 {
+    font-size: 10px;
+  }
+  .freeform-board .save-button {
+    height: 30px;
+    width: 30px;
+    min-height: 30px;
+    min-width: 30px;
+  }
+  .freeform-board .button-examples {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
