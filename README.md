@@ -2,6 +2,10 @@
 
 A React/TypeScript component library in development, presented on a mobile-first interactive canvas. An obsidian palette, silver reflections and restrained motion, with an optical material inspired by the physical edge of a screen: a machined rim, a recessed surface, and selective reflected light.
 
+**Live demo:** <https://www.juszczyk.codes/rift>
+
+The demo is served from the portfolio site as a static build with `RIFT_BASE=/rift/`, so the same source also runs standalone with `npm run dev`.
+
 ## Run
 
 ```sh
