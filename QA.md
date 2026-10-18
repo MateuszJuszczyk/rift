@@ -27,3 +27,5 @@ Native keyboard interactions verified slider increments, segmented selection and
 TypeScript strict check and production Vite build pass. No physical-device, Safari, complete accessibility audit or field performance measurements were performed.
 
 Latest pass: removed decorative copy and hidden dashboard markup, pruned unused styles, checked 13 rendered specimens and zero raster images. Rechecked 390px viewport with no page or specimen horizontal overflow. TypeScript and production build pass after cleanup.
+
+Muted Prism pass: confirmed default global finish, global switch to Obsidian and back, shared refractive rims and pearl primary controls. Browser check at 390px: no document or specimen horizontal overflow; slider interaction remains 26px while the visible rail remains 3px.

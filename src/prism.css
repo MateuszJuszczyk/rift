@@ -1,0 +1,83 @@
+/* Low-chroma refraction: opaque obsidian interiors, spectral edges. */
+.surface-study .material-picker {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.surface-study-label { margin-bottom: 14px; }
+.finish-dot.finish-0 {
+  background: conic-gradient(from 30deg, #89989b, #666c87, #9b7e8c, #a49477, #89989b);
+}
+.finish-dot.finish-1 { background: linear-gradient(140deg, #393939, #09090a); }
+.finish-dot.finish-2 { background: linear-gradient(140deg, #666665, #242425); }
+.finish-dot.finish-3 { background: linear-gradient(140deg, #b2b1ab, #535352); }
+
+.finish-muted-prism {
+  --prism-rim: linear-gradient(125deg, #ad8e997d, #7e90b35e 24%, #ffffff0c 45%, #899b9470 72%, #ae977960);
+  --prism-surface: radial-gradient(ellipse at 0% 0%, #a47d9415, transparent 55%), radial-gradient(ellipse at 100% 100%, #839e9b13, transparent 60%), linear-gradient(150deg, #202023, #121213 65%);
+}
+.finish-muted-prism .edge {
+  background: var(--prism-surface);
+  border-color: #9b939c30;
+  box-shadow: inset 0 1px 0 #c7bed218, inset 0 -1px 0 #000b, 0 12px 28px #0005;
+}
+.finish-muted-prism .edge:before {
+  background: radial-gradient(ellipse at var(--light-x) var(--light-y), #cfbfc8a6, transparent 58%), var(--prism-rim);
+  opacity: calc(.4 + var(--edge-strength) * .6);
+}
+.finish-muted-prism .edge:after {
+  border-color: #b3a8bd12;
+  background: radial-gradient(ellipse at var(--light-x) var(--light-y), #b6a2c018, transparent 65%);
+}
+.finish-muted-prism :is(.button:not(.ghost):not(.danger):not(.primary), .segmented, .stepper, .input-shell:not(.has-error), .select-shell select, .input-demo textarea, .demo-navbar, .dropdown-menu, .choice-chips button, .notification-preview, .modal, .toast, .player-play, .pagination button.active) {
+  border: 1px solid transparent;
+  background: var(--prism-surface) padding-box, var(--prism-rim) border-box;
+  box-shadow: inset 0 1px 0 #d6c8db0a, 0 2px 6px #0003;
+}
+.finish-muted-prism :is(.button.primary, .switch[aria-checked="true"] > span) {
+  background: linear-gradient(115deg, #ded2d7, #c6cdd8 43%, #d4d9d3 72%, #d8d0be);
+  border-color: #e6dce480;
+  color: #242328;
+}
+.finish-muted-prism .button.primary:hover {
+  background: linear-gradient(115deg, #e9dfe4, #d4dce7 43%, #e2e7e1 72%, #e6dece);
+}
+.finish-muted-prism :is(.segmented-indicator, .material-picker button.active, .density-control button.active, .choice-chips button.selected, .floating-dock nav > button.active) {
+  background: linear-gradient(120deg, #8f74852b, #77849d30 48%, #8c9c8e26);
+  box-shadow: inset 0 1px 0 #c2b5c626, inset 0 0 0 1px #b1a4bd13, 0 2px 5px #0004;
+  color: #e4dfe7;
+}
+.finish-muted-prism input[type="range"] {
+  background: linear-gradient(100deg, #b59ca9, #93a3bf 40%, #9cafa8 70%, #b2a38b) left center / var(--fill) 3px no-repeat, linear-gradient(#29292b, #29292b) center / 100% 3px no-repeat;
+}
+.finish-muted-prism input[type="range"]::-webkit-slider-thumb {
+  background: linear-gradient(135deg, #e1cdd8, #c2cede 50%, #d1d9ca);
+  border-color: #d5cdd9;
+}
+.finish-muted-prism input[type="range"]::-moz-range-thumb {
+  background: linear-gradient(135deg, #e1cdd8, #c2cede 50%, #d1d9ca);
+  border-color: #d5cdd9;
+}
+.finish-muted-prism .switch[aria-checked="true"] {
+  background: linear-gradient(110deg, #96818e, #77879e 50%, #8a9b90);
+  border-color: #b3a4b252;
+}
+.finish-muted-prism :is(.custom-radio, .checkbox-label input) { accent-color: #a8a3b6; }
+.finish-muted-prism .radio-group input:checked + .custom-radio {
+  border-color: #b2a6ba;
+  background: radial-gradient(circle, #c1b5c9 0 3px, transparent 4px);
+}
+.finish-muted-prism .waveform i.played { background: #a5a4b5; }
+.finish-muted-prism .hold-fill {
+  background: linear-gradient(110deg, #b49aa866, #93a3be66, #a3b3a166);
+}
+.finish-muted-prism .album-art {
+  background: radial-gradient(ellipse at 20% 15%, #9b7e9138, transparent 60%), radial-gradient(ellipse at 80% 90%, #7b929b38, transparent 65%), #171719;
+}
+.finish-smoke .edge { background: linear-gradient(150deg, #4242429c, #202021e8 65%); }
+.finish-frost .edge { background: linear-gradient(150deg, #77777344, #42423e33 65%); }
+
+.finish-muted-prism .accordion > div.open { border-color: #a899af40; }
+.finish-muted-prism .accordion > div.open > button { color: #d6cfde; }
+.finish-muted-prism .commit-progress { stroke: #b1a7bb; }
+.finish-muted-prism .layout-preview > i { border-color: #9e91a72c; background: linear-gradient(135deg, #967f9511, #7e929c0b); }
+.finish-muted-prism .precision-signal i { background: #a9a5b5; }
+.finish-muted-prism :is(.surface-control, .material-picker) { margin-top: 18px; }

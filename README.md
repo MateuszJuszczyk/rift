@@ -57,3 +57,5 @@ Native buttons, inputs, radio groups and modal dialogs provide keyboard behavior
 ## Verification
 
 TypeScript strict checks and production build pass. Browser verification in the T3 Chromium preview covers narrow mobile and desktop layouts, actual form validation and success, category filters, favorite persistence, settings, keyboard search, confirmation modal, Escape/focus restoration, and the hold-to-commit cancel/success paths. See `QA.md` for measured viewport sizes and limits. No claim of complete WCAG conformance or field Core Web Vitals is made.
+
+Muted Prism is the default global component finish. The material selector switches the whole canvas between Muted Prism, Obsidian, Smoke and Frost. Exported presets include the selected finish; resetting restores Muted Prism. Refraction uses CSS gradients and existing pointer illumination, with no raster assets or extra animation loops.

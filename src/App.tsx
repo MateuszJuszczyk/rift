@@ -211,6 +211,7 @@ export default function App() {
   }, []);
   const [about, setAbout] = useState(false);
   const [toast, setToast] = useState("");
+  const [material, setMaterial] = useState("Muted Prism");
   const [edge, setEdge] = useState(70);
   const [frost, setFrost] = useState(45);
   const [accent, setAccent] = useState("silver");
@@ -257,6 +258,7 @@ export default function App() {
         : [...previous, id],
     );
   const reset = () => {
+    setMaterial("Muted Prism");
     setEdge(70);
     setFrost(45);
     setAccent("silver");
@@ -271,6 +273,7 @@ export default function App() {
   const download = () => {
     const data = {
       name: "RIFT material preset",
+      material,
       version: 1,
       edge,
       frost,
@@ -356,7 +359,7 @@ export default function App() {
           : "213,216,197",
   } as CSSProperties;
   return (
-    <div className={`app ${!motion ? "motion-off" : ""}`} style={style}>
+    <div className={`app finish-${material.toLowerCase().replaceAll(" ", "-")} ${!motion ? "motion-off" : ""}`} style={style}>
       <a className="skip-link" href="#canvas">
         Skip to components
       </a>
@@ -519,7 +522,7 @@ export default function App() {
               onSave={() => toggleSave(item.id)}
             >
               {item.id === "optical" ? (
-                <Optical />
+                <Optical material={material} onMaterialChange={setMaterial} />
               ) : item.id === "precision" ? (
                 <Precision />
               ) : item.id === "buttons" ? (
@@ -546,6 +549,7 @@ export default function App() {
                 <DialogDemo
                   notify={notify}
                   onApply={() => {
+                    setMaterial("Obsidian");
                     setEdge(70);
                     setFrost(45);
                     setAccent("silver");
@@ -795,31 +799,22 @@ export default function App() {
   );
 }
 
-function Optical() {
-  const [material, setMaterial] = useState("Obsidian");
+function Optical({ material, onMaterialChange }: { material: string; onMaterialChange: (value: string) => void }) {
   const [illuminated, setIlluminated] = useState(false);
   return (
     <div
-      className={`surface-study material-${material.toLowerCase()} ${illuminated ? "illuminated" : ""}`}
+      className={`surface-study material-${material.toLowerCase().replaceAll(" ", "-")} ${illuminated ? "illuminated" : ""}`}
     >
-      <div className="surface-study-label">
-        <span>Surface finish</span>
-        <span>
-          {String(
-            ["Obsidian", "Smoke", "Frost"].indexOf(material) + 1,
-          ).padStart(2, "0")}{" "}
-          / 03
-        </span>
-      </div>
+      <div className="surface-study-label">Component finish</div>
       <div
         className="material-picker"
         role="group"
         aria-label="Optical material"
       >
-        {["Obsidian", "Smoke", "Frost"].map((name, index) => (
+        {["Muted Prism", "Obsidian", "Smoke", "Frost"].map((name, index) => (
           <button
             key={name}
-            onClick={() => setMaterial(name)}
+            onClick={() => onMaterialChange(name)}
             aria-pressed={material === name}
             className={material === name ? "active" : ""}
           >
@@ -842,7 +837,7 @@ function Optical() {
       </Edge>
       <div className="specimen-readout">
         <span>{material}</span>
-        <span>Move across the edge</span>
+        <span>Applied to all components</span>
       </div>
     </div>
   );
