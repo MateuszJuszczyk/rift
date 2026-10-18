@@ -1,0 +1,26 @@
+/* Component-only layout. Colors, control states, surfaces and type live in primitives.css. */
+.calendar-heading {
+  padding: 4px 2px 12px;
+}
+.calendar-heading .ui-title {
+  font-size: var(--ui-font);
+}
+.calendar-grid {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 3px;
+  table-layout: fixed;
+}
+.calendar-grid th {
+  height: 28px;
+  color: var(--ui-faint);
+  font-size: var(--ui-small);
+  font-weight: 400;
+}
+.calendar-grid abbr {
+  text-decoration: none;
+}
+.calendar-grid td {
+  padding: 0;
+  text-align: center;
+}

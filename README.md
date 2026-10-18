@@ -18,9 +18,9 @@ Vite prints the local URL. The production build is a static `dist/` directory; n
 
 ## Explore
 
-An open canvas with loose components, composed on three shared columns and four row baselines, separated by spacing, fine rules and small labels. Filtered collections reflow into a compact grid. On desktop, pan the surface, zoom, and drag each group by its grip (arrow keys also work; Shift increases the step). On mobile, the same components form a naturally scrolling layout.
+An open canvas with loose components, composed on three shared columns and aligned row baselines, separated by spacing, fine rules and small labels. Filtered collections reflow into a compact grid. On desktop, pan the surface, zoom, and drag each group by its grip (arrow keys also work; Shift increases the step). On mobile, the same components form a naturally scrolling layout.
 
-22 interactive specimens, with more than 30 individual controls and states:
+28 interactive specimens, with more than 30 individual controls and states:
 
 - Compact material controls with pointer-reactive edges, illumination and Frost / Smoke / Obsidian finishes.
 - Sliders, switches, async action button, secondary/destructive/disabled actions, like toggle and quantity stepper.
@@ -39,7 +39,10 @@ Form validation stays in memory. The confirmation dialog applies the Obsidian ma
 
 - `src/App.tsx`: canvas camera, specimen metadata and interactive components.
 - `src/ui.tsx`: reusable `Edge`, `Specimen`, `Button`, `Toggle`, `Range`, `Segmented`, `Modal` and async action primitives.
-- `src/styles.css`: material system and component state transitions.
+- `src/tokens.css`: shared colors, dimensions, material gradients and motion values.
+- `src/primitives.css` and `src/ui.tsx`: shared visual and React primitives; see [STYLING.md](STYLING.md).
+- `src/Components.tsx`: multiselect, calendar, local file input, document actions, inline editor and step navigation.
+- `src/styles.css`: original material system and component state transitions.
 - `src/canvas.css`: open canvas composition, floating tools and responsive layout.
 - `public/`: local assets and font licenses.
 
@@ -50,7 +53,7 @@ Native buttons, inputs, radio groups and modal dialogs provide keyboard behavior
 ## Assets and attribution
 
 - Layout, CSS material treatment and interaction composition for RIFT.
-- Dimensional state emblems built with CSS and Lucide glyphs; no raster assets or remote image dependencies.
+- Dimensional state emblems built with CSS and Lucide glyphs; no raster icons or remote image dependencies.
 - [Lucide](https://lucide.dev) interface icons, ISC.
 - DM Sans and Manrope, self-hosted Latin variable fonts, SIL Open Font License; license files included in `public/fonts/`.
 
@@ -63,3 +66,5 @@ Muted Prism is the default global component finish. The material selector switch
 Nine additional studies extend the canvas with compact tabs, workspace navigation, contextual view actions, searchable property selection, inline filters, OKLCH tokens, inbox, comments and bulk actions. The generated Muted Prism hero is self-hosted and respects reduced-motion. See HERO-PROMPT.md for artwork provenance.
 
 Muted Prism controls have a slow pearl-white traveling edge on hover and focus, with a quieter selected-state reflection. CSS masks isolate it to the border. Reduced-motion and the motion setting keep a static highlight.
+
+Six more specimens use shared field, surface, icon-button and menu-option primitives. Searchable multiselect, date picker, local file input, document actions, inline editing and step navigation all inherit the same tokens, state treatments and animated rim.

@@ -39,3 +39,9 @@ Browser probes verified: tab create/close, navigation selection/collapse, list/g
 Final responsive pass: 320×850, 390×844, 768×1024 and 1440×1000. All 22 specimens fit without horizontal overflow at mobile/tablet sizes. Verified sort order, tab focus restoration and combined filter reset. Clipboard export was implemented with failure handling but not exercised to preserve the user clipboard. Hero WebP is 49,158 bytes (2172×724); the source PNG is retained.
 
 Animated rim pass: Muted Prism uses a masked 1px conic reflection on hover, focus and selected controls. Browser samples confirmed both the registered angle and rendered gradient changed over 350ms. Disabled button rim stays hidden/paused; motion-off disables the animation. Keyboard focus remains explicit, and error inputs retain their error styling. The textarea wrapper and new rims introduce no horizontal overflow at 320px.
+
+## Shared primitives and six additional specimens
+
+28 specimens total. Browser DOM interaction probes verified multiselect search and Enter selection; calendar month navigation and date selection; inline validation followed by a valid save; document duplication, archive and restore; all three setup steps and restart; local file selection and removal. Shared classes replace repeated icon-button, label, metadata and avatar rules in the previous nine studies. Animated rims now opt in through one `.ui-rim` class.
+
+Responsive checks on all 28 specimens: 320×850, 390×844 and 768×1024 have no document or specimen horizontal overflow. Desktop 1440×1000 visual inspection covers the new aligned rows. No physical-device or Safari verification.

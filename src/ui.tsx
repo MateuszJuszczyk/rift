@@ -180,7 +180,7 @@ export function Button({
   return (
     <button
       {...props}
-      className={`button ${variant} ${className}`}
+      className={`button ${variant} ${variant !== "ghost" && variant !== "danger" ? "ui-rim" : ""} ${className}`}
       disabled={props.disabled || loading}
       aria-busy={loading || undefined}
     >
@@ -211,7 +211,7 @@ export function Toggle({
       <button
         id={id}
         type="button"
-        className="switch"
+        className="switch ui-rim"
         role="switch"
         aria-checked={checked}
         onClick={() => onChange(!checked)}
@@ -294,6 +294,7 @@ export function Segmented({
       {options.map((option) => (
         <button
           key={option.value}
+          className="ui-rim"
           type="button"
           aria-pressed={value === option.value}
           onKeyDown={(event) => {
@@ -404,5 +405,111 @@ export function ActionButton({ notify }: { notify: (text: string) => void }) {
           ? "Saving"
           : "Save changes"}
     </Button>
+  );
+}
+
+export function IconButton({
+  label,
+  className = "",
+  children,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { label: string }) {
+  return (
+    <button
+      type="button"
+      {...props}
+      aria-label={label}
+      className={`ui-icon-button ui-rim ${className}`}
+    >
+      {children}
+    </button>
+  );
+}
+
+export function Surface({
+  className = "",
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div {...props} className={`ui-surface ui-panel ui-rim ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+export function Field({
+  label,
+  hint,
+  error,
+  icon,
+  className = "",
+  ...props
+}: React.InputHTMLAttributes<HTMLInputElement> & {
+  label: string;
+  hint?: string;
+  error?: string;
+  icon?: ReactNode;
+}) {
+  const generated = useId();
+  const id = props.id || generated;
+  const messageId = `${id}-message`;
+  return (
+    <div className={`ui-stack ui-field-group ${className}`}>
+      <label className="ui-label" htmlFor={id}>
+        {label}
+      </label>
+      <div className={`ui-field ui-surface ui-rim ${error ? "has-error" : ""}`}>
+        {icon}
+        <input
+          {...props}
+          id={id}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error || hint ? messageId : undefined}
+        />
+      </div>
+      {(error || hint) && (
+        <span
+          id={messageId}
+          className={error ? "ui-error" : "ui-hint"}
+          role={error ? "alert" : undefined}
+        >
+          {error || hint}
+        </span>
+      )}
+    </div>
+  );
+}
+
+export function MenuOption({
+  label,
+  description,
+  icon,
+  trailing,
+  selected,
+  className = "",
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  label: string;
+  description?: string;
+  icon?: ReactNode;
+  trailing?: ReactNode;
+  selected?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      {...props}
+      className={`ui-option ui-rim ${className}`}
+      aria-pressed={props.role === "option" ? undefined : selected}
+      aria-selected={props.role === "option" ? selected : undefined}
+    >
+      {icon && <span className="ui-option-icon">{icon}</span>}
+      <span className="ui-option-copy">
+        <strong>{label}</strong>
+        {description && <small>{description}</small>}
+      </span>
+      {trailing || (selected && <Check size={14} />)}
+    </button>
   );
 }

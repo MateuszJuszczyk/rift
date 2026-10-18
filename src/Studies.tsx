@@ -124,7 +124,7 @@ function CompactTabs() {
           onKeyDown={(event) => moveFocus(event, '[role="tab"]')}
         >
           <button
-            className="compact-tab pinned"
+            className="compact-tab pinned ui-rim"
             role="tab"
             id={`${base}-Home`}
             aria-controls={`${base}-panel`}
@@ -137,7 +137,7 @@ function CompactTabs() {
           </button>
           {tabs.map((name) => (
             <div
-              className={`compact-tab ${active === name ? "selected" : ""}`}
+              className={`compact-tab ui-rim ${active === name ? "selected" : ""}`}
               key={name}
             >
               <button
@@ -162,7 +162,7 @@ function CompactTabs() {
           ))}
         </div>
         <button
-          className="study-icon add-tab"
+          className="ui-icon-button add-tab ui-rim"
           onClick={add}
           aria-label="New document"
           disabled={tabs.length >= 4}
@@ -177,7 +177,7 @@ function CompactTabs() {
         aria-labelledby={`${base}-${active.replaceAll(" ", "-")}`}
         tabIndex={0}
       >
-        <span className="study-label">
+        <span className="ui-label">
           {active === "Home" ? "Workspace" : "Document"}
         </span>
         <h3>{active}</h3>
@@ -196,7 +196,7 @@ function CompactTabs() {
           <i />
         </div>
       </div>
-      <div className="study-foot">
+      <div className="ui-meta">
         <span>{tabs.length} open documents</span>
         <span>← → to switch</span>
       </div>
@@ -305,6 +305,7 @@ function ViewToolbar() {
             return (
               <button
                 key={String(name)}
+                className="ui-rim"
                 aria-label={`${name} view`}
                 aria-pressed={layout === name}
                 onClick={() => setLayout(String(name))}
@@ -329,7 +330,7 @@ function ViewToolbar() {
           }}
         >
           <button
-            className="sort-trigger"
+            className="sort-trigger ui-rim"
             aria-expanded={menu}
             aria-controls="sort-options"
             onClick={() => setMenu(!menu)}
@@ -365,7 +366,7 @@ function ViewToolbar() {
       <div className={`collection-preview collection-${layout.toLowerCase()}`}>
         {ordered.map((item) => (
           <div key={item.name}>
-            <span className="material-tile">
+            <span className="material-tile ui-surface">
               <LayersGlyph />
             </span>
             <span>
@@ -375,7 +376,7 @@ function ViewToolbar() {
           </div>
         ))}
       </div>
-      <div className="study-foot">
+      <div className="ui-meta">
         <span>{ordered.length} materials</span>
         <span>
           {order === "Recent" ? "Recently edited first" : "Alphabetical order"}
@@ -467,7 +468,7 @@ function PropertyPicker() {
           />
           {query && (
             <button
-              className="study-icon"
+              className="ui-icon-button ui-rim"
               aria-label="Clear status search"
               onClick={() => {
                 setQuery("");
@@ -507,7 +508,7 @@ function PropertyPicker() {
           )}
         </div>
       </Edge>
-      <div className="study-foot" aria-live="polite">
+      <div className="ui-meta" aria-live="polite">
         <span>Selected status</span>
         <strong>{value}</strong>
       </div>
@@ -533,7 +534,7 @@ function InlineFilters() {
     <div className="study filter-study">
       <div className="filter-row">
         <label
-          className={`filter-token ${type !== "All types" ? "applied" : ""}`}
+          className={`filter-token ui-rim ${type !== "All types" ? "applied" : ""}`}
         >
           <span className="sr-only">Filter by type</span>
           <select
@@ -547,7 +548,7 @@ function InlineFilters() {
           <ChevronDown size={11} />
         </label>
         <label
-          className={`filter-token ${owner !== "Anyone" ? "applied" : ""}`}
+          className={`filter-token ui-rim ${owner !== "Anyone" ? "applied" : ""}`}
         >
           <span className="sr-only">Filter by owner</span>
           <select
@@ -587,7 +588,7 @@ function InlineFilters() {
           </div>
         )}
       </div>
-      <div className="study-foot">
+      <div className="ui-meta">
         <span>
           {results.length} of {items.length} results
         </span>
@@ -637,7 +638,7 @@ function ColorTokens({ notify }: { notify: Notify }) {
           <LayersGlyph />
         </div>
         <div>
-          <span className="study-label">Reflection</span>
+          <span className="ui-label">Reflection</span>
           <code>{color}</code>
         </div>
       </div>
@@ -722,7 +723,7 @@ function InboxList() {
           Unread only
         </button>
         <button
-          className="study-icon"
+          className="ui-icon-button ui-rim"
           aria-label="Mark all as read"
           disabled={read.length === 3}
           onClick={() => setRead(initialInbox.map((item) => item.id))}
@@ -742,7 +743,7 @@ function InboxList() {
               );
             }}
           >
-            <span className="person-avatar">{item.initials}</span>
+            <span className="ui-avatar">{item.initials}</span>
             <span>
               <strong>{item.title}</strong>
               <small>
@@ -820,7 +821,7 @@ function ActivityThread() {
         <div className="thread-messages" role="log" aria-label="Comments">
           {messages.map((message) => (
             <div className="thread-message" key={message.id}>
-              <span className="person-avatar">{message.initials}</span>
+              <span className="ui-avatar">{message.initials}</span>
               <div>
                 <header>
                   <strong>{message.author}</strong>
@@ -833,7 +834,7 @@ function ActivityThread() {
         </div>
       </div>
       <form
-        className="comment-composer"
+        className="comment-composer ui-rim ui-surface"
         onSubmit={(event) => {
           event.preventDefault();
           submit();
@@ -859,7 +860,7 @@ function ActivityThread() {
         <div>
           <span>⌘ / Ctrl + Enter</span>
           <button
-            className="study-icon"
+            className="ui-icon-button ui-rim"
             type="submit"
             aria-label="Send comment"
             disabled={!draft.trim()}
@@ -933,7 +934,7 @@ function BatchActions() {
           <span>Complete</span>
         </button>
         <button
-          className="study-icon"
+          className="ui-icon-button ui-rim"
           aria-label="Clear selection"
           disabled={!selected.length}
           onClick={() => setSelected([])}
@@ -941,7 +942,7 @@ function BatchActions() {
           <X size={13} />
         </button>
       </Edge>
-      <div className="study-foot" aria-live="polite">
+      <div className="ui-meta" aria-live="polite">
         <span>
           {done.length} of {items.length} completed
         </span>

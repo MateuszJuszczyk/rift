@@ -80,7 +80,7 @@
     max-width: 340px;
   }
   .component-grid.freeform-board {
-    height: 4580px;
+    height: var(--board-height, 5800px);
   }
   .freeform-board:not(.filtered-grid) .specimen-optical {
     width: 1200px;

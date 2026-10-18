@@ -1,0 +1,37 @@
+/* Shared visual contract. Component files only own composition. */
+:root {
+  --ui-text: #d1ced5;
+  --ui-muted: #8d8893;
+  --ui-faint: #6e6975;
+  --ui-line: #ffffff10;
+  --ui-hover: #ffffff06;
+  --ui-selected: #b9aac41a;
+  --ui-error: #d6a2a0;
+  --ui-surface: #141315;
+  --ui-radius: 8px;
+  --ui-radius-panel: 12px;
+  --ui-control-height: 40px;
+  --ui-icon-size: 32px;
+  --ui-gap: 12px;
+  --ui-font: 12px;
+  --ui-small: 10px;
+  --ui-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ui-shadow: inset 0 1px 0 #d6c8db0a, 0 2px 6px #0003;
+  --ui-focus: #c8c0d180;
+  --ui-rim-rest: 0.48;
+  --ui-rim-hover: 0.86;
+  --ui-rim-focus: 1;
+  --ui-rim-period: 6.4s;
+  --prism-rim: linear-gradient(
+    125deg,
+    #ad8e997d,
+    #7e90b35e 24%,
+    #ffffff0c 45%,
+    #899b9470 72%,
+    #ae977960
+  );
+  --prism-surface:
+    radial-gradient(ellipse at 0% 0%, #a47d9415, transparent 55%),
+    radial-gradient(ellipse at 100% 100%, #839e9b13, transparent 60%),
+    linear-gradient(150deg, #202023, #121213 65%);
+}

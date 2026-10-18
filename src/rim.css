@@ -31,55 +31,13 @@
     --rim-angle: 360deg;
   }
 }
-.finish-muted-prism
-  :is(
-    .button:not(.ghost):not(.danger),
-    .round-button,
-    .input-shell:not(.has-error),
-    .select-shell,
-    .textarea-shell,
-    .comment-composer,
-    .choice-chips button,
-    .material-picker button,
-    .segmented button,
-    .switch,
-    .player-play,
-    .compact-tab,
-    .view-tabs button,
-    .filter-token,
-    .floating-dock nav > button,
-    .demo-navbar nav > button,
-    .pagination button,
-    .sort-trigger,
-    .study-popover button
-  ) {
+.finish-muted-prism .ui-rim:not(.has-error) {
   position: relative;
   --rim-opacity: 0;
   --rim-play: paused;
-  --rim-period: 6.4s;
+  --rim-period: var(--ui-rim-period);
 }
-.finish-muted-prism
-  :is(
-    .button:not(.ghost):not(.danger),
-    .round-button,
-    .input-shell:not(.has-error),
-    .select-shell,
-    .textarea-shell,
-    .comment-composer,
-    .choice-chips button,
-    .material-picker button,
-    .segmented button,
-    .switch,
-    .player-play,
-    .compact-tab,
-    .view-tabs button,
-    .filter-token,
-    .floating-dock nav > button,
-    .demo-navbar nav > button,
-    .pagination button,
-    .sort-trigger,
-    .study-popover button
-  )::before {
+.finish-muted-prism .ui-rim:not(.has-error)::before {
   content: "";
   position: absolute;
   inset: -1px;
@@ -102,27 +60,7 @@
   transition: opacity 280ms ease;
 }
 .finish-muted-prism
-  :is(
-    .button:not(.ghost):not(.danger),
-    .round-button,
-    .input-shell:not(.has-error),
-    .select-shell,
-    .textarea-shell,
-    .comment-composer,
-    .choice-chips button,
-    .material-picker button,
-    .segmented button,
-    .switch,
-    .player-play,
-    .compact-tab,
-    .view-tabs button,
-    .filter-token,
-    .floating-dock nav > button,
-    .demo-navbar nav > button,
-    .pagination button,
-    .sort-trigger,
-    .study-popover button
-  ):is(
+  .ui-rim:not(.has-error):is(
     [aria-pressed="true"],
     [aria-selected="true"],
     [aria-checked="true"],
@@ -131,61 +69,22 @@
     .selected,
     .applied
   ):not(:disabled) {
-  --rim-opacity: 0.48;
+  --rim-opacity: var(--ui-rim-rest);
   --rim-play: running;
   --rim-period: 8s;
 }
 @media (hover: hover) and (pointer: fine) {
-  .finish-muted-prism
-    :is(
-      .button:not(.ghost):not(.danger),
-      .round-button,
-      .input-shell:not(.has-error),
-      .select-shell,
-      .textarea-shell,
-      .comment-composer,
-      .choice-chips button,
-      .material-picker button,
-      .segmented button,
-      .switch,
-      .player-play,
-      .compact-tab,
-      .view-tabs button,
-      .filter-token,
-      .floating-dock nav > button,
-      .demo-navbar nav > button,
-      .pagination button,
-      .sort-trigger,
-      .study-popover button
-    ):hover:not(:disabled) {
-    --rim-opacity: 0.86;
+  .finish-muted-prism .ui-rim:not(.has-error):hover:not(:disabled) {
+    --rim-opacity: var(--ui-rim-hover);
     --rim-play: running;
-    --rim-period: 6.4s;
+    --rim-period: var(--ui-rim-period);
   }
 }
 .finish-muted-prism
-  :is(
-    .button:not(.ghost):not(.danger),
-    .round-button,
-    .input-shell:not(.has-error),
-    .select-shell,
-    .textarea-shell,
-    .comment-composer,
-    .choice-chips button,
-    .material-picker button,
-    .segmented button,
-    .switch,
-    .player-play,
-    .compact-tab,
-    .view-tabs button,
-    .filter-token,
-    .floating-dock nav > button,
-    .demo-navbar nav > button,
-    .pagination button,
-    .sort-trigger,
-    .study-popover button
-  ):is(:focus-visible, :focus-within, :active):not(:disabled) {
-  --rim-opacity: 1;
+  .ui-rim:not(.has-error):is(:focus-visible, :focus-within, :active):not(
+    :disabled
+  ) {
+  --rim-opacity: var(--ui-rim-focus);
   --rim-play: running;
   --rim-period: 5.2s;
 }
@@ -233,19 +132,7 @@
   animation: none !important;
 }
 /* Keep keyboard focus explicit without overpowering the traveling reflection. */
-.finish-muted-prism
-  :is(
-    .button:not(.ghost):not(.danger),
-    .round-button,
-    .choice-chips button,
-    .material-picker button,
-    .segmented button,
-    .switch,
-    .player-play,
-    .view-tabs button,
-    .pagination button,
-    .sort-trigger
-  ):focus-visible {
+.finish-muted-prism .ui-rim:focus-visible {
   outline: 1px solid #c8c0d15c;
   outline-offset: 3px;
 }

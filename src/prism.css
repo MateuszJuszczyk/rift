@@ -10,10 +10,6 @@
 .finish-dot.finish-2 { background: linear-gradient(140deg, #666665, #242425); }
 .finish-dot.finish-3 { background: linear-gradient(140deg, #b2b1ab, #535352); }
 
-.finish-muted-prism {
-  --prism-rim: linear-gradient(125deg, #ad8e997d, #7e90b35e 24%, #ffffff0c 45%, #899b9470 72%, #ae977960);
-  --prism-surface: radial-gradient(ellipse at 0% 0%, #a47d9415, transparent 55%), radial-gradient(ellipse at 100% 100%, #839e9b13, transparent 60%), linear-gradient(150deg, #202023, #121213 65%);
-}
 .finish-muted-prism .edge {
   background: var(--prism-surface);
   border-color: #9b939c30;

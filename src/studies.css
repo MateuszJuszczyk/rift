@@ -25,45 +25,6 @@
   outline: 2px solid #aaa2b8;
   outline-offset: 3px;
 }
-.study-icon {
-  display: inline-grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
-  border-radius: 7px;
-  color: #959496;
-}
-.study-icon:hover:not(:disabled) {
-  color: #dfdee0;
-  background: #ffffff09;
-}
-.study-label {
-  display: block;
-  color: #7b7a7c;
-  font-size: 10px;
-}
-.study-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  min-height: 20px;
-  margin-top: 20px;
-  font-size: 10px;
-  color: #767577;
-}
-.study-foot strong {
-  font-weight: 450;
-  color: #b7b5b8;
-}
-.study-foot button {
-  color: #adabae;
-  font-size: 10px;
-}
-.study-foot button:hover:not(:disabled) {
-  color: #dfdee0;
-}
 .compact-tab-scroll {
   display: flex;
   align-items: center;
@@ -651,19 +612,6 @@
 .inbox-rows > button.selected {
   background: linear-gradient(110deg, #a07f9f13, #849b9a0b);
 }
-.person-avatar {
-  display: grid;
-  place-items: center;
-  width: 27px;
-  height: 27px;
-  flex-shrink: 0;
-  font-size: 8px;
-  font-weight: 500;
-  color: #a5a3a7;
-  border: 1px solid #b9a1cd17;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #a98aa318, #859d9b10);
-}
 .inbox-rows > button > span:nth-child(2) {
   min-width: 0;
   flex: 1;
@@ -773,7 +721,7 @@
   position: relative;
   padding-bottom: 22px;
 }
-.thread-message .person-avatar {
+.thread-message .ui-avatar {
   background: #18141c;
 }
 .thread-message > div {
@@ -915,25 +863,9 @@
 .study p {
   text-wrap: pretty;
 }
-.finish-muted-prism
-  :is(
-    .compact-tab.selected,
-    .view-tabs button[aria-pressed="true"],
-    .filter-token.applied,
-    .comment-composer,
-    .material-tile
-  ) {
-  border-color: transparent;
-  background:
-    var(--prism-surface) padding-box,
-    var(--prism-rim) border-box;
-}
-.finish-muted-prism .comment-composer {
-  border: 1px solid transparent;
-}
 @media (min-width: 900px) {
   .component-grid.freeform-board {
-    height: 4200px;
+    height: var(--board-height, 5800px);
   }
 }
 @media (max-width: 559px) {

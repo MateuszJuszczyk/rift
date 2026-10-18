@@ -54,6 +54,8 @@ import {
 
 import { AdditionalStudy, additionalStudies } from "./Studies";
 
+import { ComponentStudy, componentStudies } from "./Components";
+
 type Category = "all" | "controls" | "navigation" | "surfaces" | "feedback";
 const categories: { id: Category; label: string }[] = [
   { id: "all", label: "Overview" },
@@ -101,6 +103,7 @@ const specimens = [
     category: "controls",
   },
   ...additionalStudies,
+  ...componentStudies,
 ] as const;
 
 // Shared columns and row baselines keep the canvas composed even before exploration.
@@ -127,6 +130,12 @@ const positions = {
   "inbox-list": { x: 60, y: 3980, w: 340 },
   "activity-thread": { x: 490, y: 3980, w: 340 },
   "batch-actions": { x: 920, y: 3980, w: 340 },
+  "multi-select": { x: 60, y: 4540, w: 340 },
+  "date-picker": { x: 490, y: 4540, w: 340 },
+  "file-upload": { x: 920, y: 4540, w: 340 },
+  "action-menu": { x: 60, y: 5140, w: 340 },
+  "inline-editor": { x: 490, y: 5140, w: 340 },
+  "process-steps": { x: 920, y: 5140, w: 340 },
 };
 
 function defaultCamera() {
@@ -508,6 +517,7 @@ export default function App() {
               "--camera-x": `${camera.x}px`,
               "--camera-y": `${camera.y}px`,
               "--camera-zoom": camera.zoom,
+              "--board-height": `${category !== "all" || savedOnly ? 150 + Math.ceil(visible.length / 3) * 570 : 5800}px`,
             } as CSSProperties
           }
         >
@@ -547,7 +557,9 @@ export default function App() {
               saved={saved.includes(item.id)}
               onSave={() => toggleSave(item.id)}
             >
-              {additionalStudies.some((study) => study.id === item.id) ? (
+              {componentStudies.some((study) => study.id === item.id) ? (
+                <ComponentStudy id={item.id} />
+              ) : additionalStudies.some((study) => study.id === item.id) ? (
                 <AdditionalStudy id={item.id} notify={notify} />
               ) : item.id === "optical" ? (
                 <Optical material={material} onMaterialChange={setMaterial} />
@@ -839,7 +851,7 @@ function Optical({
     <div
       className={`surface-study material-${material.toLowerCase().replaceAll(" ", "-")} ${illuminated ? "illuminated" : ""}`}
     >
-      <div className="surface-study-label">Component finish</div>
+      <div className="surface-ui-label">Component finish</div>
       <div
         className="material-picker"
         role="group"
@@ -850,7 +862,7 @@ function Optical({
             key={name}
             onClick={() => onMaterialChange(name)}
             aria-pressed={material === name}
-            className={material === name ? "active" : ""}
+            className={`ui-rim ${material === name ? "active" : ""}`}
           >
             <span className={`finish-dot finish-${index}`} />
             {name}
@@ -944,7 +956,7 @@ function Buttons({ notify }: { notify: (text: string) => void }) {
       <div className="button-line">
         <ActionButton notify={notify} />
         <button
-          className={`round-button heart-button ${liked ? "liked" : ""}`}
+          className={`round-button ui-rim heart-button ${liked ? "liked" : ""}`}
           onClick={() => setLiked(!liked)}
           aria-label={liked ? "Unlike" : "Like"}
           aria-pressed={liked}
@@ -960,7 +972,7 @@ function Buttons({ notify }: { notify: (text: string) => void }) {
           {copied ? "Copied" : "Copy text"}
         </Button>
         <button
-          className="round-button arrow-button"
+          className="round-button arrow-button ui-rim"
           aria-label="Show a detail"
           onClick={() => notify("Secondary action activated.")}
         >
@@ -1111,7 +1123,7 @@ function Dock() {
         <nav aria-label="Floating dock">
           {actions.map(({ label, icon: Icon }) => (
             <button
-              className={active === label ? "active" : ""}
+              className={`ui-rim ${active === label ? "active" : ""}`}
               key={label}
               onClick={() => setActive(label)}
               aria-label={label}
@@ -1266,7 +1278,7 @@ function Player() {
             <ChevronLeft size={20} />
           </button>
           <button
-            className="player-play"
+            className="player-play ui-rim"
             aria-label={playing ? "Pause ambient audio" : "Play ambient audio"}
             onClick={() => setPlaying(!playing)}
           >
@@ -1310,7 +1322,7 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
       }}
     >
       <label htmlFor="demo-name">Name</label>
-      <div className="input-shell">
+      <div className="input-shell ui-rim">
         <span className="input-avatar">
           {name.trim().slice(0, 1).toUpperCase() || "—"}
         </span>
@@ -1326,7 +1338,7 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
       <div className="form-two">
         <div>
           <label htmlFor="demo-role">Role</label>
-          <div className="select-shell">
+          <div className="select-shell ui-rim">
             <select
               id="demo-role"
               value={role}
@@ -1341,7 +1353,7 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
         </div>
         <div>
           <label htmlFor="demo-team">Workspace</label>
-          <div className="select-shell">
+          <div className="select-shell ui-rim">
             <select id="demo-team" defaultValue="Personal">
               <option>Personal</option>
               <option>Studio</option>
@@ -1354,7 +1366,7 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
       <label htmlFor="demo-email">
         Email address <span>Local validation</span>
       </label>
-      <div className={`input-shell ${error ? "has-error" : ""}`}>
+      <div className={`input-shell ui-rim ${error ? "has-error" : ""}`}>
         <span className="at-symbol">@</span>
         <input
           type="email"
@@ -1377,7 +1389,7 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
       <label htmlFor="demo-note" className="note-label">
         Message
       </label>
-      <div className="textarea-shell">
+      <div className="textarea-shell ui-rim">
         <textarea
           id="demo-note"
           rows={2}
@@ -1426,7 +1438,7 @@ function HeaderDemo({ notify }: { notify: (message: string) => void }) {
           {["Index", "Studio", "Notes"].map((name) => (
             <button
               key={name}
-              className={tab === name ? "active" : ""}
+              className={`ui-rim ${tab === name ? "active" : ""}`}
               aria-current={tab === name ? "page" : undefined}
               onClick={() => setTab(name)}
             >
@@ -1500,7 +1512,7 @@ function Selection() {
           <button
             key={tag}
             aria-pressed={tags.includes(tag)}
-            className={tags.includes(tag) ? "selected" : ""}
+            className={`ui-rim ${tags.includes(tag) ? "selected" : ""}`}
             onClick={() =>
               setTags((value) =>
                 value.includes(tag)
@@ -1617,7 +1629,7 @@ function Disclosure() {
           </button>
           {[1, 2, 3].map((value) => (
             <button
-              className={page === value ? "active" : ""}
+              className={`ui-rim ${page === value ? "active" : ""}`}
               aria-label={`Chapter ${value}`}
               aria-current={page === value ? "page" : undefined}
               onClick={() => {

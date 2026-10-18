@@ -1312,7 +1312,7 @@ input[type="range"]:active::-webkit-slider-thumb {
     left: 0;
     top: 0;
     width: 1320px;
-    height: 2600px;
+    height: var(--board-height, 5800px);
     display: block;
     padding: 0;
     transform: translate(var(--camera-x), var(--camera-y))
@@ -1897,7 +1897,7 @@ input[type="range"]:active::-webkit-slider-thumb {
     margin-bottom: 19px;
   }
   .component-grid.freeform-board {
-    height: 2460px;
+    height: var(--board-height, 5800px);
   }
   .freeform-board .specimen-optical .specimen-heading {
     padding-left: 0;
