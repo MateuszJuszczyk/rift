@@ -24,6 +24,8 @@ Vite prints the local URL. The production build is a static `dist/` directory; n
 
 An open canvas with loose components, composed on three shared columns and aligned row baselines, separated by spacing, fine rules and small labels. Filtered collections reflow into a compact grid. On desktop, pan the surface, zoom, and drag each group by its grip (arrow keys also work; Shift increases the step). On mobile, the same components form a naturally scrolling layout.
 
+Desktop rendering is lazy: specimens outside the viewport skip layout and paint (`content-visibility: auto`), and panning commits at most one camera update per frame, so moving across the ~19 000 px board stays at 60 fps.
+
 100 interactive specimens across five collections, all drawn from one token set:
 
 - Compact material controls with pointer-reactive edges, illumination and Frost / Smoke / Obsidian finishes.

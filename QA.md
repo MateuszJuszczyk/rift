@@ -65,3 +65,20 @@ TypeScript strict checks and the production build pass. Browser checks at 1440×
 - Zero console errors and zero document horizontal overflow in every category at both mobile widths.
 - Inner overflow appears only in intentional cases: the marquee strip, the horizontally scrollable code block, visually hidden `.sr-only` text, the closed drawer panel kept off-canvas, avatar tooltips and the preroll progress rail.
 - Desktop visual inspection covered 20+ new specimens plus the light theme. Fixes made after inspection: replaced inset-shadow row separators with borders (Chromium painted them as full rings on rounded buttons), restored the table caption to `table-caption` so it spans the table, removed the default input frame inside framed controls, widened wizard step labels, kept the command-palette list unclipped, and opened the drawer, mega menu, nested menu, context menu, popover and tooltip by default so their states are visible in a static view.
+
+## Canvas panning performance
+
+Panning the canvas lagged once the board grew to ~19 000 px: every one of the 100 specimens was laid out and painted on every frame, and each wheel event committed its own React render.
+
+- Desktop specimens (`@media (min-width: 900px)`) use `content-visibility: auto` with `contain-intrinsic-size: 340px auto 320px`. Off-screen specimens skip layout and paint; `auto` remembers each measured height, so `getBoundingClientRect()` still reports real sizes for the search jump and drag maths.
+- Wheel and drag panning accumulate into one `requestAnimationFrame` commit through `queueCamera`, so a fast trackpad stream produces one render per frame instead of one per event.
+- Mobile keeps the natural document flow without containment (it already scrolled at 60 fps and containment there could shift the scroll height).
+
+Measured in Chrome 155 at 1440×900 with synthetic wheel panning (34 px per frame for 2.5 s):
+
+| Condition        | Before                      | After                    |
+| ---------------- | --------------------------- | ------------------------ |
+| Unthrottled      | 22 fps, 48 ms median, 49 frames over 32 ms | 60 fps, 17 ms median, 0 frames over 32 ms |
+| 4× CPU throttle  | 5 fps, 216 ms median        | 29 fps, 36 ms median     |
+
+Paused-by-default traveling rims contributed nothing to the lag (computed `animation-play-state` is `paused` at rest; no animations run while idle). Mobile scrolling remains 60 fps with a 34 460 px document, 100 specimens and no horizontal overflow. Pan, zoom, drag, keyboard drag and the component-search jump were re-verified after the change.

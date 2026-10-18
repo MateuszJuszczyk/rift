@@ -163,6 +163,8 @@ const boardHeight = Object.values(positions).reduce(
   5800,
 );
 
+type Camera = { x: number; y: number; zoom: number };
+
 function defaultCamera() {
   const zoom = innerWidth >= 900 ? Math.min(0.95, (innerWidth - 80) / 1320) : 1;
   return {
@@ -216,19 +218,41 @@ export default function App() {
   const viewport = useRef<HTMLElement>(null);
   const cameraRef = useRef(camera);
   cameraRef.current = camera;
+  // Trackpads fire wheel events far faster than the display refreshes. Accumulate
+  // them and commit once per frame so panning never queues extra renders.
+  const cameraFrame = useRef(0);
+  const queuedCamera = useRef<Camera | null>(null);
+  const queueCamera = (next: Camera) => {
+    queuedCamera.current = next;
+    cameraRef.current = next;
+    if (cameraFrame.current) return;
+    cameraFrame.current = requestAnimationFrame(() => {
+      cameraFrame.current = 0;
+      const value = queuedCamera.current;
+      queuedCamera.current = null;
+      if (value) setCamera(value);
+    });
+  };
+  // Discrete actions drop a queued frame so a pending pan cannot overwrite them.
+  const commitCamera = (next: Camera) => {
+    cancelAnimationFrame(cameraFrame.current);
+    cameraFrame.current = 0;
+    queuedCamera.current = null;
+    setCamera(next);
+  };
   const panStart = useRef<{
     x: number;
     y: number;
     cx: number;
     cy: number;
   } | null>(null);
-  const fitCanvas = () => setCamera(defaultCamera());
+  const fitCanvas = () => commitCamera(defaultCamera());
   const changeZoom = (delta: number) => {
     const current = cameraRef.current;
     const zoom = Math.max(0.4, Math.min(1.6, current.zoom + delta));
     const x = innerWidth / 2;
     const y = innerHeight / 2;
-    setCamera({
+    commitCamera({
       x: x - ((x - current.x) / current.zoom) * zoom,
       y: y - ((y - current.y) / current.zoom) * zoom,
       zoom,
@@ -240,7 +264,7 @@ export default function App() {
     const wheel = (event: WheelEvent) => {
       if (innerWidth < 900) return;
       event.preventDefault();
-      const current = cameraRef.current;
+      const current = queuedCamera.current ?? cameraRef.current;
       if (event.ctrlKey || event.metaKey) {
         const zoom = Math.max(
           0.4,
@@ -249,20 +273,25 @@ export default function App() {
         const rect = element.getBoundingClientRect();
         const x = event.clientX - rect.left,
           y = event.clientY - rect.top;
-        setCamera({
+        queueCamera({
           x: x - ((x - current.x) / current.zoom) * zoom,
           y: y - ((y - current.y) / current.zoom) * zoom,
           zoom,
         });
       } else
-        setCamera({
+        queueCamera({
           ...current,
           x: current.x - event.deltaX,
           y: current.y - event.deltaY,
         });
     };
     element.addEventListener("wheel", wheel, { passive: false });
-    return () => element.removeEventListener("wheel", wheel);
+    return () => {
+      element.removeEventListener("wheel", wheel);
+      cancelAnimationFrame(cameraFrame.current);
+      cameraFrame.current = 0;
+      queuedCamera.current = null;
+    };
   }, []);
   useEffect(() => {
     let frame = 0;
@@ -379,7 +408,7 @@ export default function App() {
       if (innerWidth >= 900) {
         const position = positions[id as keyof typeof positions];
         if (position)
-          setCamera({
+          commitCamera({
             x: innerWidth / 2 - (position.x + position.w / 2) * 0.95,
             y: innerHeight / 2 - (position.y + 170) * 0.95,
             zoom: 0.95,
@@ -520,7 +549,7 @@ export default function App() {
             rect.right > innerWidth - 20
           ) {
             const current = cameraRef.current;
-            setCamera({
+            commitCamera({
               ...current,
               x:
                 current.x +
@@ -563,7 +592,7 @@ export default function App() {
         onPointerMove={(event) => {
           if (panStart.current) {
             const start = panStart.current;
-            setCamera({
+            queueCamera({
               ...cameraRef.current,
               x: start.cx + event.clientX - start.x,
               y: start.cy + event.clientY - start.y,

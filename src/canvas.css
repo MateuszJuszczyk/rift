@@ -1427,6 +1427,10 @@ input[type="range"]:active::-webkit-slider-thumb {
     height: auto;
     transform: translate(var(--node-dx, 0px), var(--node-dy, 0px));
     z-index: 2;
+    /* Panning a 19 000 px board repaints every specimen; skip the ones outside
+       the viewport and remember their measured height once they render. */
+    content-visibility: auto;
+    contain-intrinsic-size: 340px auto 320px;
   }
   .freeform-board .specimen.dragging {
     z-index: 15;
