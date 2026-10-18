@@ -570,7 +570,7 @@ export default function App() {
           <div className="canvas-note hero-note">
             <img
               className="hero-sculpture"
-              src="/images/muted-prism-hero.webp"
+              src={`${import.meta.env.BASE_URL}images/muted-prism-hero.webp`}
               alt=""
               width="2172"
               height="724"
