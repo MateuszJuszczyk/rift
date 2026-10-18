@@ -1,0 +1,268 @@
+/* Shared library primitives. Component files only own composition. */
+.lib-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.lib-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 8px 10px;
+  border-radius: var(--ui-radius);
+  min-width: 0;
+  color: var(--ui-muted);
+  font-size: var(--ui-font);
+  text-align: left;
+}
+.lib-row + .lib-row {
+  border-top: 1px solid var(--ui-line);
+}
+.lib-row--interactive:hover:not(:disabled) {
+  background: var(--ui-hover);
+  color: var(--ui-text);
+}
+.lib-row[aria-selected="true"],
+.lib-row[aria-current="true"] {
+  background: var(--ui-selected);
+  color: var(--ui-text);
+}
+.lib-row__copy {
+  flex: 1;
+  min-width: 0;
+}
+.lib-row__copy strong {
+  display: block;
+  color: var(--ui-text);
+  font-weight: 450;
+  overflow-wrap: anywhere;
+}
+.lib-row__copy small {
+  display: block;
+  margin-top: 3px;
+  color: var(--ui-faint);
+  font-size: var(--ui-small);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.lib-caption {
+  color: var(--ui-faint);
+  font-size: var(--ui-small);
+  line-height: 1.6;
+}
+.lib-tile {
+  border: 1px solid var(--ui-line);
+  border-radius: var(--ui-radius);
+  background: color-mix(in srgb, var(--theme-wash) 3%, transparent);
+  padding: 10px;
+  min-width: 0;
+}
+.lib-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.lib-grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.lib-key {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0 6px;
+  border: 1px solid var(--ui-line);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--theme-wash) 4%, transparent);
+  color: var(--ui-text);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.lib-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: currentColor;
+}
+.lib-meter {
+  height: 4px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--theme-wash) 9%, transparent);
+  overflow: hidden;
+}
+.lib-meter > span {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(100deg, #b59ca9, #93a3bf, #9cafa8, #b2a38b);
+  transition: width 0.24s var(--ui-ease);
+}
+.lib-bar {
+  display: block;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(180deg, #cbb6c2, #8e9cb4);
+  min-height: 3px;
+  transition: height 0.24s var(--ui-ease);
+}
+:root[data-theme="light"] .lib-bar {
+  background: linear-gradient(180deg, #a08ea0, #6f8199);
+}
+.lib-num {
+  font-variant-numeric: tabular-nums;
+}
+.lib-tight {
+  gap: 6px;
+}
+.lib-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.lib-plain {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0;
+}
+.lib-plain legend {
+  padding: 0;
+  margin-bottom: var(--ui-gap);
+}
+.lib-popover {
+  position: absolute;
+  z-index: 4;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  padding: 4px;
+  border: 1px solid var(--ui-line);
+  border-radius: var(--ui-radius);
+  background: var(--ui-surface);
+  box-shadow: 0 16px 34px #0006;
+}
+:root[data-theme="light"] .lib-popover {
+  box-shadow: 0 16px 34px #2c243318;
+}
+.lib-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 40px;
+  padding: 7px 9px;
+  border-radius: 6px;
+  color: var(--ui-muted);
+  font-size: var(--ui-font);
+  text-align: left;
+}
+.lib-option:hover,
+.lib-option.is-current {
+  background: var(--ui-hover);
+  color: var(--ui-text);
+}
+.lib-option[aria-selected="true"],
+.lib-option[aria-checked="true"] {
+  background: var(--ui-selected);
+  color: var(--ui-text);
+}
+.lib-option > svg:last-child {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.lib-empty {
+  padding: 14px 10px;
+  color: var(--ui-faint);
+  font-size: var(--ui-small);
+  line-height: 1.6;
+  text-align: center;
+}
+.lib-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  box-shadow: inset 0 -1px 0 var(--ui-line);
+  color: var(--ui-muted);
+  font-size: var(--ui-small);
+}
+.lib-panel-head > svg:first-child {
+  color: var(--ui-faint);
+}
+.lib-panel {
+  border: 1px solid var(--ui-line);
+  border-radius: var(--ui-radius-panel);
+  background: color-mix(in srgb, var(--theme-wash) 2.5%, transparent);
+  overflow: hidden;
+  min-width: 0;
+}
+.lib-scroll {
+  max-height: 190px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  min-width: 0;
+}
+.lib-input,
+.lib-select,
+.lib-textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--ui-control-height);
+  border: 1px solid var(--ui-line);
+  border-radius: var(--ui-radius);
+  background: var(--ui-surface);
+  box-shadow: var(--ui-shadow);
+  color: var(--ui-text);
+  font-size: var(--ui-font);
+  padding: 0 11px;
+}
+.lib-textarea {
+  padding: 10px 11px;
+  min-height: 78px;
+  resize: vertical;
+  line-height: 1.6;
+}
+.lib-input:focus-visible,
+.lib-select:focus-visible,
+.lib-textarea:focus-visible {
+  outline: 1px solid var(--ui-focus);
+  outline-offset: 3px;
+}
+.lib-input.has-error {
+  border-color: var(--ui-error);
+}
+.lib-input::placeholder,
+.lib-textarea::placeholder {
+  color: var(--ui-faint);
+}
+/* Inputs that live inside a control frame keep the frame, not their own box. */
+.lib-combobox__input,
+.lib-tagfield__input,
+.lib-money__input,
+.lib-unit__input,
+.lib-palette__input {
+  border: 0;
+  background: transparent;
+  outline: none;
+}
+.lib-select {
+  appearance: none;
+  padding-right: 30px;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 16px) 18px, calc(100% - 11px) 18px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  color: var(--ui-text);
+}
+@media (max-width: 559px) {
+  .lib-input,
+  .lib-select,
+  .lib-textarea {
+    font-size: 16px;
+  }
+}

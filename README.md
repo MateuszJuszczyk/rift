@@ -24,7 +24,7 @@ Vite prints the local URL. The production build is a static `dist/` directory; n
 
 An open canvas with loose components, composed on three shared columns and aligned row baselines, separated by spacing, fine rules and small labels. Filtered collections reflow into a compact grid. On desktop, pan the surface, zoom, and drag each group by its grip (arrow keys also work; Shift increases the step). On mobile, the same components form a naturally scrolling layout.
 
-28 interactive specimens, with more than 30 individual controls and states:
+100 interactive specimens across five collections, all drawn from one token set:
 
 - Compact material controls with pointer-reactive edges, illumination and Frost / Smoke / Obsidian finishes.
 - Sliders, switches, async action button, secondary/destructive/disabled actions, like toggle and quantity stepper.
@@ -36,6 +36,7 @@ An open canvas with loose components, composed on three shared columns and align
 - Hold-to-commit interaction, cancellable by early release, including keyboard support.
 - Global material studio: rim illumination, frost, accent color and motion preference; export the preset as JSON.
 - Component search (`Cmd/Ctrl + K`) and favorites stored in browser-local storage.
+- The library collection: 24 controls (dual range, rotary dial, OTP, combobox, mask and currency fields, transfer list, tree select, shortcut recorder), 16 navigation specimens (command palette, mega menu, nested and context menus, drawer, wizard, tree view), 18 data displays (sortable table, month calendar, bar chart, sparkline, kanban, diff, JSON tree, activity heatmap) and 14 feedback specimens (toast stack, inline alerts, progress ring, coach marks, permission matrix).
 
 Form validation stays in memory. The confirmation dialog applies the Obsidian material settings. Component URLs support direct navigation through their hash.
 
@@ -46,6 +47,7 @@ Form validation stays in memory. The confirmation dialog applies the Obsidian ma
 - `src/tokens.css`: shared colors, dimensions, material gradients and motion values.
 - `src/primitives.css` and `src/ui.tsx`: shared visual and React primitives; see [STYLING.md](STYLING.md).
 - `src/Components.tsx`: multiselect, calendar, local file input, document actions, inline editor and step navigation.
+- `src/library/`: the 72-specimen collection, split into `controls`, `navigation`, `data` and `feedback` modules, each with its own CSS; `index.tsx` registers every study and dispatches by id.
 - `src/styles.css`: original material system and component state transitions.
 - `src/canvas.css`: open canvas composition, floating tools and responsive layout.
 - `public/`: local assets and font licenses.

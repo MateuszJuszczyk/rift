@@ -53,3 +53,15 @@ The header toggle changes all shared theme tokens, legacy neutral tokens, Muted 
 ## Interaction-only traveling rims
 
 Removed animation triggers based on selected/pressed/current attributes and persistent active classes. Generic `Surface` wrappers, floating dock shells and property-menu shells no longer receive traveling rims. Optical illumination remains static until direct interaction. Browser checks verified selected controls idle with opacity 0 and animation paused; theme-button hover starts animation, clicking then moving away pauses and hides it despite retained pointer focus, keyboard focus restarts it, and generic panel pseudo-elements have animation-name none. Applies to both themes; reduced-motion rules remain authoritative.
+
+## Hundred-component library pass
+
+Added 72 specimens in four modules — 24 controls, 16 navigation, 18 data and 14 feedback — registered through `src/library/index.tsx` and placed on generated canvas coordinates (three columns, 580 px row steps, board height derived from the furthest specimen instead of a hardcoded value).
+
+TypeScript strict checks and the production build pass. Browser checks at 1440×1000, 390×844 and 320×844:
+
+- All 100 specimens render with unique ids; the canvas caption reports "100 interactive components".
+- Category filters: controls 37, navigation 24, surfaces 21, feedback 18.
+- Zero console errors and zero document horizontal overflow in every category at both mobile widths.
+- Inner overflow appears only in intentional cases: the marquee strip, the horizontally scrollable code block, visually hidden `.sr-only` text, the closed drawer panel kept off-canvas, avatar tooltips and the preroll progress rail.
+- Desktop visual inspection covered 20+ new specimens plus the light theme. Fixes made after inspection: replaced inset-shadow row separators with borders (Chromium painted them as full rings on rounded buttons), restored the table caption to `table-caption` so it spans the table, removed the default input frame inside framed controls, widened wizard step labels, kept the command-palette list unclipped, and opened the drawer, mega menu, nested menu, context menu, popover and tooltip by default so their states are visible in a static view.

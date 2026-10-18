@@ -58,6 +58,8 @@ import { AdditionalStudy, additionalStudies } from "./Studies";
 
 import { ComponentStudy, componentStudies } from "./Components";
 
+import { LibraryStudy, libraryStudies } from "./library";
+
 type Category = "all" | "controls" | "navigation" | "surfaces" | "feedback";
 const categories: { id: Category; label: string }[] = [
   { id: "all", label: "Overview" },
@@ -106,10 +108,11 @@ const specimens = [
   },
   ...additionalStudies,
   ...componentStudies,
+  ...libraryStudies,
 ] as const;
 
 // Shared columns and row baselines keep the canvas composed even before exploration.
-const positions = {
+const basePositions = {
   optical: { x: 60, y: 550, w: 1200 },
   precision: { x: 60, y: 820, w: 340 },
   buttons: { x: 490, y: 820, w: 340 },
@@ -139,6 +142,26 @@ const positions = {
   "inline-editor": { x: 490, y: 5140, w: 340 },
   "process-steps": { x: 920, y: 5140, w: 340 },
 };
+
+// Library specimens flow in the same three columns, one row baseline apart.
+const positions: Record<string, { x: number; y: number; w: number }> = {
+  ...basePositions,
+  ...Object.fromEntries(
+    libraryStudies.map((study, index) => [
+      study.id,
+      {
+        x: 60 + (index % 3) * 430,
+        y: 5760 + Math.floor(index / 3) * 580,
+        w: 340,
+      },
+    ]),
+  ),
+};
+
+const boardHeight = Object.values(positions).reduce(
+  (tallest, position) => Math.max(tallest, position.y + 620),
+  5800,
+);
 
 function defaultCamera() {
   const zoom = innerWidth >= 900 ? Math.min(0.95, (innerWidth - 80) / 1320) : 1;
@@ -563,7 +586,7 @@ export default function App() {
               "--camera-x": `${camera.x}px`,
               "--camera-y": `${camera.y}px`,
               "--camera-zoom": camera.zoom,
-              "--board-height": `${category !== "all" || savedOnly ? 150 + Math.ceil(visible.length / 3) * 570 : 5800}px`,
+              "--board-height": `${category !== "all" || savedOnly ? 150 + Math.ceil(visible.length / 3) * 570 : boardHeight}px`,
             } as CSSProperties
           }
         >
@@ -604,7 +627,9 @@ export default function App() {
               saved={saved.includes(item.id)}
               onSave={() => toggleSave(item.id)}
             >
-              {componentStudies.some((study) => study.id === item.id) ? (
+              {libraryStudies.some((study) => study.id === item.id) ? (
+                <LibraryStudy id={item.id} notify={notify} />
+              ) : componentStudies.some((study) => study.id === item.id) ? (
                 <ComponentStudy id={item.id} />
               ) : additionalStudies.some((study) => study.id === item.id) ? (
                 <AdditionalStudy id={item.id} notify={notify} />

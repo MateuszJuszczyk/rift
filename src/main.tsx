@@ -12,6 +12,11 @@ import "./primitives.css";
 import "./components.css";
 import "./rim.css";
 import "./theme.css";
+import "./library.css";
+import "./library/controls.css";
+import "./library/navigation.css";
+import "./library/data.css";
+import "./library/feedback.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
