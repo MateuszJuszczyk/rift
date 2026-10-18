@@ -19,7 +19,6 @@ import {
   Eye,
   Fingerprint,
   Focus,
-  Grid2X2,
   Headphones,
   Hand,
   Heart,
@@ -38,8 +37,6 @@ import {
   Search,
   Settings2,
   ShieldCheck,
-  SlidersHorizontal,
-  Snowflake,
   Sun,
   Volume2,
   X,
@@ -56,33 +53,33 @@ import {
 } from "./ui";
 
 type Category = "all" | "controls" | "navigation" | "surfaces" | "feedback";
-const categories: { id: Category; label: string; icon: typeof Grid2X2 }[] = [
-  { id: "all", label: "Overview", icon: Grid2X2 },
-  { id: "controls", label: "Controls", icon: SlidersHorizontal },
-  { id: "navigation", label: "Navigation", icon: Compass },
-  { id: "surfaces", label: "Surfaces", icon: Layers },
-  { id: "feedback", label: "Feedback", icon: AudioLines },
+const categories: { id: Category; label: string }[] = [
+  { id: "all", label: "Overview" },
+  { id: "controls", label: "Controls" },
+  { id: "navigation", label: "Navigation" },
+  { id: "surfaces", label: "Surfaces" },
+  { id: "feedback", label: "Feedback" },
 ];
 const specimens = [
   { id: "optical", title: "Optical edge", category: "surfaces" },
   { id: "precision", title: "Precision controls", category: "controls" },
   {
     id: "buttons",
-    title: "Actions & reactions",
+    title: "Buttons",
     category: "controls",
   },
-  { id: "segments", title: "One smooth transition", category: "controls" },
+  { id: "segments", title: "Segmented controls", category: "controls" },
   {
     id: "header",
-    title: "The quiet header",
+    title: "Header navigation",
     category: "navigation",
   },
   { id: "dock", title: "Floating navigation", category: "navigation" },
   { id: "player", title: "Ambient player", category: "surfaces" },
-  { id: "inputs", title: "Fields that feel right", category: "controls" },
+  { id: "inputs", title: "Form controls", category: "controls" },
   {
     id: "selection",
-    title: "Choice, considered",
+    title: "Selection controls",
     category: "controls",
   },
   {
@@ -93,31 +90,31 @@ const specimens = [
   { id: "feedback", title: "State & feedback", category: "feedback" },
   {
     id: "dialog",
-    title: "A moment of clarity",
+    title: "Confirmation dialog",
     category: "feedback",
   },
   {
     id: "commit",
-    title: "Hold with intention",
+    title: "Hold to confirm",
     category: "controls",
   },
 ] as const;
 
 // Shared columns and row baselines keep the canvas composed even before exploration.
 const positions = {
-  optical: { x: 760, y: 120, w: 500 },
-  precision: { x: 60, y: 570, w: 340 },
-  buttons: { x: 490, y: 570, w: 340 },
-  segments: { x: 920, y: 570, w: 340 },
-  header: { x: 60, y: 1100, w: 340 },
-  dock: { x: 490, y: 1100, w: 340 },
-  player: { x: 920, y: 1100, w: 340 },
-  inputs: { x: 60, y: 1510, w: 340 },
-  selection: { x: 490, y: 1510, w: 340 },
-  disclosure: { x: 920, y: 1510, w: 340 },
-  feedback: { x: 60, y: 2110, w: 340 },
-  dialog: { x: 490, y: 2110, w: 340 },
-  commit: { x: 920, y: 2110, w: 340 },
+  optical: { x: 790, y: 150, w: 400 },
+  precision: { x: 60, y: 460, w: 340 },
+  buttons: { x: 490, y: 460, w: 340 },
+  segments: { x: 920, y: 460, w: 340 },
+  header: { x: 60, y: 970, w: 340 },
+  dock: { x: 490, y: 970, w: 340 },
+  player: { x: 920, y: 970, w: 340 },
+  inputs: { x: 60, y: 1380, w: 340 },
+  selection: { x: 490, y: 1380, w: 340 },
+  disclosure: { x: 920, y: 1380, w: 340 },
+  feedback: { x: 60, y: 1980, w: 340 },
+  dialog: { x: 490, y: 1980, w: 340 },
+  commit: { x: 920, y: 1980, w: 340 },
 };
 
 function defaultCamera() {
@@ -200,12 +197,26 @@ export default function App() {
     element.addEventListener("wheel", wheel, { passive: false });
     return () => element.removeEventListener("wheel", wheel);
   }, []);
+  useEffect(() => {
+    let frame = 0;
+    const resize = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => setCamera(defaultCamera()));
+    };
+    window.addEventListener("resize", resize);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
   const [about, setAbout] = useState(false);
   const [toast, setToast] = useState("");
   const [edge, setEdge] = useState(70);
   const [frost, setFrost] = useState(45);
   const [accent, setAccent] = useState("silver");
   const [motion, setMotion] = useState(true);
+  const motionRef = useRef(motion);
+  motionRef.current = motion;
   const [resetKey, setResetKey] = useState(0);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
@@ -255,7 +266,7 @@ export default function App() {
     setSavedOnly(false);
     setTool("select");
     setCamera(defaultCamera());
-    notify("Canvas reset. Back to a fresh start.");
+    notify("Canvas reset.");
   };
   const download = () => {
     const data = {
@@ -275,7 +286,7 @@ export default function App() {
     link.download = "rift-material.json";
     link.click();
     URL.revokeObjectURL(url);
-    notify("Material preset exported as JSON.");
+    notify("Preset exported.");
   };
   const visible = specimens.filter(
     (item) =>
@@ -285,7 +296,7 @@ export default function App() {
   const searchResults = specimens.filter((item) =>
     `${item.title} ${item.category}`
       .toLowerCase()
-      .includes(query.toLowerCase()),
+      .includes(query.trim().toLowerCase()),
   );
   const chooseResult = (id: string) => {
     setCategory("all");
@@ -305,7 +316,7 @@ export default function App() {
       } else
         item?.scrollIntoView({
           behavior:
-            motion &&
+            motionRef.current &&
             !window.matchMedia("(prefers-reduced-motion: reduce)").matches
               ? "smooth"
               : "instant",
@@ -319,6 +330,15 @@ export default function App() {
       setTimeout(() => item?.classList.remove("highlight-specimen"), 1800);
     });
   };
+  useEffect(() => {
+    const visitHash = () => {
+      const id = location.hash.slice(1);
+      if (specimens.some((item) => item.id === id)) chooseResult(id);
+    };
+    visitHash();
+    window.addEventListener("hashchange", visitHash);
+    return () => window.removeEventListener("hashchange", visitHash);
+  }, []);
   const style = {
     "--edge-strength": edge / 100,
     "--frost": `${frost / 3}px`,
@@ -418,6 +438,13 @@ export default function App() {
           }
         }}
         className={`canvas-view tool-${tool}`}
+        style={
+          {
+            "--grid-x": `${camera.x}px`,
+            "--grid-y": `${camera.y}px`,
+            "--grid-step": `${32 * camera.zoom}px`,
+          } as CSSProperties
+        }
         onPointerDown={(event) => {
           if (innerWidth < 900 || event.button !== 0) return;
           if (
@@ -467,13 +494,13 @@ export default function App() {
           }
         >
           <div className="canvas-note">
-            <span>RIFT / INTERACTION ATELIER</span>
+            <span>RIFT / OBSIDIAN · 001</span>
             <p>
-              Less noise.
+              Interface
               <br />
-              <em>More feeling.</em>
+              <span>studies.</span>
             </p>
-            <small>Thirteen studies in light, touch and intention.</small>
+            <small>13 interactive components. Built in React.</small>
           </div>
           {visible.map((item, visibleIndex) => (
             <Specimen
@@ -481,7 +508,6 @@ export default function App() {
               id={item.id}
               title={item.title}
               index={String(specimens.indexOf(item) + 1).padStart(2, "0")}
-              category={item.category}
               zoom={camera.zoom}
               style={
                 {
@@ -495,7 +521,7 @@ export default function App() {
               onSave={() => toggleSave(item.id)}
             >
               {item.id === "optical" ? (
-                <Optical notify={notify} />
+                <Optical />
               ) : item.id === "precision" ? (
                 <Precision />
               ) : item.id === "buttons" ? (
@@ -519,7 +545,14 @@ export default function App() {
               ) : item.id === "commit" ? (
                 <Commit notify={notify} />
               ) : (
-                <DialogDemo notify={notify} />
+                <DialogDemo
+                  notify={notify}
+                  onApply={() => {
+                    setEdge(70);
+                    setFrost(45);
+                    setAccent("silver");
+                  }}
+                />
               )}
             </Specimen>
           ))}
@@ -527,8 +560,8 @@ export default function App() {
         {!visible.length && (
           <div className="empty-state">
             <Bookmark size={26} />
-            <h2>A space for the good things.</h2>
-            <p>Bookmark an object to keep it here.</p>
+            <h2>No saved components</h2>
+            <p>Use the bookmark beside a component to save it.</p>
             <Button onClick={() => pickCategory("all")}>
               Back to everything <ArrowRight size={14} />
             </Button>
@@ -620,14 +653,14 @@ export default function App() {
         className="inspector-modal"
       >
         <p className="modal-description">
-          One material. Your own expression.
+          Adjust the shared surface material.
           <br />
-          Changes apply across the entire canvas.
+          Settings apply to the canvas.
         </p>
         <div className="inspector-preview">
           <Edge className="inspector-edge">
             <Fingerprint size={44} />
-            <span>Touch the edge.</span>
+            <span>Edge preview</span>
           </Edge>
         </div>
         <Range label="Edge illumination" value={edge} onChange={setEdge} />
@@ -679,7 +712,7 @@ export default function App() {
           setCommand(false);
           setQuery("");
         }}
-        title="Find your next detail"
+        title="Find a component"
         className="command-modal"
       >
         <div className="command-search">
@@ -718,11 +751,7 @@ export default function App() {
           </span>
         </div>
       </Modal>
-      <Modal
-        open={about}
-        onClose={() => setAbout(false)}
-        title="The thinking behind the feeling"
-      >
+      <Modal open={about} onClose={() => setAbout(false)} title="About RIFT">
         <div className="about-mark">
           <span className="brand-symbol">
             <i />
@@ -730,20 +759,15 @@ export default function App() {
             <i />
           </span>
         </div>
-        <p className="about-lead">
-          Less noise.
-          <br />
-          More nuance.
+        <p className="about-lead">RIFT / Obsidian</p>
+        <p className="modal-description">
+          A collection of interactive controls in React and TypeScript. The
+          material uses a recessed surface, a double rim and pointer-controlled
+          reflections.
         </p>
         <p className="modal-description">
-          RIFT is an original React interface experiment. Its optical edge takes
-          a cue from physical screens: a dark machined rim, a recessed surface,
-          and a fine line of reflected light.
-        </p>
-        <p className="modal-description">
-          Every example is interactive. Explore with a keyboard, save your
-          favorites, or tune the material. Your collection is stored only in
-          this browser.
+          Use the keyboard or pointer, bookmark components and adjust the
+          material. Bookmarks stay in this browser.
         </p>
         <div className="credits">
           <span>Interface & interaction</span>
@@ -775,65 +799,54 @@ export default function App() {
   );
 }
 
-function Optical({ notify }: { notify: (text: string) => void }) {
+function Optical() {
   const [material, setMaterial] = useState("Obsidian");
-  const [pressed, setPressed] = useState(false);
+  const [illuminated, setIlluminated] = useState(false);
   return (
-    <div className={`optical-stage material-${material.toLowerCase()}`}>
-      <div className="stage-grid" />
-      <div className="optical-aura" />
-      <div className="optical-arc" aria-hidden="true" />
-      <div className="stage-coordinate">
-        R / 01<span>OPTICAL STUDY</span>
-      </div>
-      <Edge className="optical-object">
-        <div className="object-shine" />
-        <button
-          className="object-core"
-          aria-label="Activate optical surface"
-          aria-pressed={pressed}
-          onClick={() => {
-            setPressed(!pressed);
-            notify(
-              pressed
-                ? "Surface at rest."
-                : "A fine line between light and matter.",
-            );
-          }}
-        >
-          {pressed ? (
-            <Fingerprint size={44} strokeWidth={1} />
-          ) : (
-            <Snowflake size={44} strokeWidth={1} />
-          )}
-        </button>
-        <div className="object-caption">
-          <span>
-            {pressed ? "A little closer." : "Between light & matter."}
-          </span>
-          <small>{material.toUpperCase()} / RIFT MATERIAL 001</small>
-        </div>
-      </Edge>
-      <div className="stage-bottom">
-        <span className="stage-note">
-          <i /> Reactive edge
+    <div
+      className={`surface-study material-${material.toLowerCase()} ${illuminated ? "illuminated" : ""}`}
+    >
+      <div className="surface-study-label">
+        <span>Surface finish</span>
+        <span>
+          {String(
+            ["Obsidian", "Smoke", "Frost"].indexOf(material) + 1,
+          ).padStart(2, "0")}{" "}
+          / 03
         </span>
-        <div
-          className="material-picker"
-          role="group"
-          aria-label="Optical material"
+      </div>
+      <div
+        className="material-picker"
+        role="group"
+        aria-label="Optical material"
+      >
+        {["Obsidian", "Smoke", "Frost"].map((name, index) => (
+          <button
+            key={name}
+            onClick={() => setMaterial(name)}
+            aria-pressed={material === name}
+            className={material === name ? "active" : ""}
+          >
+            <span className={`finish-dot finish-${index}`} />
+            {name}
+          </button>
+        ))}
+      </div>
+      <Edge className="surface-control">
+        <button
+          aria-pressed={illuminated}
+          onClick={() => setIlluminated(!illuminated)}
         >
-          {["Frost", "Smoke", "Obsidian"].map((name) => (
-            <button
-              key={name}
-              onClick={() => setMaterial(name)}
-              aria-pressed={material === name}
-              className={material === name ? "active" : ""}
-            >
-              {name}
-            </button>
-          ))}
-        </div>
+          <Sun size={17} strokeWidth={1.4} />
+          <span>Edge illumination</span>
+          <span className="surface-control-state">
+            {illuminated ? "On" : "Off"}
+          </span>
+        </button>
+      </Edge>
+      <div className="specimen-readout">
+        <span>{material}</span>
+        <span>Move across the edge</span>
       </div>
     </div>
   );
@@ -846,14 +859,6 @@ function Precision() {
   const [ambient, setAmbient] = useState(false);
   return (
     <div className={`precision-content ${ambient ? "ambient-light-on" : ""}`}>
-      <div className="precision-heading">
-        <span className="control-symbol">
-          <SlidersHorizontal size={19} />
-        </span>
-        <div>
-          Find your balance.<small>Just enough. Just right.</small>
-        </div>
-      </div>
       <Range
         label="Luminance"
         value={brightness}
@@ -874,8 +879,20 @@ function Precision() {
         aria-live="polite"
       >
         <span />
-        {focus ? "A little less distraction." : "Open to the world."}
-        {ambient && " Light on."}
+        {focus ? "Focus enabled" : "Focus disabled"}
+        <div
+          className="signal-preview"
+          aria-hidden="true"
+          style={{ opacity: 0.25 + (brightness / 100) * 0.75 }}
+        >
+          {Array.from({ length: 16 }, (_, index) => (
+            <i
+              key={index}
+              className={index < (volume / 100) * 16 ? "lit" : ""}
+              style={{ height: `${5 + (index % 5) * 2}px` }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -889,11 +906,9 @@ function Buttons({ notify }: { notify: (text: string) => void }) {
   useEffect(() => () => clearTimeout(timeout.current), []);
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(
-        "A little less interface. A lot more feeling.",
-      );
+      await navigator.clipboard.writeText("RIFT — Interface studies");
       setCopied(true);
-      notify("A small thought, copied to your clipboard.");
+      notify("Copied to clipboard.");
       timeout.current = setTimeout(() => setCopied(false), 2000);
     } catch {
       notify("Clipboard access unavailable in this browser.");
@@ -917,12 +932,12 @@ function Buttons({ notify }: { notify: (text: string) => void }) {
           onClick={copy}
           icon={copied ? <Check size={15} /> : <Copy size={15} />}
         >
-          {copied ? "Copied" : "Copy a little thought"}
+          {copied ? "Copied" : "Copy text"}
         </Button>
         <button
           className="round-button arrow-button"
           aria-label="Show a detail"
-          onClick={() => notify("Every pixel has a purpose. Even this one.")}
+          onClick={() => notify("Secondary action activated.")}
         >
           <ArrowUpRight size={18} />
         </button>
@@ -933,7 +948,7 @@ function Buttons({ notify }: { notify: (text: string) => void }) {
           onClick={() => {
             setLiked(false);
             setCount(1);
-            notify("Choices cleared. A fresh little start.");
+            notify("Selection cleared.");
           }}
         >
           Clear choices
@@ -963,10 +978,10 @@ function Buttons({ notify }: { notify: (text: string) => void }) {
         </div>
         <Button
           variant="ghost"
-          onClick={() => notify("You found the quietest button.")}
+          onClick={() => notify("Secondary action activated.")}
           icon={<ArrowRight size={13} />}
         >
-          Quiet action
+          Secondary action
         </Button>
       </div>
     </div>
@@ -975,7 +990,7 @@ function Buttons({ notify }: { notify: (text: string) => void }) {
 
 function Segments() {
   const [view, setView] = useState("grid");
-  const [period, setPeriod] = useState("monthly");
+  const [density, setDensity] = useState("relaxed");
   return (
     <div className="segments-demo">
       <Segmented
@@ -1013,7 +1028,7 @@ function Segments() {
         label="Preview arrangement"
       />
       <div
-        className={`layout-preview layout-${view}`}
+        className={`layout-preview layout-${view} density-${density}`}
         aria-label={`${view} layout preview`}
       >
         <span />
@@ -1024,23 +1039,22 @@ function Segments() {
         <span />
       </div>
       <div className="segments-bottom">
-        <span>A different point of view.</span>
+        <span>Spacing</span>
         <Segmented
           options={[
-            { value: "monthly", label: "Month" },
-            { value: "yearly", label: "Year" },
+            { value: "compact", label: "Compact" },
+            { value: "relaxed", label: "Relaxed" },
           ]}
-          value={period}
-          onChange={setPeriod}
-          label="Billing period"
+          value={density}
+          onChange={setDensity}
+          label="Preview spacing"
         />
       </div>
-      <div className="price-preview" aria-live="polite">
-        <strong>{period === "monthly" ? "$12" : "$108"}</strong>
+      <div className="specimen-readout" aria-live="polite">
         <span>
-          / {period === "monthly" ? "month" : "year"} · illustrative plan
+          {view === "grid" ? "Grid" : view === "list" ? "List" : "Focus"}
         </span>
-        {period === "yearly" && <small>Save 25%</small>}
+        <span>{density === "compact" ? "4" : "8"} px spacing</span>
       </div>
     </div>
   );
@@ -1057,28 +1071,15 @@ function Dock() {
   ];
   return (
     <div className="dock-stage">
-      <div className="dock-orbit orbit-one" />
-      <div className="dock-orbit orbit-two" />
       <div className="dock-context" aria-live="polite">
-        <span className="dock-context-symbol">
-          {active === "Home" ? (
-            <Home size={23} strokeWidth={1.2} />
-          ) : active === "Explore" ? (
-            <Compass size={23} strokeWidth={1.2} />
-          ) : active === "Library" ? (
-            <Layers size={23} strokeWidth={1.2} />
-          ) : (
-            <AudioLines size={23} strokeWidth={1.2} />
-          )}
-        </span>
         <span>
           {active === "Home"
-            ? "Somewhere familiar."
+            ? "Home"
             : active === "Explore"
-              ? "A little room to wander."
+              ? "Explore"
               : active === "Library"
-                ? "Keep the good things close."
-                : "A sense of what’s happening."}
+                ? "Library"
+                : "Activity"}
         </span>
       </div>
       <Edge className="floating-dock">
@@ -1112,9 +1113,7 @@ function Dock() {
           </button>
         </nav>
       </Edge>
-      <span className="dock-caption">
-        A navigation that gives the content room.
-      </span>
+      <span className="dock-caption">Select a destination</span>
     </div>
   );
 }
@@ -1125,16 +1124,13 @@ function Player() {
   const [track, setTrack] = useState(0);
   const [liked, setLiked] = useState(false);
   const tracks = [
-    { name: "A moment of stillness", artist: "RIFT Radio · Ambient 001" },
-    { name: "Between the spaces", artist: "RIFT Radio · Ambient 002" },
-    { name: "Softly, into focus", artist: "RIFT Radio · Ambient 003" },
+    { name: "Stillness", artist: "RIFT Radio · Ambient 001" },
+    { name: "Intervals", artist: "RIFT Radio · Ambient 002" },
+    { name: "Soft focus", artist: "RIFT Radio · Ambient 003" },
   ];
-  const audio = useRef<AudioContext | null>(null);
-  const voices = useRef<OscillatorNode[]>([]);
   useEffect(() => {
     if (!playing) return;
     const context = new AudioContext();
-    audio.current = context;
     const gain = context.createGain();
     gain.gain.setValueAtTime(0, context.currentTime);
     gain.gain.linearRampToValueAtTime(0.028, context.currentTime + 1.5);
@@ -1144,7 +1140,7 @@ function Player() {
       [146.83, 220, 293.66],
       [110, 164.81, 220],
     ][track];
-    voices.current = frequencies.map((frequency, index) => {
+    const oscillators = frequencies.map((frequency, index) => {
       const oscillator = context.createOscillator();
       oscillator.type = "sine";
       oscillator.frequency.value = frequency;
@@ -1159,15 +1155,13 @@ function Player() {
     );
     return () => {
       clearInterval(tick);
-      voices.current.forEach((voice) => {
-        try {
-          voice.stop();
-        } catch {
-          /* Already stopped. */
-        }
-      });
-      void context.close();
-      audio.current = null;
+      const end = context.currentTime;
+      gain.gain.cancelScheduledValues(end);
+      gain.gain.setTargetAtTime(0, end, 0.015);
+      oscillators.forEach((voice) => voice.stop(end + 0.08));
+      setTimeout(() => {
+        void context.close();
+      }, 100);
     };
   }, [playing, track]);
   const next = () => {
@@ -1186,7 +1180,7 @@ function Player() {
           </span>
         </div>
         <div className="track-info">
-          <span className="eyebrow">A LITTLE SPACE TO BREATHE</span>
+          <span className="eyebrow">RIFT / AMBIENT</span>
           <h3>{tracks[track].name}</h3>
           <p>{tracks[track].artist}</p>
         </div>
@@ -1283,14 +1277,14 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
       onSubmit={(event) => {
         event.preventDefault();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          setError("A valid email helps us find you.");
+          setError("Enter a valid email address.");
           return;
         }
         setError("");
-        notify("Looking good. This is a local demo — nothing was sent.");
+        notify("Form validated. No data was sent.");
       }}
     >
-      <label htmlFor="demo-name">What should we call you?</label>
+      <label htmlFor="demo-name">Name</label>
       <div className="input-shell">
         <span className="input-avatar">
           {name.trim().slice(0, 1).toUpperCase() || "—"}
@@ -1306,7 +1300,7 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
       </div>
       <div className="form-two">
         <div>
-          <label htmlFor="demo-role">Your perspective</label>
+          <label htmlFor="demo-role">Role</label>
           <div className="select-shell">
             <select
               id="demo-role"
@@ -1315,7 +1309,7 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
             >
               <option>Designer</option>
               <option>Engineer</option>
-              <option>Curious human</option>
+              <option>Other</option>
             </select>
             <ChevronDown size={13} />
           </div>
@@ -1340,7 +1334,7 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
         <input
           type="email"
           id="demo-email"
-          placeholder="you@somewhere.nice"
+          placeholder="you@example.com"
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
@@ -1356,16 +1350,16 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
         </p>
       )}
       <label htmlFor="demo-note" className="note-label">
-        A little context
+        Message
       </label>
       <textarea
         id="demo-note"
         rows={2}
-        placeholder="An idea worth keeping…"
-        aria-label="A little context"
+        placeholder="Add a message…"
+        aria-label="Message"
       />
       <Button type="submit" className="input-submit">
-        Give it a try <ArrowUpRight size={14} />
+        Validate form <ArrowUpRight size={14} />
       </Button>
     </form>
   );
@@ -1396,17 +1390,10 @@ function HeaderDemo({ notify }: { notify: (message: string) => void }) {
   }, [menu]);
   return (
     <div className="header-demo" ref={headerRef}>
-      <div className="mini-browser">
-        <span />
-        <span />
-        <span />
-        <div>studio.rift / workspace</div>
-        <Link size={11} />
-      </div>
       <div className="demo-navbar">
         <span className="demo-brand">
           <span className="tiny-brand" />
-          form<span>®</span>
+          rift
         </span>
         <nav aria-label="Header specimen navigation">
           {["Index", "Studio", "Notes"].map((name) => (
@@ -1437,7 +1424,7 @@ function HeaderDemo({ notify }: { notify: (message: string) => void }) {
                 setMenu(false);
                 navigator.clipboard
                   .writeText(location.href.split("#")[0] + "#header")
-                  .then(() => notify("Workspace specimen link copied."))
+                  .then(() => notify("Component link copied."))
                   .catch(() =>
                     notify(
                       "Clipboard is unavailable. Use the address bar to share this canvas.",
@@ -1451,11 +1438,11 @@ function HeaderDemo({ notify }: { notify: (message: string) => void }) {
             <button
               onClick={() => {
                 setMenu(false);
-                notify("You’re viewing the original RIFT navigation study.");
+                setTab("Notes");
               }}
             >
               <Eye size={14} />
-              View details
+              Open Notes
             </button>
           </div>
         )}
@@ -1464,61 +1451,11 @@ function HeaderDemo({ notify }: { notify: (message: string) => void }) {
         <span className="header-page">{tab}</span>
         <span>
           {tab === "Index"
-            ? "A place for everything."
+            ? "Collection overview"
             : tab === "Studio"
-              ? "Space for the next idea."
-              : "Thoughts, quietly collected."}
+              ? "Studio workspace"
+              : "Saved notes"}
         </span>
-      </div>
-      <div className="header-content">
-        <div className="mini-breadcrumb">
-          Workspace <ChevronRight size={10} /> {tab}
-        </div>
-        <div className="mini-content-heading">
-          <div>
-            <h3>
-              {tab === "Overview"
-                ? "Good things take shape."
-                : tab === "Projects"
-                  ? "A little work in progress."
-                  : "Good people. Better together."}
-            </h3>
-            <p>
-              {tab === "Overview"
-                ? "A clear view of what matters."
-                : tab === "Projects"
-                  ? "Space for the next good idea."
-                  : "A considered space for your team."}
-            </p>
-          </div>
-          <button
-            className="round-button small"
-            aria-label="Create a project"
-            onClick={() => notify("A new idea starts with a little space.")}
-          >
-            <Plus size={16} />
-          </button>
-        </div>
-        <div className="ghost-content" aria-hidden="true">
-          <div />
-          <div />
-          <div />
-        </div>
-      </div>
-      <div className="navbar-bottom">
-        <span className="avatar-stack">
-          <i>M</i>
-          <i>J</i>
-          <i>A</i>
-        </span>
-        <span>A shared space, without the noise.</span>
-        <button
-          className="icon-button"
-          aria-label="Invite a collaborator"
-          onClick={() => notify("Invite preview. No invitation has been sent.")}
-        >
-          <Plus size={13} />
-        </button>
       </div>
     </div>
   );
@@ -1530,7 +1467,7 @@ function Selection() {
   const [check, setCheck] = useState(true);
   return (
     <div className="selection-demo">
-      <div className="mini-label">A FEW THINGS YOU’RE INTO</div>
+      <div className="mini-label">CATEGORIES</div>
       <div className="choice-chips">
         {["Interface", "Motion", "Objects", "Code"].map((tag) => (
           <button
@@ -1552,7 +1489,7 @@ function Selection() {
       </div>
       <div className="control-divider" />
       <fieldset className="radio-group">
-        <legend>A little character</legend>
+        <legend>Motion intensity</legend>
         {["Quiet", "Balanced", "Expressive"].map((name) => (
           <label key={name}>
             <input
@@ -1563,7 +1500,7 @@ function Selection() {
             />
             <span className="custom-radio" />
             <span>{name}</span>
-            {name === "Balanced" && <small>Just right</small>}
+            {name === "Balanced" && <small>Default</small>}
           </label>
         ))}
       </fieldset>
@@ -1576,10 +1513,10 @@ function Selection() {
         <span>
           <Check size={11} />
         </span>
-        Leave room for the unexpected.
+        Enable transitions
       </label>
       <p className="selection-summary" aria-live="polite">
-        {tags.length} interests · {choice.toLowerCase()} by nature.
+        {tags.length} interests · {choice.toLowerCase()} motion.
       </p>
     </div>
   );
@@ -1590,16 +1527,16 @@ function Disclosure() {
   const [page, setPage] = useState(1);
   const questions = [
     {
-      title: "What makes a surface feel real?",
-      body: "Not more effects. The right contrast, a little depth, and light that knows where to stop.",
+      title: "Material",
+      body: "A recessed surface with two edge highlights. The reflection follows the pointer; the center stays dark.",
     },
     {
-      title: "Does it work without motion?",
-      body: "Of course. Reduced motion keeps every function intact, with a quieter transition between states.",
+      title: "Motion",
+      body: "Position and opacity transitions use a shared timing curve. Reduced motion removes animation while preserving every control.",
     },
     {
-      title: "What happens on a smaller screen?",
-      body: "The canvas rearranges. Every control stays within reach, with space for your fingers.",
+      title: "Responsive layout",
+      body: "Three aligned columns on desktop, two on tablet, and a single scrolling column on mobile.",
     },
   ];
   return (
@@ -1612,7 +1549,10 @@ function Disclosure() {
                 id={`accordion-button-${index}`}
                 aria-expanded={open === index}
                 aria-controls={`accordion-panel-${index}`}
-                onClick={() => setOpen(open === index ? null : index)}
+                onClick={() => {
+                  setOpen(open === index ? null : index);
+                  setPage(index + 1);
+                }}
               >
                 {question.title}
                 <Plus size={14} />
@@ -1695,10 +1635,11 @@ function Feedback({ notify }: { notify: (message: string) => void }) {
       />
       <div
         className={`feedback-preview state-${state.toLowerCase()}`}
+        aria-busy={state === "Loading"}
         aria-live="polite"
       >
         {state === "Loading" ? (
-          <div className="skeleton-content">
+          <div className="skeleton-content" aria-label="Loading preview">
             <div />
             <span />
             <span />
@@ -1716,43 +1657,39 @@ function Feedback({ notify }: { notify: (message: string) => void }) {
                 </Edge>
               )}
             </div>
-            <h3>
-              {state === "Done"
-                ? "Right where it belongs."
-                : "Ready when you are."}
-            </h3>
+            <h3>{state === "Done" ? "Changes saved" : "No pending changes"}</h3>
             <p>
               {state === "Done"
-                ? "Your little idea has landed."
-                : "Good things are a small action away."}
+                ? "All changes are up to date."
+                : "Choose a state to preview the response."}
             </p>
           </>
         )}
       </div>
       <div className="status-chips">
-        <span>
-          <i /> In sync
+        <span className={state === "Ready" ? "status-current" : ""}>
+          <i /> Ready
         </span>
-        <span>
+        <span className={state === "Loading" ? "status-current" : ""}>
           <LoaderCircle
             size={10}
             className={state === "Loading" ? "spin" : ""}
           />{" "}
           Processing
         </span>
-        <span>
+        <span className={state === "Done" ? "status-current" : ""}>
           <Check size={10} /> Saved
         </span>
       </div>
       <button
         className="notification-preview"
-        onClick={() => notify("All saved. Your changes feel right at home.")}
+        onClick={() => notify("Changes saved.")}
       >
         <span>
           <Check size={13} />
         </span>
         <div>
-          All the little things, saved.<small>Just now · Tap to replay</small>
+          Changes saved<small>Preview notification</small>
         </div>
         <ChevronRight size={13} />
       </button>
@@ -1760,7 +1697,13 @@ function Feedback({ notify }: { notify: (message: string) => void }) {
   );
 }
 
-function DialogDemo({ notify }: { notify: (message: string) => void }) {
+function DialogDemo({
+  notify,
+  onApply,
+}: {
+  notify: (message: string) => void;
+  onApply: () => void;
+}) {
   const [open, setOpen] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [tooltip, setTooltip] = useState(false);
@@ -1772,18 +1715,18 @@ function DialogDemo({ notify }: { notify: (message: string) => void }) {
         </Edge>
         <span className="dialog-halo" />
       </div>
-      <h3>A pause with a purpose.</h3>
-      <p>A little clarity before the next step.</p>
+      <h3>Confirm an action</h3>
+      <p>Review the preset before applying it.</p>
       <Button
         onClick={() => {
           setConfirmed(false);
           setOpen(true);
         }}
       >
-        Open a little dialog <ArrowUpRight size={14} />
+        Open dialog <ArrowUpRight size={14} />
       </Button>
       <div className="tooltip-example">
-        <span>A little context, too.</span>
+        <span>Confirmation behavior</span>
         <button
           className="icon-button tooltip-target"
           onMouseEnter={() => setTooltip(true)}
@@ -1800,16 +1743,12 @@ function DialogDemo({ notify }: { notify: (message: string) => void }) {
           <CircleHelp size={14} />
           {tooltip && (
             <span id="dialog-tip" className="custom-tooltip" role="tooltip">
-              Small interruption. Clear intention.
+              Escape closes the dialog without applying changes.
             </span>
           )}
         </button>
       </div>
-      <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        title={confirmed ? "A good place to start." : "Make a little room."}
-      >
+      <Modal open={open} onClose={() => setOpen(false)} title="Material preset">
         <div className="confirm-image">
           <Edge
             className={`state-emblem modal-emblem ${confirmed ? "emblem-done" : ""}`}
@@ -1822,12 +1761,12 @@ function DialogDemo({ notify }: { notify: (message: string) => void }) {
           </Edge>
         </div>
         <p className="confirm-title">
-          {confirmed ? "Consider it done." : "Keep what matters."}
+          {confirmed ? "Preset applied." : "Apply Obsidian?"}
         </p>
         <p className="modal-description centered">
           {confirmed
-            ? "Your choice is saved for this session. A small interaction, all the way through."
-            : "A considered confirmation. No surprises, no irreversible actions. Just a small moment of clarity."}
+            ? "Edge illumination is 70%. Surface frost is 45%."
+            : "This sets edge illumination to 70% and surface frost to 45%."}
         </p>
         <div className="modal-actions">
           {confirmed ? (
@@ -1836,15 +1775,16 @@ function DialogDemo({ notify }: { notify: (message: string) => void }) {
             </Button>
           ) : (
             <>
-              <Button onClick={() => setOpen(false)}>Not right now</Button>
+              <Button onClick={() => setOpen(false)}>Cancel</Button>
               <Button
                 variant="primary"
                 onClick={() => {
+                  onApply();
                   setConfirmed(true);
-                  notify("A small decision. Beautifully resolved.");
+                  notify("Obsidian preset applied.");
                 }}
               >
-                Sounds good <Check size={14} />
+                Apply preset <Check size={14} />
               </Button>
             </>
           )}
@@ -1876,9 +1816,7 @@ function Commit({ notify }: { notify: (message: string) => void }) {
         held.current = false;
         setHolding(false);
         setComplete(true);
-        notify(
-          "Committed with intention. A small interaction, fully resolved.",
-        );
+        notify("Action confirmed.");
       } else if (held.current) frame.current = requestAnimationFrame(advance);
     };
     frame.current = requestAnimationFrame(advance);
@@ -1915,22 +1853,21 @@ function Commit({ notify }: { notify: (message: string) => void }) {
           {complete ? (
             <Check size={26} strokeWidth={1.4} />
           ) : (
-            <Fingerprint size={30} strokeWidth={1} />
+            <strong className="hold-readout">
+              {Math.round(progress)}
+              <small>%</small>
+            </strong>
           )}
         </span>
       </div>
       <div className="commit-copy" aria-live="polite">
         <h3>
-          {complete
-            ? "Intention, confirmed."
-            : holding
-              ? "Stay for a moment."
-              : "Some things deserve a moment."}
+          {complete ? "Confirmed" : holding ? "Keep holding" : "Press and hold"}
         </h3>
         <p>
           {complete
-            ? "A little patience. A very clear outcome."
-            : "Press and hold. Release to change your mind."}
+            ? "Release to finish. Reset to try again."
+            : "Hold for 1.1 seconds. Release early to cancel."}
         </p>
       </div>
       <Edge className="hold-edge">
@@ -1962,7 +1899,7 @@ function Commit({ notify }: { notify: (message: string) => void }) {
         >
           <span className="hold-fill" style={{ width: `${progress}%` }} />
           {complete ? <Check size={14} /> : <Fingerprint size={15} />}
-          <span>{complete ? "Consider it done" : "Hold to commit"}</span>
+          <span>{complete ? "Confirmed" : "Hold to commit"}</span>
           <small>{complete ? "✓" : "1.1s"}</small>
         </button>
       </Edge>
@@ -1971,7 +1908,7 @@ function Commit({ notify }: { notify: (message: string) => void }) {
         disabled={!complete && progress === 0}
         onClick={reset}
       >
-        <RotateCcw size={10} /> Try it again
+        <RotateCcw size={10} /> Reset
       </button>
     </div>
   );

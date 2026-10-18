@@ -54,7 +54,6 @@ export function Specimen({
   id,
   title,
   index,
-  category,
   children,
   className = "",
   saved,
@@ -65,7 +64,6 @@ export function Specimen({
   id: string;
   title: string;
   index: string;
-  category: string;
   children: ReactNode;
   className?: string;
   saved: boolean;
@@ -166,12 +164,6 @@ export function Specimen({
         </button>
       </header>
       <div className="specimen-body">{children}</div>
-      <footer className="specimen-footer">
-        <span>{category}</span>
-        <span className="live-mark">
-          <i /> Interactive
-        </span>
-      </footer>
     </section>
   );
 }
@@ -395,7 +387,7 @@ export function ActionButton({ notify }: { notify: (text: string) => void }) {
     setStatus("loading");
     timer.current = setTimeout(() => {
       setStatus("done");
-      notify("Interaction complete. A little detail, well considered.");
+      notify("Changes saved.");
       timer.current = setTimeout(() => setStatus("idle"), 2200);
     }, 950);
   };
@@ -410,10 +402,10 @@ export function ActionButton({ notify }: { notify: (text: string) => void }) {
       onClick={activate}
     >
       {status === "done"
-        ? "All done"
+        ? "Saved"
         : status === "loading"
-          ? "Working"
-          : "Make it happen"}
+          ? "Saving"
+          : "Save changes"}
     </Button>
   );
 }

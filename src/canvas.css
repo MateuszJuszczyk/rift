@@ -233,9 +233,6 @@ textarea:focus-visible {
   color: var(--accent);
   opacity: 1;
 }
-.freeform-board .specimen-footer {
-  display: none;
-}
 .freeform-board .specimen-body {
   display: block;
 }
@@ -245,7 +242,6 @@ textarea:focus-visible {
 .drag-handle {
   display: none;
 }
-/* Optical material: light catches a double machined rim, never a luminous fill. */
 .edge {
   background: linear-gradient(155deg, #30303080, #111112e8 40%, #151516e8);
   border-color: #ffffff1c;
@@ -261,98 +257,6 @@ textarea:focus-visible {
     #ffffff0b,
     transparent 60%
   );
-}
-.freeform-board .optical-stage {
-  height: 320px;
-  min-height: 320px;
-  background: none;
-  overflow: clip;
-}
-.freeform-board .stage-grid,
-.freeform-board .stage-coordinate,
-.freeform-board .optical-arc {
-  display: none;
-}
-.freeform-board .optical-aura {
-  background: radial-gradient(ellipse, #d5d3d008, transparent 65%);
-}
-.freeform-board .optical-object {
-  width: 260px;
-  height: 193px;
-  margin-top: -20px;
-  border-radius: 34px;
-  transform: rotate(-7deg);
-  background: linear-gradient(150deg, #36363770, #101011 42%, #0a0a0b 80%);
-  box-shadow:
-    0 30px 38px -20px #000,
-    inset 4px 5px 9px #000b,
-    inset -1px -1px 3px #ffffff08;
-  transition:
-    transform 0.8s var(--ease-out),
-    box-shadow 0.8s;
-}
-.freeform-board .optical-object:hover {
-  transform: rotate(-3deg) translateY(-5px);
-}
-.freeform-board .optical-object:after {
-  border-radius: 26px;
-  border-color: #ffffff15;
-  box-shadow:
-    inset 2px 2px 3px #000,
-    inset -1px -1px 0 #ffffff06;
-}
-.freeform-board .optical-object:before {
-  padding: 2px;
-  background: conic-gradient(
-    from 130deg at var(--light-x) var(--light-y),
-    #fff0,
-    #d7d6d322 20%,
-    rgba(var(--accent-rgb), var(--edge-strength)) 37%,
-    #fff9 40%,
-    #ffffff08 49%,
-    #0000 73%,
-    #bcbbb844 93%,
-    #fff0
-  );
-}
-.material-smoke .optical-object {
-  background: linear-gradient(145deg, #45454599, #1a1a1ae8 60%, #111);
-}
-.material-frost .optical-object {
-  background: linear-gradient(145deg, #72727055, #292928aa 65%, #181818e8);
-}
-.freeform-board .object-core {
-  width: 64px;
-  height: 64px;
-  border-radius: 21px;
-  background: linear-gradient(145deg, #ffffff13, #ffffff03);
-  color: #d9d8d5;
-}
-.freeform-board .object-core svg {
-  width: 34px;
-  height: 34px;
-}
-.freeform-board .object-caption {
-  gap: 8px;
-}
-.freeform-board .object-caption > span {
-  font-size: 13px;
-  color: #d8d6d0;
-}
-.freeform-board .object-caption small {
-  font-size: 6px;
-  letter-spacing: 1.6px;
-  color: #777775;
-}
-.freeform-board .stage-bottom {
-  bottom: 0;
-  left: 0;
-  right: 0;
-  gap: 8px;
-}
-.freeform-board .stage-note {
-  color: #868583;
-  font-size: 9px;
 }
 .material-picker {
   background: #141414;
@@ -373,12 +277,8 @@ textarea:focus-visible {
     inset 0 1px 0 #ffffff10,
     0 2px 4px #0006;
 }
-/* Controls share a 40px rhythm, with distinct physical states. */
 .freeform-board .precision-content {
   padding: 0;
-}
-.freeform-board .precision-heading {
-  display: none;
 }
 .freeform-board .precision-content .range-field {
   margin: 0 0 24px;
@@ -662,28 +562,12 @@ input[type="range"]:active::-webkit-slider-thumb {
   font-size: 10px;
   min-height: 29px;
 }
-.price-preview {
-  margin-top: 20px;
-  opacity: 1;
-}
-.price-preview > strong {
-  color: #d9d8d5;
-  font-size: 23px;
-}
-.price-preview > span {
-  color: #858482;
-}
-/* Navigation specimens live directly on the surface. */
 .freeform-board .dock-stage {
   background: none;
   min-height: 240px;
   padding: 0;
   gap: 26px;
   overflow: visible;
-}
-.freeform-board .dock-orbit,
-.freeform-board .dock-context-symbol {
-  display: none;
 }
 .freeform-board .dock-context {
   min-height: 30px;
@@ -735,11 +619,6 @@ input[type="range"]:active::-webkit-slider-thumb {
   display: block;
   height: auto;
   background: none;
-}
-.freeform-board .mini-browser,
-.freeform-board .header-content,
-.freeform-board .navbar-bottom {
-  display: none;
 }
 .freeform-board .demo-navbar {
   min-height: 63px;
@@ -809,7 +688,6 @@ input[type="range"]:active::-webkit-slider-thumb {
   font-size: 11px;
   color: #c7c6c3;
 }
-/* Sound, fields, choices and disclosure use the same type and spacing scale. */
 .freeform-board .player {
   padding: 0;
 }
@@ -1083,7 +961,6 @@ input[type="range"]:active::-webkit-slider-thumb {
   color: #e1ded9;
   background: #ffffff0b;
 }
-/* Feedback: quiet by default, explicit when state changes. */
 .feedback-preview {
   min-height: 182px;
 }
@@ -1381,13 +1258,6 @@ input[type="range"]:active::-webkit-slider-thumb {
   .freeform-board .specimen {
     align-self: start;
   }
-  .freeform-board .optical-object {
-    width: 320px;
-    height: 220px;
-  }
-  .freeform-board .optical-stage {
-    height: 350px;
-  }
   .freeform-board .specimen-header {
     grid-column: auto;
   }
@@ -1528,38 +1398,6 @@ input[type="range"]:active::-webkit-slider-thumb {
     padding-left: 35px;
     padding-right: 35px;
   }
-  .freeform-board .optical-stage {
-    height: 350px;
-    min-height: 0;
-  }
-  .freeform-board .optical-object {
-    width: 354px;
-    height: 235px;
-    border-radius: 38px;
-    margin-top: -22px;
-  }
-  .freeform-board .optical-object:after {
-    border-radius: 30px;
-  }
-  .freeform-board .object-core {
-    width: 78px;
-    height: 78px;
-    border-radius: 25px;
-  }
-  .freeform-board .object-core svg {
-    width: 42px;
-    height: 42px;
-  }
-  .freeform-board .object-caption > span {
-    font-size: 16px;
-  }
-  .freeform-board .object-caption small {
-    font-size: 7px;
-  }
-  .freeform-board .stage-bottom {
-    left: 35px;
-    right: 35px;
-  }
   .canvas-tools .desktop-canvas-tool {
     display: grid;
   }
@@ -1660,13 +1498,6 @@ input[type="range"]:active::-webkit-slider-thumb {
   .canvas-note > p {
     font-size: 40px;
   }
-  .freeform-board .optical-object {
-    width: 232px;
-    height: 180px;
-  }
-  .freeform-board .stage-note {
-    font-size: 8px;
-  }
   .freeform-board .material-picker button {
     font-size: 9px;
     padding: 9px 8px;
@@ -1699,16 +1530,6 @@ input[type="range"]:active::-webkit-slider-thumb {
     gap: 8px;
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .freeform-board .optical-object:hover {
-    transform: rotate(-7deg);
-  }
-}
-.motion-off .freeform-board .optical-object:hover {
-  transform: rotate(-7deg);
-}
-
-/* Align navigation objects to one baseline; supporting text sits below. */
 .freeform-board .dock-stage {
   justify-content: flex-start;
   gap: 23px;
@@ -1818,26 +1639,6 @@ input[type="range"]:active::-webkit-slider-thumb {
     padding-left: 0;
     padding-right: 0;
   }
-  .filtered-grid .optical-stage {
-    height: 320px;
-  }
-  .filtered-grid .optical-object {
-    width: 270px;
-    height: 195px;
-    border-radius: 34px;
-  }
-  .filtered-grid .stage-bottom {
-    left: 0;
-    right: 0;
-  }
-  .filtered-grid .object-core {
-    width: 64px;
-    height: 64px;
-    border-radius: 21px;
-  }
-  .filtered-grid .object-caption > span {
-    font-size: 13px;
-  }
 }
 @media (max-width: 559px) {
   .canvas-note > p {
@@ -1852,8 +1653,310 @@ input[type="range"]:active::-webkit-slider-thumb {
   .component-grid.freeform-board {
     gap: 58px;
   }
-  .freeform-board .optical-stage {
-    height: 295px;
-    min-height: 295px;
+}
+.canvas-note > p {
+  font-size: 44px;
+  font-weight: 450;
+  letter-spacing: -2px;
+  line-height: 1.08;
+}
+.canvas-note > p > span {
+  color: #858580;
+}
+.canvas-note > small {
+  color: #8c8b86;
+}
+.surface-study {
+  padding: 0;
+}
+.surface-study-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  color: #8a8983;
+  font-size: 11px;
+}
+.surface-study-label > span:last-child {
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  color: #62625e;
+}
+.surface-study .material-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  background: #101011;
+  border-radius: 11px;
+  padding: 4px;
+}
+.surface-study .material-picker button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 37px;
+  font-size: 11px;
+  color: #868680;
+  border-radius: 7px;
+  padding: 6px;
+}
+.surface-study .material-picker button.active {
+  color: #e6e4dd;
+  background: linear-gradient(#303031, #242425);
+}
+.finish-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1px solid #ffffff20;
+  background: linear-gradient(140deg, #393939, #09090a);
+  box-shadow: inset 0 1px 1px #ffffff20;
+}
+.finish-1 {
+  background: linear-gradient(140deg, #666665, #242425);
+}
+.finish-2 {
+  background: linear-gradient(140deg, #b2b1ab, #535352);
+}
+.surface-control {
+  margin-top: 26px;
+  border-radius: 13px;
+  background: linear-gradient(150deg, #242425, #111112 55%);
+  transition:
+    box-shadow 0.35s,
+    background 0.35s;
+}
+.surface-control:after {
+  inset: 4px;
+  border-radius: 9px;
+}
+.surface-control > button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 55px;
+  padding: 0 19px;
+  text-align: left;
+  position: relative;
+  z-index: 5;
+  color: #c5c3bb;
+  font-size: 12px;
+  border-radius: inherit;
+}
+.surface-control > button > svg {
+  color: #8d8b83;
+}
+.surface-control-state {
+  margin-left: auto;
+  color: #74736c;
+  font-size: 10px;
+}
+.illuminated .surface-control {
+  box-shadow:
+    0 0 25px #e0dbca08,
+    inset 0 1px 0 #ffffff20,
+    inset 0 -1px 0 #000;
+}
+.illuminated .surface-control:before {
+  opacity: 1;
+  background: linear-gradient(125deg, #f0e8ceaa, #ffffff06 45%, #d8d1bc66);
+}
+.illuminated .surface-control-state,
+.illuminated .surface-control > button > svg {
+  color: #d7d0bc;
+}
+.material-smoke .surface-control {
+  background: linear-gradient(150deg, #4242429c, #202021b8 65%);
+}
+.material-frost .surface-control {
+  background: linear-gradient(150deg, #77777344, #42423e33 65%);
+  backdrop-filter: blur(var(--frost));
+}
+.specimen-readout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  color: #77766e;
+  min-height: 16px;
+}
+.specimen-readout > span:first-child {
+  color: #aaa79d;
+}
+.surface-study .specimen-readout {
+  font-size: 9px;
+  margin-top: 17px;
+}
+.segments-bottom .segmented {
+  width: 173px;
+}
+.layout-preview.density-compact {
+  gap: 4px;
+}
+.layout-preview.density-relaxed {
+  gap: 8px;
+}
+.layout-list.density-compact {
+  gap: 3px;
+}
+.layout-list.density-relaxed {
+  gap: 6px;
+}
+.precision-status {
+  justify-content: flex-start;
+  min-height: 20px;
+}
+.signal-preview {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 20px;
+}
+.signal-preview > i {
+  width: 3px;
+  background: #ffffff10;
+  border-radius: 1px;
+  transition: background 0.15s;
+}
+.signal-preview > i.lit {
+  background: #b3b0a5;
+}
+.status-chips > span,
+.status-chips > span:first-child,
+.status-chips > span:last-child {
+  color: #696962;
+  opacity: 0.7;
+  transition:
+    opacity 0.2s,
+    color 0.2s;
+}
+.status-chips > span.status-current {
+  color: #c6c4ba;
+  opacity: 1;
+}
+.status-chips > span:not(.status-current) i {
+  background: #696962;
+}
+.status-chips > span.status-current:first-child {
+  color: #a0b9a3;
+}
+.state-emblem,
+.dialog-visual-edge {
+  transform: none;
+  box-shadow:
+    inset 0 1px 0 #ffffff10,
+    0 8px 16px #0005;
+}
+.feedback-preview:hover .state-emblem,
+.dialog-visual-edge:hover {
+  transform: translateY(-2px);
+}
+.dialog-halo {
+  display: none;
+}
+.commit-orbit > span {
+  background: none;
+  border: none;
+}
+.hold-readout {
+  font-size: 19px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
+  color: #c6c2b8;
+}
+.hold-readout > small {
+  font-size: 9px;
+  margin-left: 2px;
+  color: #77766f;
+}
+.commit-orbit .commit-progress {
+  filter: none;
+}
+.dialog-demo h3,
+.commit-copy h3 {
+  font-size: 14px;
+}
+.tooltip-example {
+  font-size: 10px;
+}
+.custom-tooltip {
+  white-space: normal;
+  width: 215px;
+  line-height: 1.6;
+  text-align: left;
+}
+.canvas-tools {
+  box-shadow:
+    inset 0 1px 0 #ffffff0c,
+    0 10px 30px #0008;
+}
+.canvas-tools:after {
+  border-color: #ffffff06;
+  box-shadow: none;
+  background: none;
+}
+.canvas-chrome {
+  background: linear-gradient(#080809 55%, #08080900);
+}
+@media (min-width: 900px) {
+  .canvas-note {
+    top: 158px;
   }
+  .canvas-note > p {
+    font-size: 61px;
+    letter-spacing: -3px;
+    margin-top: 22px;
+    margin-bottom: 19px;
+  }
+  .component-grid.freeform-board {
+    height: 2460px;
+  }
+  .freeform-board .specimen-optical .specimen-heading {
+    padding-left: 0;
+    padding-right: 0;
+    border-top: 1px solid #ffffff13;
+  }
+}
+@media (max-width: 559px) {
+  .canvas-note > p {
+    font-size: 39px;
+    letter-spacing: -1.6px;
+  }
+  .freeform-board .specimen-optical .specimen-heading {
+    border-top: 1px solid #ffffff13;
+  }
+  .component-grid.freeform-board {
+    gap: 52px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .feedback-preview:hover .state-emblem,
+  .dialog-visual-edge:hover {
+    transform: none;
+  }
+}
+.motion-off .feedback-preview:hover .state-emblem,
+.motion-off .dialog-visual-edge:hover {
+  transform: none;
+}
+
+@media (min-width: 900px) {
+  .canvas-view {
+    background-position: var(--grid-x) var(--grid-y);
+    background-size: var(--grid-step) var(--grid-step);
+  }
+}
+
+.specimen:focus-visible {
+  outline: none;
+}
+.specimen:focus-visible > .specimen-heading {
+  border-top-color: var(--accent);
+  box-shadow: 0 -1px 0 var(--accent);
 }

@@ -1,6 +1,6 @@
 # RIFT — a study in interaction
 
-An original, mobile-first React/TypeScript component canvas. An obsidian palette, silver reflections and restrained motion, with an optical material inspired by the physical edge of a screen: a machined rim, a recessed surface, and selective reflected light.
+A mobile-first React/TypeScript component canvas. An obsidian palette, silver reflections and restrained motion, with an optical material inspired by the physical edge of a screen: a machined rim, a recessed surface, and selective reflected light.
 
 ## Run
 
@@ -22,10 +22,10 @@ An open canvas with loose components, composed on three shared columns and four 
 
 13 interactive specimens, with more than 30 individual controls and states:
 
-- Optical edge with pointer-reactive lighting and Frost / Smoke / Obsidian materials.
-- Sliders, switches, async action button, secondary/quiet/destructive/disabled actions, like toggle and quantity stepper.
-- Animated segmented control with an actual layout preview and illustrative billing selection.
-- Floating dock, header navigation, dropdown, avatar stack, breadcrumbs and pagination.
+- Compact material controls with pointer-reactive edges, illumination and Frost / Smoke / Obsidian finishes.
+- Sliders, switches, async action button, secondary/destructive/disabled actions, like toggle and quantity stepper.
+- Animated segmented control with layout and spacing previews.
+- Floating dock, header navigation, dropdown and pagination.
 - Ambient player that actually synthesizes three quiet sine-wave chords using Web Audio. No remote recordings.
 - Inputs, select, textarea, validation, chips, radios and checkbox.
 - Accordion, tooltip, modal confirmation, toast, status chips, loading skeleton and progress ring.
@@ -33,7 +33,7 @@ An open canvas with loose components, composed on three shared columns and four 
 - Global material studio: rim illumination, frost, accent color and motion preference; export the preset as JSON.
 - Component search (`Cmd/Ctrl + K`) and favorites stored in browser-local storage.
 
-Demo form submissions stay in memory and are not transmitted. Illustrative plan pricing is not a real offer. Header workspace actions are isolated specimens, not an account system.
+Form validation stays in memory. The confirmation dialog applies the Obsidian material settings. Component URLs support direct navigation through their hash.
 
 ## Structure
 
@@ -49,7 +49,7 @@ Native buttons, inputs, radio groups and modal dialogs provide keyboard behavior
 
 ## Assets and attribution
 
-- Original layout, CSS material treatment and interaction composition for RIFT.
+- Layout, CSS material treatment and interaction composition for RIFT.
 - Dimensional state emblems built with CSS and Lucide glyphs; no raster assets or remote image dependencies.
 - [Lucide](https://lucide.dev) interface icons, ISC.
 - DM Sans and Manrope, self-hosted Latin variable fonts, SIL Open Font License; license files included in `public/fonts/`.
