@@ -68,61 +68,62 @@ const specimens = [
   { id: "precision", title: "Precision controls", category: "controls" },
   {
     id: "buttons",
-    title: "Small actions. Good reactions.",
+    title: "Actions & reactions",
     category: "controls",
   },
-  { id: "segments", title: "A change of perspective", category: "controls" },
-  { id: "dock", title: "A place to land", category: "navigation" },
+  { id: "segments", title: "One smooth transition", category: "controls" },
   {
     id: "header",
-    title: "A quieter kind of navigation",
+    title: "The quiet header",
     category: "navigation",
   },
-  { id: "player", title: "In the moment", category: "surfaces" },
-  { id: "inputs", title: "Room for a little input", category: "controls" },
+  { id: "dock", title: "Floating navigation", category: "navigation" },
+  { id: "player", title: "Ambient player", category: "surfaces" },
+  { id: "inputs", title: "Fields that feel right", category: "controls" },
   {
     id: "selection",
-    title: "The details are the design",
+    title: "Choice, considered",
     category: "controls",
   },
   {
     id: "disclosure",
-    title: "A little more, when you need it",
+    title: "Progressive disclosure",
     category: "navigation",
   },
-  { id: "feedback", title: "Every state, considered", category: "feedback" },
+  { id: "feedback", title: "State & feedback", category: "feedback" },
   {
     id: "dialog",
-    title: "Something worth your attention",
+    title: "A moment of clarity",
     category: "feedback",
   },
   {
     id: "commit",
-    title: "A little intention goes a long way",
+    title: "Hold with intention",
     category: "controls",
   },
 ] as const;
 
+// Shared columns and row baselines keep the canvas composed even before exploration.
 const positions = {
-  optical: { x: 440, y: 110, w: 390 },
-  precision: { x: 90, y: 320, w: 270 },
-  buttons: { x: 465, y: 550, w: 300 },
-  segments: { x: 885, y: 770, w: 310 },
-  dock: { x: 940, y: 260, w: 320 },
-  header: { x: 85, y: 910, w: 575 },
-  player: { x: 795, y: 1180, w: 345 },
-  inputs: { x: 90, y: 1370, w: 320 },
-  selection: { x: 540, y: 1560, w: 305 },
-  disclosure: { x: 935, y: 1590, w: 355 },
-  feedback: { x: 90, y: 1970, w: 300 },
-  dialog: { x: 545, y: 2060, w: 300 },
-  commit: { x: 970, y: 2090, w: 300 },
+  optical: { x: 760, y: 120, w: 500 },
+  precision: { x: 60, y: 570, w: 340 },
+  buttons: { x: 490, y: 570, w: 340 },
+  segments: { x: 920, y: 570, w: 340 },
+  header: { x: 60, y: 1100, w: 340 },
+  dock: { x: 490, y: 1100, w: 340 },
+  player: { x: 920, y: 1100, w: 340 },
+  inputs: { x: 60, y: 1510, w: 340 },
+  selection: { x: 490, y: 1510, w: 340 },
+  disclosure: { x: 920, y: 1510, w: 340 },
+  feedback: { x: 60, y: 2110, w: 340 },
+  dialog: { x: 490, y: 2110, w: 340 },
+  commit: { x: 920, y: 2110, w: 340 },
 };
 
 function defaultCamera() {
-  const zoom = innerWidth >= 900 ? Math.min(1, (innerWidth - 80) / 1320) : 1;
+  const zoom = innerWidth >= 900 ? Math.min(0.95, (innerWidth - 80) / 1320) : 1;
   return {
-    x: innerWidth >= 900 ? Math.max(0, (innerWidth - 1400 * zoom) / 2) : 0,
+    x: innerWidth >= 900 ? Math.max(0, (innerWidth - 1320 * zoom) / 2) : 0,
     y: innerWidth >= 900 ? 20 : 0,
     zoom,
   };
@@ -203,7 +204,7 @@ export default function App() {
   const [toast, setToast] = useState("");
   const [edge, setEdge] = useState(70);
   const [frost, setFrost] = useState(45);
-  const [accent, setAccent] = useState("ice");
+  const [accent, setAccent] = useState("silver");
   const [motion, setMotion] = useState(true);
   const [resetKey, setResetKey] = useState(0);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
@@ -235,20 +236,8 @@ export default function App() {
   const pickCategory = (next: Category) => {
     setCategory(next);
     setSavedOnly(false);
-    if (innerWidth >= 900) {
-      const first = specimens.find(
-        (item) => next === "all" || item.category === next,
-      );
-      if (next === "all") fitCanvas();
-      else if (first) {
-        const position = positions[first.id];
-        setCamera({
-          x: 100 - position.x * 0.9,
-          y: 75 - position.y * 0.9,
-          zoom: 0.9,
-        });
-      }
-    }
+    if (innerWidth >= 900) setCamera(defaultCamera());
+    else window.scrollTo({ top: 0, behavior: "instant" });
   };
   const toggleSave = (id: string) =>
     setSaved((previous) =>
@@ -259,10 +248,12 @@ export default function App() {
   const reset = () => {
     setEdge(70);
     setFrost(45);
-    setAccent("ice");
+    setAccent("silver");
     setMotion(true);
     setResetKey((value) => value + 1);
-    setCategory('all');setSavedOnly(false);setTool('select');
+    setCategory("all");
+    setSavedOnly(false);
+    setTool("select");
     setCamera(defaultCamera());
     notify("Canvas reset. Back to a fresh start.");
   };
@@ -332,10 +323,14 @@ export default function App() {
     "--edge-strength": edge / 100,
     "--frost": `${frost / 3}px`,
     "--accent":
-      accent === "ice" ? "#a8c9ed" : accent === "lilac" ? "#c3b2eb" : "#d5d8c5",
+      accent === "silver"
+        ? "#dedbd5"
+        : accent === "lilac"
+          ? "#c3b2eb"
+          : "#d5d8c5",
     "--accent-rgb":
-      accent === "ice"
-        ? "168,201,237"
+      accent === "silver"
+        ? "222,219,213"
         : accent === "lilac"
           ? "195,178,235"
           : "213,216,197",
@@ -386,7 +381,11 @@ export default function App() {
         id="canvas"
         ref={viewport}
         onFocusCapture={(event) => {
-          if (innerWidth < 900 || !(event.target as Element).matches(':focus-visible')) return;
+          if (
+            innerWidth < 900 ||
+            !(event.target as Element).matches(":focus-visible")
+          )
+            return;
           const target = (event.target as Element).closest<HTMLElement>(
             ".specimen",
           );
@@ -468,15 +467,15 @@ export default function App() {
           }
         >
           <div className="canvas-note">
-            <span>MATERIAL EXPLORATIONS / VOL. 01</span>
+            <span>RIFT / INTERACTION ATELIER</span>
             <p>
-              Light. Touch.
+              Less noise.
               <br />
-              <em>A little feeling.</em>
+              <em>More feeling.</em>
             </p>
-            <small>Interactive objects. No wrong way to explore.</small>
+            <small>Thirteen studies in light, touch and intention.</small>
           </div>
-          {visible.map((item) => (
+          {visible.map((item, visibleIndex) => (
             <Specimen
               key={item.id}
               id={item.id}
@@ -486,9 +485,9 @@ export default function App() {
               zoom={camera.zoom}
               style={
                 {
-                  "--node-x": `${positions[item.id].x}px`,
-                  "--node-y": `${positions[item.id].y}px`,
-                  "--node-width": `${positions[item.id].w}px`,
+                  "--node-x": `${category !== "all" || savedOnly ? 60 + (visibleIndex % 3) * 430 : positions[item.id].x}px`,
+                  "--node-y": `${category !== "all" || savedOnly ? 150 + Math.floor(visibleIndex / 3) * 570 : positions[item.id].y}px`,
+                  "--node-width": `${category !== "all" || savedOnly ? 340 : positions[item.id].w}px`,
                 } as CSSProperties
               }
               className={`specimen-${item.id}`}
@@ -597,15 +596,7 @@ export default function App() {
             const next = !savedOnly;
             setSavedOnly(next);
             setCategory("all");
-            if (next && saved.length && innerWidth >= 900) {
-              const position = positions[saved[0] as keyof typeof positions];
-              if (position)
-                setCamera({
-                  x: 100 - position.x * 0.9,
-                  y: 75 - position.y * 0.9,
-                  zoom: 0.9,
-                });
-            } else fitCanvas();
+            fitCanvas();
           }}
         >
           <Bookmark size={16} />
@@ -645,7 +636,7 @@ export default function App() {
           <span>Color temperature</span>
           <div className="color-options">
             {[
-              { id: "ice", name: "Ice", color: "#a8c9ed" },
+              { id: "silver", name: "Silver", color: "#dedbd5" },
               { id: "lilac", name: "Dusk", color: "#c3b2eb" },
               { id: "stone", name: "Stone", color: "#d5d8c5" },
             ].map((color) => (
@@ -757,10 +748,6 @@ export default function App() {
         <div className="credits">
           <span>Interface & interaction</span>
           <strong>Original RIFT study</strong>
-          <span>3D accents</span>
-          <a href="https://3dicons.co" target="_blank" rel="noreferrer">
-            3dicons by Vijay Verma · CC0 <ExternalLink size={11} />
-          </a>
           <span>Interface icons</span>
           <a href="https://lucide.dev" target="_blank" rel="noreferrer">
             Lucide · ISC <ExternalLink size={11} />
@@ -789,7 +776,7 @@ export default function App() {
 }
 
 function Optical({ notify }: { notify: (text: string) => void }) {
-  const [material, setMaterial] = useState("Frost");
+  const [material, setMaterial] = useState("Obsidian");
   const [pressed, setPressed] = useState(false);
   return (
     <div className={`optical-stage material-${material.toLowerCase()}`}>
@@ -1219,9 +1206,10 @@ function Player() {
         {Array.from({ length: 55 }, (_, i) => (
           <i
             key={i}
+            className={i / 55 <= progress / 100 ? "played" : ""}
             style={
               {
-                height: `${12 + Math.sin(i * 0.67) * Math.sin(i * 0.23) * 35 + Math.cos(i * 1.2) * 8}px`,
+                height: `${Math.max(4, 12 + Math.sin(i * 0.67) * Math.sin(i * 0.23) * 35 + Math.cos(i * 1.2) * 8)}px`,
                 "--delay": `${(i % 7) * -0.16}s`,
               } as CSSProperties
             }
@@ -1287,6 +1275,7 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [role, setRole] = useState("Designer");
+  const [name, setName] = useState("Morgan");
   return (
     <form
       className="input-demo"
@@ -1303,14 +1292,17 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
     >
       <label htmlFor="demo-name">What should we call you?</label>
       <div className="input-shell">
-        <span className="input-avatar">M</span>
+        <span className="input-avatar">
+          {name.trim().slice(0, 1).toUpperCase() || "—"}
+        </span>
         <input
           id="demo-name"
           placeholder="Your name"
-          defaultValue="Morgan"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
           autoComplete="off"
         />
-        <Check size={14} />
+        {name.trim() && <Check size={14} />}
       </div>
       <div className="form-two">
         <div>
@@ -1341,7 +1333,7 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
         </div>
       </div>
       <label htmlFor="demo-email">
-        A place to reach you <span>Optional experiment</span>
+        Email address <span>Local validation</span>
       </label>
       <div className={`input-shell ${error ? "has-error" : ""}`}>
         <span className="at-symbol">@</span>
@@ -1380,10 +1372,30 @@ function Inputs({ notify }: { notify: (message: string) => void }) {
 }
 
 function HeaderDemo({ notify }: { notify: (message: string) => void }) {
-  const [tab, setTab] = useState("Overview");
+  const [tab, setTab] = useState("Index");
   const [menu, setMenu] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const menuTrigger = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!menu) return;
+    const outside = (event: PointerEvent) => {
+      if (!headerRef.current?.contains(event.target as Node)) setMenu(false);
+    };
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenu(false);
+        menuTrigger.current?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", outside);
+    document.addEventListener("keydown", escape);
+    return () => {
+      document.removeEventListener("pointerdown", outside);
+      document.removeEventListener("keydown", escape);
+    };
+  }, [menu]);
   return (
-    <div className="header-demo">
+    <div className="header-demo" ref={headerRef}>
       <div className="mini-browser">
         <span />
         <span />
@@ -1397,10 +1409,11 @@ function HeaderDemo({ notify }: { notify: (message: string) => void }) {
           form<span>®</span>
         </span>
         <nav aria-label="Header specimen navigation">
-          {["Overview", "Projects", "People"].map((name) => (
+          {["Index", "Studio", "Notes"].map((name) => (
             <button
               key={name}
               className={tab === name ? "active" : ""}
+              aria-current={tab === name ? "page" : undefined}
               onClick={() => setTab(name)}
             >
               {name}
@@ -1408,6 +1421,7 @@ function HeaderDemo({ notify }: { notify: (message: string) => void }) {
           ))}
         </nav>
         <button
+          ref={menuTrigger}
           className="mini-profile"
           aria-label="Open workspace menu"
           aria-expanded={menu}
@@ -1445,6 +1459,16 @@ function HeaderDemo({ notify }: { notify: (message: string) => void }) {
             </button>
           </div>
         )}
+      </div>
+      <div className="header-caption" aria-live="polite">
+        <span className="header-page">{tab}</span>
+        <span>
+          {tab === "Index"
+            ? "A place for everything."
+            : tab === "Studio"
+              ? "Space for the next idea."
+              : "Thoughts, quietly collected."}
+        </span>
       </div>
       <div className="header-content">
         <div className="mini-breadcrumb">
@@ -1598,9 +1622,13 @@ function Disclosure() {
               id={`accordion-panel-${index}`}
               role="region"
               aria-labelledby={`accordion-button-${index}`}
-              hidden={open !== index}
+              className="accordion-panel"
+              aria-hidden={open !== index}
+              inert={open !== index}
             >
-              <p>{question.body}</p>
+              <div>
+                <p>{question.body}</p>
+              </div>
             </div>
           </div>
         ))}
@@ -1679,9 +1707,13 @@ function Feedback({ notify }: { notify: (message: string) => void }) {
           <>
             <div className="feedback-asset">
               {state === "Done" ? (
-                <img src="/tick.webp" alt="" width="72" height="72" />
+                <Edge className="state-emblem emblem-done">
+                  <Check size={31} strokeWidth={1.4} />
+                </Edge>
               ) : (
-                <img src="/rocket.webp" alt="" width="72" height="72" />
+                <Edge className="state-emblem emblem-ready">
+                  <ArrowUpRight size={31} strokeWidth={1.2} />
+                </Edge>
               )}
             </div>
             <h3>
@@ -1761,7 +1793,7 @@ function DialogDemo({ notify }: { notify: (message: string) => void }) {
           }}
           onFocus={() => setTooltip(true)}
           onBlur={() => setTooltip(false)}
-          onClick={() => setTooltip(!tooltip)}
+          onClick={() => setTooltip(true)}
           aria-label="About this dialog"
           aria-describedby={tooltip ? "dialog-tip" : undefined}
         >
@@ -1779,12 +1811,15 @@ function DialogDemo({ notify }: { notify: (message: string) => void }) {
         title={confirmed ? "A good place to start." : "Make a little room."}
       >
         <div className="confirm-image">
-          <img
-            src={confirmed ? "/tick.webp" : "/shield.webp"}
-            width="100"
-            height="100"
-            alt=""
-          />
+          <Edge
+            className={`state-emblem modal-emblem ${confirmed ? "emblem-done" : ""}`}
+          >
+            {confirmed ? (
+              <Check size={40} strokeWidth={1.3} />
+            ) : (
+              <ShieldCheck size={40} strokeWidth={1.1} />
+            )}
+          </Edge>
         </div>
         <p className="confirm-title">
           {confirmed ? "Consider it done." : "Keep what matters."}

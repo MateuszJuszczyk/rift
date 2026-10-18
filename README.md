@@ -1,6 +1,6 @@
 # RIFT — a study in interaction
 
-An original, mobile-first React/TypeScript component canvas. Dark, restrained UI with an optical material inspired by the physical edge of a screen: a machined rim, a recessed surface, and selective reflected light.
+An original, mobile-first React/TypeScript component canvas. An obsidian palette, silver reflections and restrained motion, with an optical material inspired by the physical edge of a screen: a machined rim, a recessed surface, and selective reflected light.
 
 ## Run
 
@@ -18,7 +18,7 @@ Vite prints the local URL. The production build is a static `dist/` directory; n
 
 ## Explore
 
-An open canvas with loose components, separated by spacing and small labels rather than presentation cards. On desktop, pan the surface, zoom, and drag each group by its grip (arrow keys also work; Shift increases the step). On mobile, the same components form a naturally scrolling layout.
+An open canvas with loose components, composed on three shared columns and four row baselines, separated by spacing, fine rules and small labels. Filtered collections reflow into a compact grid. On desktop, pan the surface, zoom, and drag each group by its grip (arrow keys also work; Shift increases the step). On mobile, the same components form a naturally scrolling layout.
 
 13 interactive specimens, with more than 30 individual controls and states:
 
@@ -50,7 +50,7 @@ Native buttons, inputs, radio groups and modal dialogs provide keyboard behavior
 ## Assets and attribution
 
 - Original layout, CSS material treatment and interaction composition for RIFT.
-- Three 3D accent assets by Vijay Verma, [3dicons](https://3dicons.co), CC0; downloaded locally as `rocket.webp`, `tick.webp`, `shield.webp`. Source image URLs are listed in `ASSETS.md`.
+- Dimensional state emblems built with CSS and Lucide glyphs; no raster assets or remote image dependencies.
 - [Lucide](https://lucide.dev) interface icons, ISC.
 - DM Sans and Manrope, self-hosted Latin variable fonts, SIL Open Font License; license files included in `public/fonts/`.
 

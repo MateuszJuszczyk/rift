@@ -38,6 +38,10 @@ export function Edge({
       ref={frame}
       className={`edge ${className}`}
       onPointerMove={move}
+      onPointerLeave={() => {
+        frame.current?.style.removeProperty("--light-x");
+        frame.current?.style.removeProperty("--light-y");
+      }}
       style={style}
       {...props}
     >
@@ -189,6 +193,7 @@ export function Button({
       {...props}
       className={`button ${variant} ${className}`}
       disabled={props.disabled || loading}
+      aria-busy={loading || undefined}
     >
       {loading ? <LoaderCircle className="spin" size={15} /> : icon}
       {children}
@@ -302,6 +307,29 @@ export function Segmented({
           key={option.value}
           type="button"
           aria-pressed={value === option.value}
+          onKeyDown={(event) => {
+            const direction =
+              event.key === "ArrowRight"
+                ? 1
+                : event.key === "ArrowLeft"
+                  ? -1
+                  : 0;
+            if (!direction && event.key !== "Home" && event.key !== "End")
+              return;
+            event.preventDefault();
+            const index =
+              event.key === "Home"
+                ? 0
+                : event.key === "End"
+                  ? options.length - 1
+                  : (selected + direction + options.length) % options.length;
+            onChange(options[index].value);
+            const buttons =
+              event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>(
+                "button",
+              );
+            buttons?.[index].focus();
+          }}
           onClick={() => onChange(option.value)}
         >
           {option.label}

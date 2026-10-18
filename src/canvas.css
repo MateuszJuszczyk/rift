@@ -1,9 +1,37 @@
-/* An open surface. Only the components themselves have containers. */
+/* RIFT · Obsidian edition. One open surface, a deliberate typographic grid. */
+:root {
+  --canvas: #080809;
+  --ink: #e9e7e3;
+  --secondary-ink: #a7a6a3;
+  --quiet-ink: #727270;
+  --hairline: #ffffff0f;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  background: var(--canvas);
+  color: var(--ink);
+}
 html {
-  scroll-padding-top: 125px;
+  scroll-padding-top: 132px;
 }
 .app {
-  background: #0b0d11;
+  background: var(--canvas);
+}
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #dedbd5;
+  outline-offset: 4px;
+}
+::selection {
+  background: #dedbd533;
 }
 .canvas-chrome {
   position: fixed;
@@ -12,9 +40,9 @@ html {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  padding: 23px 20px 18px;
-  background: linear-gradient(#0b0d11 50%, #0b0d1100);
+  gap: 16px;
+  padding: 24px;
+  background: linear-gradient(var(--canvas) 60%, #08080900);
   pointer-events: none;
 }
 .canvas-chrome > * {
@@ -23,24 +51,24 @@ html {
 .canvas-wordmark {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   padding: 0;
   flex-shrink: 0;
 }
 .canvas-wordmark strong {
   font-family: Manrope, sans-serif;
-  font-size: 25px;
+  font-size: 26px;
   font-weight: 800;
-  letter-spacing: -1.5px;
-  color: #d8dfe9;
+  letter-spacing: -1.6px;
+  color: #e8e7e3;
 }
 .canvas-wordmark > span:last-child {
   font-size: 9px;
-  color: #5f6b7d;
-  border-left: 1px solid #65738b26;
-  padding-left: 12px;
+  color: #71716f;
+  border-left: 1px solid #ffffff17;
+  padding-left: 15px;
   margin-left: 9px;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.15px;
 }
 .canvas-wordmark .brand-symbol {
   position: relative;
@@ -55,13 +83,13 @@ html {
   width: 6px;
   height: 20px;
   border-radius: 1px;
-  background: linear-gradient(160deg, #dae5f7, #63748f);
+  background: linear-gradient(160deg, #e7e5df, #777775);
   transform: skew(-25deg);
 }
 .canvas-wordmark .brand-symbol i:nth-child(2) {
   left: 11px;
   height: 12px;
-  background: linear-gradient(160deg, #c4d4ed, #62738c);
+  background: linear-gradient(160deg, #c9c7c2, #666665);
 }
 .canvas-wordmark .brand-symbol i:nth-child(3) {
   left: 13px;
@@ -70,92 +98,87 @@ html {
   transform: skew(25deg);
 }
 .canvas-info {
-  color: #64738b;
+  color: #8b8b87;
 }
 .canvas-filters {
   position: absolute;
-  top: 75px;
-  left: 20px;
-  right: 20px;
+  top: 76px;
+  left: 24px;
+  right: 24px;
   display: flex;
-  gap: 16px;
+  gap: 22px;
   overflow: auto;
   scrollbar-width: none;
-  padding-bottom: 10px;
-  pointer-events: auto;
+  padding: 0 0 12px;
 }
 .canvas-filters button {
+  position: relative;
   padding: 8px 0;
-  font-size: 10px;
-  color: #63718a;
+  font-size: 11px;
+  color: #81817e;
   white-space: nowrap;
   flex-shrink: 0;
-  position: relative;
 }
 .canvas-filters button.active {
-  color: #b9cce7;
+  color: #eeeae3;
 }
 .canvas-filters button.active:after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: auto 0 0;
   height: 1px;
-  background: #a2badc77;
+  background: #d8d7d4;
 }
 .canvas-filters button:hover {
-  color: #d7e7fd;
-}
-.canvas-chrome .canvas-info {
-  width: 30px;
-  height: 30px;
+  color: #f4f1eb;
 }
 .canvas-view {
   position: relative;
-  max-width: none;
   width: 100%;
+  max-width: none;
   margin: 0;
   min-height: 100dvh;
-  padding: 145px 0 110px;
+  padding: 157px 0 130px;
   isolation: isolate;
-  background-image: radial-gradient(#7186a419 0.75px, transparent 0.75px);
-  background-size: 22px 22px;
-  background-position: center 0;
+  background: radial-gradient(#ffffff0d 0.6px, transparent 0.6px) center 0 /
+    28px 28px;
 }
 .component-grid.freeform-board {
   display: flex;
   flex-direction: column;
-  gap: 66px;
+  gap: 72px;
   padding: 0 28px;
-  align-items: stretch;
   position: relative;
 }
 .canvas-note {
-  margin: 0 0 8px 9px;
+  margin: 0 0 0;
 }
 .canvas-note > span {
-  font-size: 7px;
-  letter-spacing: 1.8px;
-  color: #61718a;
+  font-size: 9px;
+  letter-spacing: 2.1px;
+  color: #8d8c8a;
 }
 .canvas-note > p {
   font-family: Manrope, sans-serif;
-  font-size: 31px;
-  line-height: 1.25;
-  letter-spacing: -1.1px;
-  color: #c0ccdf;
-  margin: 15px 0 12px;
+  font-size: 45px;
+  font-weight: 400;
+  line-height: 1.13;
+  letter-spacing: -2px;
+  color: #eeece6;
+  margin: 25px 0 22px;
 }
 .canvas-note > p em {
   font-family: Georgia, serif;
   font-weight: 400;
   font-style: italic;
-  color: #8296b4;
+  color: #a9a8a5;
 }
 .canvas-note > small {
-  font-size: 9px;
-  color: #536680;
+  display: block;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #858583;
+  max-width: 260px;
 }
 .filtered-grid .canvas-note {
   display: none;
@@ -176,41 +199,39 @@ html {
 }
 .freeform-board .specimen-heading {
   border: 0;
-  padding: 0 0 17px;
-  min-height: 25px;
-  gap: 8px;
-  opacity: 0.68;
-  transition: opacity 0.2s;
-}
-.freeform-board .specimen:hover > .specimen-heading,
-.freeform-board .specimen:focus-within > .specimen-heading {
+  border-top: 1px solid #ffffff13;
+  padding: 17px 0 30px;
+  min-height: 64px;
+  gap: 12px;
   opacity: 1;
 }
 .freeform-board .specimen-heading > div {
-  gap: 8px;
+  gap: 12px;
 }
 .freeform-board .specimen h2 {
-  font-size: 9px;
-  font-weight: 400;
-  color: #768ba8;
-  letter-spacing: 0.2px;
-  line-height: 1.5;
+  font-size: 12px;
+  font-weight: 450;
+  color: #b6b4ae;
+  letter-spacing: -0.1px;
+  line-height: 1.4;
 }
 .freeform-board .index {
-  font-size: 8px;
-  color: #3c506c;
+  font-size: 9px;
+  color: #62625e;
+  font-variant-numeric: tabular-nums;
 }
 .freeform-board .save-button {
-  height: 23px;
-  width: 23px;
-  min-height: 23px;
-  min-width: 23px;
-  opacity: 0.55;
-  color: #687f9f;
+  height: 28px;
+  width: 28px;
+  min-height: 28px;
+  min-width: 28px;
+  color: #656560;
+  opacity: 0.75;
 }
+.freeform-board .save-button:hover,
 .freeform-board .save-button.is-saved {
-  opacity: 1;
   color: var(--accent);
+  opacity: 1;
 }
 .freeform-board .specimen-footer {
   display: none;
@@ -224,131 +245,496 @@ html {
 .drag-handle {
   display: none;
 }
+/* Optical material: light catches a double machined rim, never a luminous fill. */
+.edge {
+  background: linear-gradient(155deg, #30303080, #111112e8 40%, #151516e8);
+  border-color: #ffffff1c;
+  box-shadow:
+    inset 0 1px 0 #ffffff14,
+    inset 0 -1px 0 #000,
+    0 18px 35px #0006;
+}
+.edge:after {
+  border-color: #ffffff0c;
+  background: radial-gradient(
+    ellipse at var(--light-x) var(--light-y),
+    #ffffff0b,
+    transparent 60%
+  );
+}
 .freeform-board .optical-stage {
-  height: 280px;
-  min-height: 280px;
+  height: 320px;
+  min-height: 320px;
   background: none;
   overflow: clip;
 }
-.freeform-board .stage-grid {
+.freeform-board .stage-grid,
+.freeform-board .stage-coordinate,
+.freeform-board .optical-arc {
   display: none;
 }
-.freeform-board .optical-arc {
-  opacity: 0.5;
-  width: 230px;
-  height: 230px;
-  top: 10px;
-  left: calc(50% - 115px);
+.freeform-board .optical-aura {
+  background: radial-gradient(ellipse, #d5d3d008, transparent 65%);
 }
 .freeform-board .optical-object {
-  width: 245px;
-  height: 170px;
-  margin-top: -12px;
+  width: 260px;
+  height: 193px;
+  margin-top: -20px;
+  border-radius: 34px;
+  transform: rotate(-7deg);
+  background: linear-gradient(150deg, #36363770, #101011 42%, #0a0a0b 80%);
+  box-shadow:
+    0 30px 38px -20px #000,
+    inset 4px 5px 9px #000b,
+    inset -1px -1px 3px #ffffff08;
+  transition:
+    transform 0.8s var(--ease-out),
+    box-shadow 0.8s;
+}
+.freeform-board .optical-object:hover {
+  transform: rotate(-3deg) translateY(-5px);
 }
 .freeform-board .optical-object:after {
-  border-radius: 25px;
+  border-radius: 26px;
+  border-color: #ffffff15;
+  box-shadow:
+    inset 2px 2px 3px #000,
+    inset -1px -1px 0 #ffffff06;
 }
-.freeform-board .stage-coordinate {
-  display: none;
+.freeform-board .optical-object:before {
+  padding: 2px;
+  background: conic-gradient(
+    from 130deg at var(--light-x) var(--light-y),
+    #fff0,
+    #d7d6d322 20%,
+    rgba(var(--accent-rgb), var(--edge-strength)) 37%,
+    #fff9 40%,
+    #ffffff08 49%,
+    #0000 73%,
+    #bcbbb844 93%,
+    #fff0
+  );
+}
+.material-smoke .optical-object {
+  background: linear-gradient(145deg, #45454599, #1a1a1ae8 60%, #111);
+}
+.material-frost .optical-object {
+  background: linear-gradient(145deg, #72727055, #292928aa 65%, #181818e8);
+}
+.freeform-board .object-core {
+  width: 64px;
+  height: 64px;
+  border-radius: 21px;
+  background: linear-gradient(145deg, #ffffff13, #ffffff03);
+  color: #d9d8d5;
+}
+.freeform-board .object-core svg {
+  width: 34px;
+  height: 34px;
+}
+.freeform-board .object-caption {
+  gap: 8px;
+}
+.freeform-board .object-caption > span {
+  font-size: 13px;
+  color: #d8d6d0;
+}
+.freeform-board .object-caption small {
+  font-size: 6px;
+  letter-spacing: 1.6px;
+  color: #777775;
 }
 .freeform-board .stage-bottom {
   bottom: 0;
   left: 0;
   right: 0;
+  gap: 8px;
 }
-.freeform-board .object-core {
-  width: 66px;
-  height: 66px;
-  border-radius: 22px;
-}
-.freeform-board .object-caption > span {
-  font-size: 12px;
-}
-.freeform-board .object-caption small {
-  font-size: 6px;
-}
-.freeform-board .material-picker {
-  background: #121a27aa;
-  border-color: #b3cae815;
-}
-.freeform-board .material-picker button {
+.freeform-board .stage-note {
+  color: #868583;
   font-size: 9px;
 }
+.material-picker {
+  background: #141414;
+  border: 1px solid #ffffff0d;
+  border-radius: 10px;
+  padding: 3px;
+}
+.freeform-board .material-picker button {
+  font-size: 10px;
+  padding: 9px 10px;
+  border-radius: 7px;
+  color: #858583;
+}
+.material-picker button.active {
+  color: #e8e5dd;
+  background: linear-gradient(#ffffff0d, #ffffff06);
+  box-shadow:
+    inset 0 1px 0 #ffffff10,
+    0 2px 4px #0006;
+}
+/* Controls share a 40px rhythm, with distinct physical states. */
 .freeform-board .precision-content {
-  padding: 3px 10px 8px;
+  padding: 0;
 }
 .freeform-board .precision-heading {
   display: none;
 }
 .freeform-board .precision-content .range-field {
-  margin: 15px 0 29px;
+  margin: 0 0 24px;
 }
-.freeform-board .control-divider,
-.freeform-board .button-divider {
-  background: #7f9bbe13;
-}
-.freeform-board .precision-status {
-  color: #5d7392;
-}
-.freeform-board .button-examples {
-  padding: 4px 8px;
-  gap: 18px;
-}
-.freeform-board .segments-demo {
-  padding: 4px 8px;
-}
-.freeform-board .layout-preview {
-  height: 73px;
-  opacity: 0.8;
-}
-.freeform-board .segments-bottom > span {
-  color: #4e6584;
-  font-size: 8px;
-}
-.freeform-board .price-preview {
-  opacity: 0.7;
-}
-.freeform-board .dock-stage {
-  padding: 25px 0 5px;
-  background: none;
-  overflow: visible;
-  min-height: 190px;
-  gap: 22px;
-}
-.freeform-board .dock-orbit {
-  display: none;
-}
-.freeform-board .dock-context {
-  min-height: 38px;
+.range-field > label {
+  font-size: 12px;
+  color: #bab8b1;
+  margin-bottom: 5px;
   gap: 10px;
 }
+.range-field label > svg {
+  color: #80807e;
+}
+.range-field output {
+  font:
+    10px "DM Sans",
+    sans-serif;
+  color: #8a8a88;
+  font-variant-numeric: tabular-nums;
+}
+input[type="range"] {
+  height: 26px;
+  background: linear-gradient(
+      to right,
+      var(--accent) 0 var(--fill),
+      #29292b var(--fill) 100%
+    )
+    center / 100% 3px no-repeat;
+  box-shadow: none;
+  border-radius: 0;
+  margin: 0;
+}
+input[type="range"]::-webkit-slider-thumb {
+  height: 17px;
+  width: 17px;
+  border: 1px solid #e6e3dc;
+  background: linear-gradient(145deg, #f1efe9, #abaaa8);
+  box-shadow:
+    0 0 0 4px #080809,
+    0 3px 5px #0009;
+  transition:
+    box-shadow 0.2s,
+    transform 0.25s var(--ease-out);
+}
+input[type="range"]::-moz-range-thumb {
+  height: 15px;
+  width: 15px;
+  border: 1px solid #e6e3dc;
+  background: linear-gradient(145deg, #f1efe9, #abaaa8);
+  box-shadow: 0 0 0 4px #080809;
+}
+input[type="range"]:hover::-webkit-slider-thumb {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 0 5px #ffffff12,
+    0 3px 6px #0009;
+}
+input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(0.96);
+}
+.control-divider,
+.button-divider {
+  background: var(--hairline);
+}
+.freeform-board .precision-content .control-divider {
+  margin: 16px 0 22px;
+}
+.toggle-row {
+  min-height: 30px;
+  margin: 15px 0;
+}
+.toggle-row label {
+  font-size: 12px;
+  color: #b4b2ad;
+}
+.switch {
+  width: 42px;
+  height: 25px;
+  border-radius: 20px;
+  background: #242425;
+  border: 1px solid #ffffff0b;
+}
+.switch > span {
+  top: 2px;
+  left: 2px;
+  width: 19px;
+  height: 19px;
+  background: linear-gradient(#c0bfbb, #85847f);
+  transition:
+    transform 0.4s cubic-bezier(0.2, 1.3, 0.3, 1),
+    background 0.25s;
+}
+.switch[aria-checked="true"] {
+  background: #bcbbb8;
+  border-color: #ffffff26;
+}
+.switch[aria-checked="true"] > span {
+  transform: translateX(17px);
+  background: linear-gradient(#fffdf7, #e7e6e2);
+  color: #474745;
+}
+.precision-status {
+  margin-top: 20px;
+  font-size: 10px;
+  color: #777774;
+}
+.ambient-light-on {
+  box-shadow: -1px 0 0 #d6d4d140;
+  background: radial-gradient(ellipse at 0 30%, #d6d4d109, transparent 70%);
+  border-radius: 2px;
+}
+.freeform-board .button-examples {
+  padding: 0;
+  gap: 19px;
+}
+.button {
+  min-height: 40px;
+  border-radius: 10px;
+  padding: 0 15px;
+  font-size: 12px;
+  letter-spacing: -0.1px;
+  color: #d1cec7;
+  background: linear-gradient(#ffffff06, #ffffff00), #1a1a1b;
+  border-color: #ffffff13;
+  box-shadow:
+    inset 0 1px 0 #ffffff09,
+    0 2px 3px #0005;
+  transition:
+    transform 0.22s var(--ease-out),
+    background 0.22s,
+    border-color 0.22s,
+    box-shadow 0.22s;
+}
+.button:hover:not(:disabled) {
+  background-color: #252525;
+  border-color: #ffffff26;
+  box-shadow:
+    inset 0 1px 0 #ffffff0e,
+    0 4px 12px #0005;
+  transform: translateY(-1px);
+}
+.button:active:not(:disabled) {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: inset 0 1px 3px #0003;
+}
+.button.primary {
+  color: #252524;
+  background: linear-gradient(#eeece5, #c6c5c2);
+  border-color: #fff9;
+  font-weight: 600;
+  box-shadow:
+    inset 0 1px 0 #fff9,
+    0 2px 4px #0008;
+}
+.button.primary:hover:not(:disabled) {
+  background: linear-gradient(#fffdf6, #d7d6d2);
+  box-shadow:
+    inset 0 1px 0 #fff9,
+    0 4px 15px #edebe50d;
+}
+.freeform-board .specimen-buttons .button {
+  font-size: 12px;
+}
+.specimen-buttons .button.primary {
+  min-width: 167px;
+}
+.specimen-buttons .button.secondary:not(:disabled) {
+  min-width: 189px;
+}
+.button.ghost {
+  color: #939390;
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+}
+.freeform-board .specimen-buttons .button.ghost {
+  font-size: 11px;
+}
+.button-minor-actions .button {
+  min-height: 36px;
+  font-size: 10px !important;
+}
+.button-minor-actions .button.danger {
+  background: #25191b;
+  color: #ca9e9f;
+  border-color: #c890901c;
+}
+.button.success-button {
+  background: linear-gradient(#e1e8dc, #b6c4af);
+  color: #2b3828;
+  border-color: #d4dfc9;
+}
+.round-button {
+  width: 40px;
+  height: 40px;
+  color: #bab9b6;
+  background: linear-gradient(#ffffff07, transparent), #151516;
+  border-color: #ffffff14;
+}
+.freeform-board .specimen-buttons .round-button {
+  width: 40px;
+  height: 40px;
+}
+.round-button:hover {
+  border-color: #ffffff30;
+  background-color: #232323;
+}
+.stepper {
+  height: 38px;
+  border-radius: 9px;
+  background: #101011;
+  border-color: #ffffff13;
+}
+.stepper > button {
+  height: 36px;
+  width: 34px;
+  color: #aaa9a6;
+}
+.stepper > output {
+  width: 31px;
+  font-size: 11px;
+  color: #d5d4d1;
+}
+.button-divider {
+  margin: 3px 0;
+}
+.freeform-board .segments-demo {
+  padding: 0;
+}
+.segmented {
+  background: #101011;
+  padding: 4px;
+  border-radius: 11px;
+  border-color: #ffffff0b;
+}
+.segmented-indicator {
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / var(--count));
+  border-radius: 7px;
+  background: linear-gradient(#343434, #252525);
+  border-color: #ffffff0a;
+  transition: transform 0.45s var(--ease-out);
+}
+.segmented button {
+  min-height: 33px;
+  font-size: 11px;
+  color: #858582;
+  border-radius: 7px;
+}
+.segmented button[aria-pressed="true"] {
+  color: #e7e6e3;
+}
+.freeform-board .layout-preview {
+  height: 93px;
+  margin: 28px 19px;
+  opacity: 1;
+}
+.layout-preview > span {
+  border-color: #ffffff15;
+  background: linear-gradient(135deg, #ffffff0b, #ffffff02);
+  border-radius: 5px;
+}
+.layout-preview > span:first-child {
+  border-color: #ffffff24;
+  background: linear-gradient(135deg, #ffffff13, #ffffff03);
+}
+.layout-focus > span:first-child {
+  height: 93px;
+}
+.segments-bottom > span {
+  color: #888785;
+  font-size: 10px;
+}
+.segments-bottom .segmented {
+  width: 120px;
+  border-radius: 8px;
+}
+.segments-bottom .segmented button {
+  font-size: 10px;
+  min-height: 29px;
+}
+.price-preview {
+  margin-top: 20px;
+  opacity: 1;
+}
+.price-preview > strong {
+  color: #d9d8d5;
+  font-size: 23px;
+}
+.price-preview > span {
+  color: #858482;
+}
+/* Navigation specimens live directly on the surface. */
+.freeform-board .dock-stage {
+  background: none;
+  min-height: 240px;
+  padding: 0;
+  gap: 26px;
+  overflow: visible;
+}
+.freeform-board .dock-orbit,
 .freeform-board .dock-context-symbol {
   display: none;
 }
-.freeform-board .dock-context > span:last-child {
-  font-size: 10px;
-  color: #637d9e;
+.freeform-board .dock-context {
+  min-height: 30px;
 }
-.freeform-board .dock-caption {
-  font-size: 8px;
-  color: #3e5576;
-  margin-top: 2px;
+.dock-context > span:last-child {
+  color: #9c9b98;
+  font-size: 12px;
 }
 .freeform-board .floating-dock {
-  padding: 9px 10px;
+  padding: 9px 11px;
+  border-radius: 22px;
+  background: linear-gradient(150deg, #3030309c, #101011 70%);
 }
-.freeform-board .floating-dock nav {
+.floating-dock nav {
   gap: 4px;
 }
 .freeform-board .floating-dock nav > button {
-  height: 40px;
-  width: 39px;
+  width: 43px;
+  height: 44px;
+  color: #8c8c89;
+  border-radius: 12px;
+  transition:
+    transform 0.4s var(--ease-out),
+    color 0.2s,
+    background 0.2s;
+}
+.floating-dock nav > button.active {
+  color: #e9e8e5;
+  background: linear-gradient(#ffffff0e, #ffffff03);
+  box-shadow: inset 0 1px 0 #ffffff12;
+}
+.floating-dock nav > button.active i {
+  background: #d5d3d0;
+  width: 3px;
+  height: 3px;
+}
+.dock-tooltip {
+  background: #222;
+  border-color: #ffffff15;
+  color: #d8d7d4;
+  font-size: 10px;
+}
+.freeform-board .dock-caption {
+  color: #6c6c6a;
+  font-size: 10px;
 }
 .freeform-board .header-demo {
-  background: none;
-  padding: 15px 0;
+  padding: 31px 0 0;
   display: block;
   height: auto;
+  background: none;
 }
 .freeform-board .mini-browser,
 .freeform-board .header-content,
@@ -356,90 +742,500 @@ html {
   display: none;
 }
 .freeform-board .demo-navbar {
+  min-height: 63px;
   border-radius: 14px;
-  min-height: 62px;
-  padding: 0 17px;
+  padding: 0 14px;
+  background: linear-gradient(150deg, #ffffff0a, #ffffff02), #121213;
   box-shadow:
-    0 10px 25px #0005,
-    inset 0 1px 0 #dbe9ff18;
-  background:
-    linear-gradient(145deg, #576d8b32, #202b3c77 60%, #7890ae10), #111723;
-  backdrop-filter: blur(var(--frost));
+    inset 0 1px 0 #ffffff12,
+    0 12px 25px #0005;
+  border: 1px solid #ffffff15;
+}
+.freeform-board .demo-brand {
+  font-size: 17px;
+  letter-spacing: -0.8px;
+  color: #e1e0dd;
+  gap: 5px;
+}
+.freeform-board .tiny-brand {
+  width: 15px;
+  height: 15px;
 }
 .freeform-board .demo-navbar nav {
-  gap: 12px;
+  gap: 15px;
 }
 .freeform-board .demo-navbar nav > button {
-  font-size: 8px;
+  font-size: 10px;
+  color: #848381;
 }
-.freeform-board .player {
-  padding: 15px 6px;
+.demo-navbar nav > button.active {
+  color: #e1dfdc;
 }
-.freeform-board .input-demo,
-.freeform-board .selection-demo {
-  padding: 8px;
+.demo-navbar nav > button.active:after {
+  background: #d4d2cf;
 }
-.freeform-board .disclosure-demo,
-.freeform-board .feedback-demo {
-  padding: 5px 8px;
+.freeform-board .mini-profile {
+  height: 25px;
+  width: 25px;
+  font-size: 9px;
+  color: #c9c7c4;
+  background: linear-gradient(#3a3a38, #222221);
 }
-.freeform-board .dialog-demo {
-  padding: 8px;
-  min-height: 280px;
-}
-.freeform-board .commit-demo {
-  padding: 8px;
-  min-height: 290px;
-}
-.freeform-board .specimen.highlight-specimen {
-  border: 0 !important;
-  box-shadow: none !important;
-}
-.freeform-board .highlight-specimen .specimen-heading {
-  opacity: 1;
-  color: #bfd7f7;
-}
-.freeform-board .highlight-specimen:after {
-  content: "";
-  position: absolute;
-  inset: -18px;
-  border: 1px dashed #a3c6f139;
-  border-radius: 8px;
-  pointer-events: none;
-}
-.freeform-board .input-demo label {
-  font-size: 11px;
-}
-.freeform-board .pagination {
-  margin-top: 20px;
-}
-.freeform-board .notification-preview {
+.header-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 24px 2px;
+  color: #777674;
   font-size: 10px;
 }
-.freeform-board .player .track-info h3 {
-  font-size: 12px;
+.header-page {
+  color: #b4b3b0;
 }
+.dropdown-menu {
+  top: calc(100% + 9px);
+  right: 0;
+  border-radius: 13px;
+  background: #1c1c1d;
+  border-color: #ffffff17;
+  padding: 7px;
+  box-shadow:
+    0 18px 45px #000b,
+    inset 0 1px 0 #ffffff09;
+}
+.dropdown-menu > button {
+  min-height: 39px;
+  border-radius: 7px;
+  font-size: 11px;
+  color: #c7c6c3;
+}
+/* Sound, fields, choices and disclosure use the same type and spacing scale. */
+.freeform-board .player {
+  padding: 0;
+}
+.freeform-board .album-art {
+  width: 57px;
+  height: 57px;
+  background: linear-gradient(140deg, #484745, #242423 55%, #121213);
+  border-color: #ffffff16;
+  border-radius: 13px;
+}
+.freeform-board .track-info .eyebrow {
+  font-size: 6px;
+  letter-spacing: 1.3px;
+  color: #7e7d7a;
+}
+.freeform-board .track-info h3 {
+  font-size: 13px;
+  color: #d7d5d2;
+}
+.freeform-board .track-info p {
+  font-size: 10px;
+  color: #878683;
+}
+.freeform-board .waveform {
+  height: 67px;
+  margin: 24px 0 10px;
+}
+.waveform > i,
+.waveform > i:nth-child(-n + 16) {
+  background: #444442;
+  opacity: 0.7;
+}
+.waveform > i.played {
+  background: var(--accent);
+  opacity: 0.9;
+}
+.player input.track-progress {
+  height: 20px;
+  background: linear-gradient(
+      to right,
+      #dedbd5 0 var(--fill),
+      #29292b var(--fill) 100%
+    )
+    center / 100% 2px no-repeat;
+}
+.player input.track-progress::-webkit-slider-thumb {
+  width: 8px;
+  height: 8px;
+  border: 0;
+  box-shadow: none;
+}
+.freeform-board .player-bottom {
+  margin-top: 9px;
+}
+.player-play {
+  width: 36px;
+  height: 36px;
+  color: #d9d7d4;
+  background: linear-gradient(#393937, #242422);
+  border-color: #ffffff14;
+}
+.freeform-board .input-demo,
+.freeform-board .selection-demo,
+.freeform-board .disclosure-demo,
+.freeform-board .feedback-demo {
+  padding: 0;
+}
+.input-demo label,
+.freeform-board .input-demo label {
+  font-size: 11px;
+  color: #a9a8a5;
+  margin-bottom: 9px;
+}
+.input-demo label > span {
+  color: #72716f;
+  font-size: 9px;
+}
+.input-shell,
+.select-shell select,
+.input-demo textarea {
+  background: #101011;
+  border-color: #ffffff12;
+  border-radius: 9px;
+  box-shadow: inset 0 2px 5px #0004;
+}
+.input-shell {
+  min-height: 43px;
+  padding: 0 12px;
+}
+.input-shell input {
+  height: 41px;
+  font-size: 13px;
+  color: #d8d6d3;
+}
+.input-shell input::placeholder,
+.input-demo textarea::placeholder {
+  color: #6b6a68;
+}
+.input-shell:focus-within {
+  border-color: #dedbd566;
+  box-shadow: 0 0 0 3px #dedbd509;
+}
+.select-shell select {
+  height: 42px;
+  font-size: 12px;
+  color: #b9b7b4;
+  padding-left: 12px;
+}
+.select-shell > svg {
+  top: 15px;
+  color: #888784;
+}
+.form-two {
+  gap: 14px;
+  margin: 22px 0;
+}
+.input-demo textarea {
+  min-height: 76px;
+  max-height: 126px;
+  font-size: 12px;
+  color: #c8c6c2;
+  padding: 12px;
+}
+.input-demo label.note-label {
+  margin-top: 22px;
+}
+.input-submit {
+  min-height: 38px;
+  margin-top: 16px;
+  font-size: 11px;
+}
+.input-avatar {
+  width: 22px;
+  height: 22px;
+  color: #cbc9c4;
+  background: #ffffff0a;
+  border-radius: 6px;
+}
+.mini-label {
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  color: #8c8b87;
+  margin-bottom: 16px;
+}
+.choice-chips {
+  gap: 8px;
+}
+.choice-chips > button {
+  min-height: 34px;
+  font-size: 11px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  color: #8c8b88;
+  background: #111112;
+  border-color: #ffffff12;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+.choice-chips > button.selected {
+  color: #d5d3cf;
+  border-color: #d5d3cf30;
+  background: #d5d3cf0c;
+}
+.selection-demo .control-divider {
+  margin: 28px 0;
+}
+.radio-group > legend {
+  font-size: 11px;
+  color: #b6b4af;
+  margin-bottom: 10px;
+}
+.radio-group > label {
+  min-height: 40px;
+  font-size: 12px;
+  color: #a7a5a1;
+  padding: 9px 0;
+  gap: 11px;
+}
+.custom-radio {
+  width: 15px;
+  height: 15px;
+  background: #111112;
+  border-color: #686764;
+}
+.radio-group input:checked + .custom-radio {
+  border-color: #d7d5cf;
+}
+.radio-group input:checked + .custom-radio:after {
+  inset: 4px;
+  background: #d7d5cf;
+  box-shadow: none;
+}
+.radio-group small {
+  font-size: 9px;
+  color: #9e9c97;
+  background: #ffffff06;
+  border-radius: 5px;
+}
+.checkbox-label {
+  min-height: 40px;
+  margin-top: 15px;
+  font-size: 11px;
+  color: #a7a5a0;
+  gap: 10px;
+}
+.checkbox-label > span {
+  width: 15px;
+  height: 15px;
+  border-color: #666461;
+  background: #111112;
+  border-radius: 4px;
+}
+.selection-summary {
+  color: #777572;
+  font-size: 10px;
+  margin-top: 16px;
+}
+.accordion > div {
+  border-bottom-color: #ffffff11;
+}
+.accordion h3 > button {
+  min-height: 59px;
+  padding: 18px 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #a9a8a5;
+  gap: 14px;
+}
+.accordion .open h3 > button {
+  color: #dedcd9;
+}
+.accordion p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #8b8986;
+  padding: 0 15px 22px 0;
+  animation: none;
+}
+.accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.45s var(--ease-out),
+    opacity 0.3s;
+}
+.accordion-panel > div {
+  overflow: hidden;
+}
+.open > .accordion-panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.freeform-board .pagination {
+  padding-top: 24px;
+  margin-top: 0;
+}
+.pagination > span {
+  font-size: 10px;
+  color: #817f7b;
+}
+.pagination > div > button {
+  width: 30px;
+  height: 32px;
+  border-radius: 7px;
+  font-size: 11px;
+}
+.pagination button.active {
+  color: #e1ded9;
+  background: #ffffff0b;
+}
+/* Feedback: quiet by default, explicit when state changes. */
+.feedback-preview {
+  min-height: 182px;
+}
+.feedback-asset img {
+  filter: saturate(0.28) brightness(0.9);
+}
+.feedback-preview h3 {
+  color: #d4d2ce;
+  font-size: 14px;
+}
+.feedback-preview p {
+  color: #93908c;
+  font-size: 11px;
+}
+.status-chips {
+  padding-bottom: 21px;
+  border-bottom-color: #ffffff10;
+  gap: 12px;
+}
+.status-chips > span {
+  font-size: 9px;
+  color: #8e8c89;
+}
+.status-chips > span:last-child {
+  color: #b6b4af;
+}
+.notification-preview {
+  padding-top: 20px;
+  min-height: 60px;
+  gap: 12px;
+}
+.notification-preview > div {
+  font-size: 11px;
+  color: #c5c3be;
+}
+.notification-preview small {
+  font-size: 9px;
+  color: #817f7b;
+  margin-top: 5px;
+}
+.skeleton-content {
+  padding: 0 24px;
+}
+.skeleton-content > * {
+  background-image: linear-gradient(
+    100deg,
+    #ffffff05 20%,
+    #ffffff14 45%,
+    #ffffff05 70%
+  );
+}
+.freeform-board .dialog-demo,
+.freeform-board .commit-demo {
+  padding: 0;
+  min-height: 326px;
+}
+.dialog-visual {
+  margin-bottom: 20px;
+}
+.dialog-visual-edge {
+  background: linear-gradient(145deg, #44434155, #171716);
+  color: #d3d0cb;
+  border-radius: 21px;
+  transform: rotate(-7deg);
+}
+.dialog-demo h3,
+.commit-copy h3 {
+  color: #d8d5d0;
+  font-size: 15px;
+  letter-spacing: -0.3px;
+  font-weight: 450;
+}
+.dialog-demo > p,
+.commit-copy p {
+  color: #908d88;
+  font-size: 11px;
+  line-height: 1.7;
+  margin-top: 10px;
+}
+.dialog-demo > .button {
+  min-height: 40px;
+  font-size: 11px;
+}
+.tooltip-example {
+  font-size: 10px;
+  margin-top: 17px;
+  color: #817e7a;
+}
+.custom-tooltip {
+  font-size: 10px;
+  background: #252524;
+  color: #d6d3cd;
+  border-color: #ffffff14;
+  border-radius: 8px;
+}
+.commit-orbit {
+  margin-bottom: 22px;
+}
+.commit-orbit > span {
+  background: linear-gradient(145deg, #4a48461a, #151514);
+  border-color: #ffffff13;
+  color: #c0bcb4;
+}
+.commit-copy {
+  min-height: 64px;
+}
+.hold-edge {
+  width: 227px;
+  margin-top: 20px;
+  border-radius: 12px;
+}
+.hold-button {
+  min-height: 46px;
+  padding: 0 16px;
+  color: #d3cfc7;
+}
+.hold-button > small {
+  font-size: 9px;
+  color: #96928b;
+}
+.hold-fill {
+  background: linear-gradient(90deg, #ddd9d015, #ddd9d030);
+  box-shadow: 1px 0 0 #ddd9d060;
+}
+.commit-reset {
+  min-height: 30px;
+  font-size: 10px;
+  color: #8f8a83;
+  margin-top: 11px;
+}
+/* Floating chrome and dialogs remain functional at every viewport. */
 .canvas-tools {
   position: fixed;
   left: 50%;
   bottom: max(22px, env(safe-area-inset-bottom));
   transform: translateX(-50%);
   z-index: 40;
-  padding: 7px 9px;
+  padding: 7px;
   display: flex;
   align-items: center;
   gap: 4px;
-  border-radius: 18px;
-  background: linear-gradient(165deg, #62718a29, #111b2be8 70%);
+  border-radius: 17px;
+  background: linear-gradient(160deg, #2d2d2dde, #111112ed 70%);
+  border-color: #ffffff24;
   box-shadow:
-    0 15px 40px #0009,
-    0 1px 0 #d1e4ff24 inset;
-  border-color: #b0c6e42e;
+    inset 0 1px 0 #ffffff14,
+    0 15px 40px #000a;
   backdrop-filter: blur(24px);
 }
 .canvas-tools:after {
   inset: 4px;
-  border-radius: 14px;
+  border-radius: 13px;
 }
 .canvas-tools > button,
 .tool-selection > button {
@@ -447,38 +1243,43 @@ html {
   z-index: 5;
   display: grid;
   place-items: center;
-  height: 35px;
-  width: 35px;
+  height: 38px;
+  width: 38px;
   flex-shrink: 0;
-  border-radius: 9px;
+  border-radius: 10px;
   padding: 0;
-  color: #7a91b0;
+  color: #92928f;
 }
 .canvas-tools > button:hover,
 .tool-selection > button:hover {
-  color: #d4e5ff;
-  background: #b6ceef0c;
+  color: #e8e7e4;
+  background: #ffffff08;
 }
 .canvas-tools .active {
-  background: linear-gradient(#acbfdb20, #8da8cd0b);
-  color: #cee1fb;
-  box-shadow: 0 1px 0 #d7e6ff19 inset;
+  background: linear-gradient(#ffffff12, #ffffff06);
+  color: #e8e7e4;
+  box-shadow: inset 0 1px 0 #ffffff12;
 }
 .tool-selection {
   position: relative;
   z-index: 5;
   display: flex;
-  align-items: center;
   gap: 2px;
 }
 .canvas-tools .tool-separator {
   width: 1px;
   height: 20px;
-  background: #b6d3f51b;
+  background: #ffffff15;
   margin: 0 4px;
 }
 .canvas-tools .desktop-canvas-tool {
   display: none;
+}
+.canvas-tools .canvas-zoom {
+  width: 46px;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  color: #aaa9a6;
 }
 .saved-dot {
   position: absolute;
@@ -492,80 +1293,109 @@ html {
 .canvas-caption {
   display: none;
 }
-.canvas-view .empty-state {
-  padding-top: 70px;
-}
 .canvas-view:after {
   content: "";
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 110px;
-  background: linear-gradient(transparent, #0b0d11bb);
+  inset: auto 0 0;
+  height: 100px;
+  background: linear-gradient(transparent, #080809dd);
   pointer-events: none;
   z-index: 3;
 }
-.canvas-tools .canvas-zoom {
-  font-size: 9px;
-  width: 45px;
-  color: #8ba3c4;
-  font-variant-numeric: tabular-nums;
+.freeform-board .highlight-specimen {
+  border: 0 !important;
+  box-shadow: none !important;
 }
-.canvas-tools button:focus-visible {
-  outline-offset: 1px;
+.freeform-board .highlight-specimen .specimen-heading {
+  border-top-color: #dddad688;
+}
+.freeform-board .highlight-specimen:after {
+  display: none;
+}
+.modal {
+  color: #e2e0dd;
+  background: linear-gradient(145deg, #262626, #171718 65%);
+  border: 1px solid #ffffff24;
+  border-radius: 22px;
+  box-shadow:
+    0 35px 120px #000d,
+    inset 0 1px 0 #ffffff12;
+}
+.modal::backdrop {
+  background: #0009;
+  backdrop-filter: blur(12px);
+}
+.modal-content {
+  padding: 28px;
+}
+.modal-header h2 {
+  color: #e5e3e0;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+}
+.modal-description {
+  color: #9c9a96;
+  line-height: 1.8;
+}
+.confirm-image img {
+  filter: saturate(0.35);
+}
+.toast {
+  background: #222221f5;
+  border-color: #ffffff1d;
+  color: #d9d7d3;
+  border-radius: 14px;
+  box-shadow: 0 12px 35px #0008;
+}
+.command-search {
+  background: #111112;
+  border-color: #ffffff13;
+  border-radius: 10px;
+}
+.command-results > button {
+  min-height: 48px;
+}
+.command-results > button:hover {
+  background: #ffffff06;
 }
 @media (min-width: 560px) and (max-width: 899px) {
   .component-grid.freeform-board {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 48px;
+    column-gap: 40px;
     row-gap: 80px;
-    padding: 0 40px;
+    padding: 0 36px;
   }
-  .freeform-board .canvas-note {
-    grid-column: span 2;
-    margin-bottom: 10px;
+  .canvas-note,
+  .freeform-board .specimen-optical {
+    grid-column: 1 / -1;
+  }
+  .canvas-note {
+    max-width: 450px;
   }
   .freeform-board .specimen-optical {
-    grid-column: span 2;
-    max-width: 430px;
-    justify-self: center;
     width: 100%;
-    margin-bottom: 20px;
-  }
-  .freeform-board .specimen-header {
-    grid-column: span 2;
-    max-width: 600px;
+    max-width: 480px;
     justify-self: center;
-    width: 100%;
-  }
-  .freeform-board .optical-stage {
-    height: 320px;
-  }
-  .freeform-board .optical-object {
-    width: 300px;
-    height: 200px;
-  }
-  .freeform-board .optical-object:after {
-    border-radius: 30px;
-  }
-  .freeform-board .optical-arc {
-    width: 280px;
-    height: 280px;
-    left: calc(50% - 140px);
   }
   .freeform-board .specimen {
     align-self: start;
   }
-  .freeform-board .specimen-player {
-    margin-top: 40px;
+  .freeform-board .optical-object {
+    width: 320px;
+    height: 220px;
   }
-  .freeform-board .specimen-segments {
-    margin-top: 65px;
+  .freeform-board .optical-stage {
+    height: 350px;
   }
-  .freeform-board .specimen-commit {
-    margin-top: 50px;
+  .freeform-board .specimen-header {
+    grid-column: auto;
+  }
+  .freeform-board .demo-navbar nav {
+    gap: 10px;
+  }
+  .freeform-board .demo-navbar {
+    padding: 0 10px;
   }
 }
 @media (min-width: 900px) {
@@ -573,47 +1403,39 @@ html {
     overflow: hidden;
   }
   .canvas-chrome {
-    padding: 29px 38px;
-    background: none;
+    padding: 28px 40px;
+    background: linear-gradient(#080809e8, #08080900);
   }
   .canvas-wordmark > span:last-child {
     font-size: 10px;
-    color: #6b7e9b;
-    padding-left: 17px;
-    margin-left: 13px;
-  }
-  .canvas-wordmark strong {
-    font-size: 29px;
   }
   .canvas-filters {
     position: static;
     gap: 3px;
     padding: 4px;
-    background: #121925ae;
-    border: 1px solid #93afd51a;
+    background: #151515bc;
+    border: 1px solid #ffffff11;
     backdrop-filter: blur(20px);
-    border-radius: 24px;
+    border-radius: 22px;
     margin-left: auto;
-    margin-right: 25px;
+    margin-right: 22px;
     overflow: visible;
-    box-shadow: 0 4px 20px #0002;
   }
   .canvas-filters button {
-    padding: 8px 14px;
+    padding: 9px 15px;
     border-radius: 18px;
-    font-size: 10px;
-    letter-spacing: 0.05px;
+    font-size: 11px;
   }
   .canvas-filters button.active {
-    color: #c5d7ef;
-    background: #93afd513;
-    box-shadow: 0 1px 0 #d6e6ff0a inset;
+    color: #e0dfdc;
+    background: #ffffff09;
+    box-shadow: inset 0 1px 0 #ffffff08;
   }
   .canvas-filters button.active:after {
     display: none;
   }
   .canvas-filters button:hover {
-    background: #93afd509;
+    background: #ffffff05;
   }
   .canvas-view {
     height: 100dvh;
@@ -622,17 +1444,15 @@ html {
     inset: 0;
     padding: 0;
     overflow: hidden;
-    background-size: 24px 24px;
-    background-image: radial-gradient(#8da8cf1a 0.65px, transparent 0.65px);
-    background-position: 0 0;
     touch-action: none;
+    background-size: 32px 32px;
   }
   .component-grid.freeform-board {
     position: absolute;
     left: 0;
     top: 0;
-    width: 1400px;
-    height: 2550px;
+    width: 1320px;
+    height: 2600px;
     display: block;
     padding: 0;
     transform: translate(var(--camera-x), var(--camera-y))
@@ -642,32 +1462,33 @@ html {
   }
   .canvas-note {
     position: absolute;
-    left: 90px;
-    top: 130px;
-    width: 300px;
+    left: 60px;
+    top: 173px;
+    width: 560px;
     margin: 0;
     pointer-events: none;
   }
   .canvas-note > p {
-    font-size: 40px;
-    line-height: 1.2;
-    margin-top: 19px;
-    margin-bottom: 15px;
+    font-size: 68px;
+    letter-spacing: -3.4px;
+    line-height: 1.08;
+    margin: 28px 0 24px;
   }
   .canvas-note > span {
-    font-size: 8px;
-    letter-spacing: 2px;
+    font-size: 10px;
+    letter-spacing: 2.6px;
   }
   .canvas-note > small {
-    font-size: 10px;
+    font-size: 13px;
+    max-width: 300px;
   }
   .freeform-board .specimen {
     position: absolute;
     left: var(--node-x);
     top: var(--node-y);
     width: var(--node-width);
-    height: auto;
     min-height: 0;
+    height: auto;
     transform: translate(var(--node-dx, 0px), var(--node-dy, 0px));
     z-index: 2;
   }
@@ -675,170 +1496,69 @@ html {
     z-index: 15;
   }
   .freeform-board .specimen-heading {
-    padding: 0 0 19px;
-    min-height: 26px;
-    opacity: 0.6;
+    min-height: 66px;
+    padding-bottom: 30px;
+  }
+  .freeform-board .specimen h2 {
+    font-size: 12px;
   }
   .drag-handle {
     display: grid;
     place-items: center;
-    width: 17px;
-    height: 20px;
+    width: 18px;
+    height: 24px;
     padding: 0;
-    color: #506988;
+    color: #4d4d4c;
     cursor: grab;
     touch-action: none;
-    margin-left: -20px;
+    margin-left: -30px;
     margin-right: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .specimen:hover .drag-handle,
+  .specimen:focus-within .drag-handle {
+    opacity: 1;
   }
   .drag-handle:active {
     cursor: grabbing;
   }
-  .freeform-board .specimen-heading > div {
-    gap: 9px;
-  }
-  .freeform-board .specimen h2 {
-    font-size: 10px;
-    color: #7f97b8;
-  }
-  .freeform-board .index {
-    font-size: 8px;
-    color: #415b7f;
+  .freeform-board .specimen-optical .specimen-heading {
+    border-top: 0;
+    padding-left: 35px;
+    padding-right: 35px;
   }
   .freeform-board .optical-stage {
-    height: 330px;
+    height: 350px;
     min-height: 0;
   }
   .freeform-board .optical-object {
-    width: 295px;
-    height: 200px;
+    width: 354px;
+    height: 235px;
     border-radius: 38px;
-    margin-top: -15px;
+    margin-top: -22px;
   }
   .freeform-board .optical-object:after {
     border-radius: 30px;
   }
   .freeform-board .object-core {
-    width: 77px;
-    height: 77px;
+    width: 78px;
+    height: 78px;
     border-radius: 25px;
   }
-  .freeform-board .optical-arc {
-    height: 285px;
-    width: 285px;
-    top: 8px;
-    left: calc(50% - 142px);
+  .freeform-board .object-core svg {
+    width: 42px;
+    height: 42px;
   }
   .freeform-board .object-caption > span {
-    font-size: 14px;
+    font-size: 16px;
   }
   .freeform-board .object-caption small {
     font-size: 7px;
   }
-  .freeform-board .stage-note {
-    font-size: 9px;
-  }
   .freeform-board .stage-bottom {
-    bottom: 8px;
-  }
-  .freeform-board .precision-content {
-    padding: 0 5px;
-  }
-  .freeform-board .precision-content .range-field {
-    margin: 15px 0 33px;
-  }
-  .freeform-board .precision-content .toggle-row {
-    margin: 20px 0;
-  }
-  .freeform-board .precision-content .control-divider {
-    margin-top: 30px;
-  }
-  .freeform-board .specimen-buttons .button {
-    font-size: 11px;
-    padding: 0 15px;
-  }
-  .freeform-board .specimen-buttons .button.ghost {
-    font-size: 10px;
-  }
-  .freeform-board .button-examples {
-    gap: 22px;
-    padding: 10px 5px;
-  }
-  .freeform-board .specimen-buttons .round-button {
-    width: 37px;
-    height: 37px;
-  }
-  .freeform-board .segments-demo {
-    padding: 0 5px;
-  }
-  .freeform-board .dock-stage {
-    min-height: 190px;
-    gap: 26px;
-  }
-  .freeform-board .floating-dock nav > button {
-    width: 42px;
-    height: 42px;
-  }
-  .freeform-board .floating-dock {
-    border-radius: 21px;
-  }
-  .freeform-board .demo-navbar {
-    min-height: 65px;
-    border-radius: 16px;
-    padding: 0 23px;
-  }
-  .freeform-board .demo-navbar nav {
-    gap: 27px;
-  }
-  .freeform-board .demo-navbar nav > button {
-    font-size: 11px;
-  }
-  .freeform-board .demo-brand {
-    font-size: 20px;
-  }
-  .freeform-board .tiny-brand {
-    height: 20px;
-    width: 20px;
-  }
-  .freeform-board .mini-profile {
-    height: 29px;
-    width: 29px;
-    font-size: 10px;
-  }
-  .freeform-board .player {
-    padding: 7px 5px;
-  }
-  .freeform-board .track-info .eyebrow {
-    font-size: 7px;
-  }
-  .freeform-board .track-info h3 {
-    font-size: 13px;
-  }
-  .freeform-board .album-art {
-    height: 55px;
-    width: 55px;
-  }
-  .freeform-board .track-info p {
-    font-size: 9px;
-  }
-  .freeform-board .waveform {
-    margin: 24px 0 16px;
-  }
-  .freeform-board .player-bottom {
-    margin-top: 16px;
-  }
-  .freeform-board .input-demo {
-    padding: 0 5px;
-  }
-  .freeform-board .selection-demo,
-  .freeform-board .disclosure-demo,
-  .freeform-board .feedback-demo {
-    padding: 5px;
-  }
-  .canvas-tools {
-    bottom: 29px;
-    padding: 7px 9px;
-    gap: 3px;
+    left: 35px;
+    right: 35px;
   }
   .canvas-tools .desktop-canvas-tool {
     display: grid;
@@ -846,36 +1566,24 @@ html {
   .canvas-tools .tool-separator.desktop-canvas-tool {
     display: block;
   }
-  .canvas-tools > button,
-  .tool-selection > button {
-    height: 34px;
-    width: 34px;
-  }
-  .canvas-tools .canvas-zoom {
-    width: 45px;
-    font-size: 9px;
+  .canvas-tools {
+    bottom: 25px;
   }
   .canvas-caption {
     display: flex;
     position: fixed;
-    bottom: 35px;
-    left: 36px;
+    bottom: 34px;
+    left: 40px;
     z-index: 10;
     flex-direction: column;
     gap: 7px;
-    color: #425d80;
-    font-size: 8px;
-    letter-spacing: 0.2px;
+    font-size: 9px;
+    color: #656562;
     pointer-events: none;
   }
   .canvas-caption .live-mark {
-    color: #6d86a8;
-    font-size: 9px;
-  }
-  .canvas-caption .live-mark i {
-    width: 3px;
-    height: 3px;
-    background: #91b3a5;
+    color: #a4a29e;
+    font-size: 10px;
   }
   .tool-hand {
     cursor: grab;
@@ -887,141 +1595,265 @@ html {
     pointer-events: none;
   }
   .canvas-view:after {
-    height: 75px;
-    background: linear-gradient(transparent, #0b0d1188);
+    height: 100px;
   }
-  .freeform-board .header-demo {
-    padding: 8px 0;
+}
+@media (max-width: 559px) {
+  .component-grid.freeform-board {
+    gap: 67px;
   }
-  .freeform-board .segments-bottom > span {
-    font-size: 9px;
+  .canvas-note {
+    margin-bottom: -17px;
   }
-  .freeform-board .specimen-body {
-    display: block;
+  .canvas-note > p {
+    font-size: 43px;
   }
-  .freeform-board .specimen-heading .save-button {
-    width: 25px;
-    height: 25px;
+  .canvas-note > small {
+    font-size: 11px;
   }
-  .freeform-board .specimen-dialog .dialog-demo,
-  .freeform-board .specimen-commit .commit-demo {
-    padding: 0;
+  .freeform-board .specimen-heading {
+    padding-top: 15px;
+    padding-bottom: 25px;
+  }
+  .freeform-board .save-button {
+    width: 32px;
+    height: 32px;
+  }
+  .freeform-board .dialog-demo,
+  .freeform-board .commit-demo {
+    min-height: 330px;
+  }
+  .canvas-tools > button,
+  .tool-selection > button {
+    width: 40px;
+    height: 40px;
+  }
+  .freeform-board .specimen-optical .specimen-heading {
+    border: 0;
+  }
+  .input-shell input,
+  .select-shell select,
+  .input-demo textarea {
+    font-size: 16px;
   }
 }
 @media (max-width: 370px) {
   .canvas-chrome {
-    padding: 20px 17px;
+    padding: 20px;
   }
   .canvas-wordmark > span:last-child {
     font-size: 8px;
-    margin-left: 6px;
-    padding-left: 9px;
+    margin-left: 4px;
+    padding-left: 10px;
   }
   .canvas-filters {
-    left: 18px;
-    right: 18px;
-    gap: 15px;
+    left: 20px;
+    right: 20px;
+    gap: 18px;
   }
   .canvas-filters button {
-    font-size: 9px;
+    font-size: 10px;
   }
   .component-grid.freeform-board {
     padding: 0 24px;
-    gap: 65px;
   }
-  .freeform-board .specimen h2 {
-    font-size: 9px;
-  }
-  .freeform-board .material-picker button {
-    font-size: 8px;
-    padding-left: 7px;
-    padding-right: 7px;
-  }
-  .freeform-board .stage-note {
-    font-size: 7px;
+  .canvas-note > p {
+    font-size: 40px;
   }
   .freeform-board .optical-object {
-    width: 225px;
-    height: 165px;
+    width: 232px;
+    height: 180px;
   }
-  .freeform-board .floating-dock nav {
-    gap: 2px;
+  .freeform-board .stage-note {
+    font-size: 8px;
+  }
+  .freeform-board .material-picker button {
+    font-size: 9px;
+    padding: 9px 8px;
   }
   .freeform-board .floating-dock nav > button {
-    width: 34px;
-    height: 39px;
+    width: 36px;
   }
   .freeform-board .demo-navbar {
     padding: 0 10px;
   }
   .freeform-board .demo-navbar nav {
-    gap: 8px;
+    gap: 10px;
   }
   .freeform-board .demo-navbar nav > button {
-    font-size: 7px;
+    font-size: 9px;
   }
   .freeform-board .demo-brand {
-    font-size: 14px;
+    font-size: 15px;
   }
-  .freeform-board .mini-profile {
-    width: 22px;
-    height: 22px;
+  .specimen-buttons .button.secondary:not(:disabled) {
+    min-width: 175px;
   }
-  .canvas-note > p {
-    font-size: 30px;
+  .freeform-board .specimen-buttons .button {
+    font-size: 11px;
   }
-  .canvas-wordmark strong {
-    font-size: 24px;
+  .segments-bottom > span {
+    font-size: 9px;
+  }
+  .status-chips {
+    gap: 8px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .freeform-board .optical-object:hover {
-    transform: rotate(-9deg) skewY(1deg);
+    transform: rotate(-7deg);
+  }
+}
+.motion-off .freeform-board .optical-object:hover {
+  transform: rotate(-7deg);
+}
+
+/* Align navigation objects to one baseline; supporting text sits below. */
+.freeform-board .dock-stage {
+  justify-content: flex-start;
+  gap: 23px;
+}
+.freeform-board .floating-dock {
+  order: 0;
+}
+.freeform-board .dock-context {
+  order: 1;
+}
+.freeform-board .dock-caption {
+  order: 2;
+  margin-top: -13px;
+}
+.freeform-board .header-demo {
+  padding-top: 0;
+}
+.accordion h3 > button {
+  padding-right: 4px;
+}
+.accordion h3 svg {
+  width: 12px;
+  height: 12px;
+}
+.demo-navbar {
+  isolation: isolate;
+}
+.demo-navbar:before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 20%;
+  right: 35%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ffffff50, transparent);
+  pointer-events: none;
+}
+.button:disabled {
+  opacity: 0.4;
+}
+.specimen-buttons .button.secondary:disabled {
+  color: #95938b;
+}
+.toast {
+  bottom: 102px;
+}
+@media (max-width: 899px) {
+  .freeform-board .specimen {
+    scroll-margin-top: 0;
   }
 }
 
-.ambient-light-on {
-  background: radial-gradient(
-    ellipse at 0 30%,
-    rgba(var(--accent-rgb), 0.06),
-    transparent 70%
-  );
-  box-shadow: -1px 0 0 rgba(var(--accent-rgb), 0.2);
-  border-radius: 3px;
+.state-emblem {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 21px;
+  color: #d5d3cd;
+  background: linear-gradient(140deg, #49494685, #161617 60%);
+  transform: rotate(-8deg);
+  transition: transform 0.6s var(--ease-out);
+  box-shadow:
+    inset 0 1px 0 #fff2,
+    inset 4px 5px 10px #0007,
+    0 15px 22px #0007;
+}
+.state-emblem:after {
+  inset: 5px;
+  border-radius: 16px;
+}
+.state-emblem svg {
+  filter: drop-shadow(0 1px 1px #000a);
+}
+.feedback-preview:hover .state-emblem {
+  transform: rotate(0deg) translateY(-3px);
+}
+.state-emblem.emblem-done {
+  color: #bbccba;
+}
+.modal-emblem {
+  width: 86px;
+  height: 86px;
+  border-radius: 28px;
+}
+.modal-emblem:after {
+  border-radius: 21px;
+  inset: 7px;
+}
+.confirm-image {
+  display: grid;
+  place-items: center;
+  min-height: 123px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .feedback-preview:hover .state-emblem {
+    transform: rotate(-8deg);
+  }
+}
+.motion-off .feedback-preview:hover .state-emblem {
+  transform: rotate(-8deg);
+}
+
+@media (min-width: 900px) {
+  .filtered-grid .specimen-optical .specimen-heading {
+    border-top: 1px solid #ffffff13;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .filtered-grid .optical-stage {
+    height: 320px;
+  }
+  .filtered-grid .optical-object {
+    width: 270px;
+    height: 195px;
+    border-radius: 34px;
+  }
+  .filtered-grid .stage-bottom {
+    left: 0;
+    right: 0;
+  }
+  .filtered-grid .object-core {
+    width: 64px;
+    height: 64px;
+    border-radius: 21px;
+  }
+  .filtered-grid .object-caption > span {
+    font-size: 13px;
+  }
 }
 @media (max-width: 559px) {
-  .canvas-note > p,
+  .canvas-note > p {
+    font-size: 36px;
+    letter-spacing: -1.5px;
+    margin: 20px 0 17px;
+  }
   .canvas-note > small {
-    display: none;
-  }
-  .canvas-note {
-    margin: 0 0 -30px 8px;
-  }
-  .component-grid.freeform-board {
-    gap: 60px;
-  }
-  .canvas-view {
-    padding-top: 146px;
-  }
-  .canvas-tools > button,
-  .tool-selection > button {
-    height: 40px;
-    width: 38px;
-  }
-  .freeform-board .specimen-heading {
-    opacity: 0.85;
-  }
-  .freeform-board .specimen h2 {
+    max-width: none;
     font-size: 10px;
   }
-  .freeform-board .save-button {
-    height: 30px;
-    width: 30px;
-    min-height: 30px;
-    min-width: 30px;
+  .component-grid.freeform-board {
+    gap: 58px;
   }
-  .freeform-board .button-examples {
-    padding-left: 5px;
-    padding-right: 5px;
+  .freeform-board .optical-stage {
+    height: 295px;
+    min-height: 295px;
   }
 }
