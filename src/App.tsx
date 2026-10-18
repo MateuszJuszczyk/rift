@@ -494,7 +494,6 @@ export default function App() {
           }
         >
           <div className="canvas-note">
-            <span>RIFT / OBSIDIAN · 001</span>
             <p>
               Interface
               <br />
@@ -507,7 +506,6 @@ export default function App() {
               key={item.id}
               id={item.id}
               title={item.title}
-              index={String(specimens.indexOf(item) + 1).padStart(2, "0")}
               zoom={camera.zoom}
               style={
                 {
@@ -569,9 +567,7 @@ export default function App() {
         )}
       </main>
       <div className="canvas-caption">
-        <span className="live-mark">
-          <i /> {visible.length} interactive studies
-        </span>
+        <span>{visible.length} interactive components</span>
         <span>Drag a grip to rearrange · Scroll to explore</span>
       </div>
       <Edge className="canvas-tools">

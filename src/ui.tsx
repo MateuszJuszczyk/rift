@@ -53,7 +53,6 @@ export function Edge({
 export function Specimen({
   id,
   title,
-  index,
   children,
   className = "",
   saved,
@@ -63,7 +62,6 @@ export function Specimen({
 }: {
   id: string;
   title: string;
-  index: string;
   children: ReactNode;
   className?: string;
   saved: boolean;
@@ -151,7 +149,6 @@ export function Specimen({
           >
             <GripVertical size={12} />
           </button>
-          <span className="index">{index}</span>
           <h2 id={`${id}-title`}>{title}</h2>
         </div>
         <button

@@ -153,11 +153,6 @@ textarea:focus-visible {
 .canvas-note {
   margin: 0 0 0;
 }
-.canvas-note > span {
-  font-size: 9px;
-  letter-spacing: 2.1px;
-  color: #8d8c8a;
-}
 .canvas-note > p {
   font-family: Manrope, sans-serif;
   font-size: 45px;
@@ -214,11 +209,6 @@ textarea:focus-visible {
   color: #b6b4ae;
   letter-spacing: -0.1px;
   line-height: 1.4;
-}
-.freeform-board .index {
-  font-size: 9px;
-  color: #62625e;
-  font-variant-numeric: tabular-nums;
 }
 .freeform-board .save-button {
   height: 28px;
@@ -1344,10 +1334,6 @@ input[type="range"]:active::-webkit-slider-thumb {
     line-height: 1.08;
     margin: 28px 0 24px;
   }
-  .canvas-note > span {
-    font-size: 10px;
-    letter-spacing: 2.6px;
-  }
   .canvas-note > small {
     font-size: 13px;
     max-width: 300px;
@@ -1418,10 +1404,6 @@ input[type="range"]:active::-webkit-slider-thumb {
     font-size: 9px;
     color: #656562;
     pointer-events: none;
-  }
-  .canvas-caption .live-mark {
-    color: #a4a29e;
-    font-size: 10px;
   }
   .tool-hand {
     cursor: grab;

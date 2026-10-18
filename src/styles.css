@@ -243,12 +243,6 @@ h1 {
   gap: 10px;
   min-width: 0;
 }
-.index {
-  font-size: 9px;
-  font-variant-numeric: tabular-nums;
-  font-family: monospace;
-  color: #5b5b5b;
-}
 .specimen h2 {
   font-size: 11px;
   font-weight: 450;
@@ -270,18 +264,6 @@ h1 {
 .specimen-body {
   flex: 1;
   min-width: 0;
-}
-.live-mark {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-.live-mark i {
-  display: block;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #7d9e8b;
 }
 .highlight-specimen {
   border-color: rgba(var(--accent-rgb), 0.7) !important;
