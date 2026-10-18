@@ -28,6 +28,7 @@ import {
   Link,
   LoaderCircle,
   Minus,
+  Moon,
   MousePointer2,
   PanelLeft,
   Pause,
@@ -50,6 +51,7 @@ import {
   Segmented,
   Specimen,
   Toggle,
+  IconButton,
 } from "./ui";
 
 import { AdditionalStudy, additionalStudies } from "./Studies";
@@ -158,7 +160,28 @@ function readSaved(): string[] {
   }
 }
 
+function readTheme(): "dark" | "light" {
+  try {
+    return localStorage.getItem("rift-theme") === "light" ? "light" : "dark";
+  } catch {
+    return "dark";
+  }
+}
+
 export default function App() {
+  const [theme, setTheme] = useState<"dark" | "light">(readTheme);
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", theme === "dark" ? "#080809" : "#f4f3f1");
+    try {
+      localStorage.setItem("rift-theme", theme);
+    } catch {
+      /* Storage can be unavailable. */
+    }
+  }, [theme]);
   const [category, setCategory] = useState<Category>("all");
   const [saved, setSaved] = useState<string[]>(readSaved);
   const [savedOnly, setSavedOnly] = useState(false);
@@ -300,6 +323,7 @@ export default function App() {
       frost,
       accent,
       motion,
+      theme,
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], {
       type: "application/json",
@@ -368,16 +392,28 @@ export default function App() {
     "--frost": `${frost / 3}px`,
     "--accent":
       accent === "silver"
-        ? "#dedbd5"
+        ? theme === "light"
+          ? "#45404d"
+          : "#dedbd5"
         : accent === "lilac"
-          ? "#c3b2eb"
-          : "#d5d8c5",
+          ? theme === "light"
+            ? "#77628e"
+            : "#c3b2eb"
+          : theme === "light"
+            ? "#65705c"
+            : "#d5d8c5",
     "--accent-rgb":
       accent === "silver"
-        ? "222,219,213"
+        ? theme === "light"
+          ? "69,64,77"
+          : "222,219,213"
         : accent === "lilac"
-          ? "195,178,235"
-          : "213,216,197",
+          ? theme === "light"
+            ? "119,98,142"
+            : "195,178,235"
+          : theme === "light"
+            ? "101,112,92"
+            : "213,216,197",
   } as CSSProperties;
   return (
     <div
@@ -416,13 +452,25 @@ export default function App() {
             </button>
           ))}
         </nav>
-        <button
-          className="canvas-info icon-button"
-          aria-label="About RIFT"
-          onClick={() => setAbout(true)}
-        >
-          <CircleHelp size={17} />
-        </button>
+        <div className="canvas-header-actions ui-row">
+          <IconButton
+            label={
+              theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+            }
+            title={theme === "dark" ? "Light mode" : "Dark mode"}
+            aria-pressed={theme === "light"}
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          >
+            {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+          </IconButton>
+          <button
+            className="canvas-info icon-button"
+            aria-label="About RIFT"
+            onClick={() => setAbout(true)}
+          >
+            <CircleHelp size={17} />
+          </button>
+        </div>
       </header>
       <main
         id="canvas"

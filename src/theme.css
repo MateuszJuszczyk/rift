@@ -1,0 +1,178 @@
+/* Theme decisions live here; component geometry is shared by both modes. */
+.canvas-header-actions {
+  gap: 12px;
+  flex-shrink: 0;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --canvas: #f4f3f1;
+  --ink: #27242b;
+  --secondary-ink: #68636d;
+  --quiet-ink: #716b76;
+  --hairline: #30263818;
+  --surface: #faf9f7;
+  --muted: #69626e;
+  --text: #27242b;
+  --line: #30263818;
+  --ui-text: #302a36;
+  --ui-muted: #645c6d;
+  --ui-faint: #716977;
+  --ui-line: #3b2d471c;
+  --ui-hover: #4c365d08;
+  --ui-selected: #8f789c1c;
+  --ui-error: #a04444;
+  --ui-surface: #faf9f7;
+  --ui-shadow: inset 0 1px 0 #fff9, 0 2px 6px #30263808;
+  --ui-focus: #75627b;
+  --prism-rim: linear-gradient(
+    125deg,
+    #ae8d9b80,
+    #7f93b26b 24%,
+    #afabb329 45%,
+    #8b9d8a80 72%,
+    #b29d7e80
+  );
+  --prism-surface:
+    radial-gradient(ellipse at 0% 0%, #b896ac18, transparent 55%),
+    radial-gradient(ellipse at 100% 100%, #9eb6ad1a, transparent 60%),
+    linear-gradient(150deg, #fffefd, #ecebe9 65%);
+  background: var(--canvas);
+  color: var(--ink);
+}
+:root[data-theme="light"] .study {
+  --study-text: var(--ui-text);
+  --study-muted: var(--ui-muted);
+}
+:root[data-theme="light"] .hero-sculpture {
+  filter: invert(1) hue-rotate(180deg) saturate(0.55);
+  mix-blend-mode: multiply;
+}
+:root[data-theme="light"] .canvas-chrome {
+  background: linear-gradient(#f4f3f1f5 60%, #f4f3f100);
+}
+:root[data-theme="light"] .canvas-view:after {
+  background: linear-gradient(transparent, #f4f3f1ed);
+}
+:root[data-theme="light"] .finish-muted-prism .edge {
+  background: var(--prism-surface);
+  border-color: #93829940;
+  box-shadow:
+    inset 0 1px 0 #fff9,
+    inset 0 -1px 0 #91819815,
+    0 8px 24px #3026380b;
+}
+:root[data-theme="light"]
+  .finish-muted-prism
+  :is(.button.primary, .switch[aria-checked="true"] > span) {
+  background: linear-gradient(
+    115deg,
+    #665866,
+    #505d72 43%,
+    #52645c 72%,
+    #74634d
+  );
+  border-color: #54425c55;
+  color: #fff;
+}
+:root[data-theme="light"] .finish-muted-prism .button.primary:hover {
+  filter: brightness(1.1);
+}
+:root[data-theme="light"]
+  .finish-muted-prism
+  :is(
+    .segmented-indicator,
+    .material-picker button.active,
+    .density-control button.active,
+    .choice-chips button.selected,
+    .floating-dock nav > button.active
+  ) {
+  color: var(--ui-text);
+  box-shadow:
+    inset 0 1px 0 #fff8,
+    inset 0 0 0 1px #93829920,
+    0 2px 5px #3026380b;
+}
+:root[data-theme="light"] .finish-muted-prism .accordion > div.open > button {
+  color: var(--ui-text);
+}
+:root[data-theme="light"] .finish-muted-prism .album-art {
+  background:
+    radial-gradient(ellipse at 20% 15%, #9b7e9138, transparent 60%),
+    radial-gradient(ellipse at 80% 90%, #7b929b38, transparent 65%), #dedbdd;
+}
+:root[data-theme="light"] .finish-smoke .edge {
+  background: linear-gradient(150deg, #e4e1dfe6, #d1d0cfe8 65%);
+}
+:root[data-theme="light"] .finish-frost .edge {
+  background: linear-gradient(150deg, #ffffffb8, #e9e8e2a6 65%);
+}
+:root[data-theme="light"] .finish-muted-prism ::before {
+  --rim-beam: conic-gradient(
+    from var(--rim-angle),
+    transparent 0deg 218deg,
+    #9b8baf10 245deg,
+    #927a9d6b 273deg,
+    #fffefcf2 294deg,
+    #8497ac8c 312deg,
+    #859b8929 331deg,
+    transparent 350deg
+  );
+}
+:root[data-theme="light"] .finish-muted-prism .ui-rim:focus-visible {
+  outline-color: var(--ui-focus);
+}
+:root[data-theme="light"] .ui-progress,
+:root[data-theme="light"] .ui-progress::-webkit-progress-bar {
+  background: #ddd9df;
+}
+:root[data-theme="light"] .ui-progress::-webkit-progress-value {
+  background: linear-gradient(100deg, #99788b, #71839e, #738e80, #988569);
+}
+:root[data-theme="light"] .ui-progress::-moz-progress-bar {
+  background: linear-gradient(100deg, #99788b, #71839e, #738e80, #988569);
+}
+@media (max-width: 370px) {
+  .canvas-wordmark > span:last-child {
+    display: none;
+  }
+}
+
+:root[data-theme="light"]
+  .finish-muted-prism
+  :is(
+    .button:not(.ghost):not(.danger):not(.primary),
+    .segmented,
+    .stepper,
+    .input-shell:not(.has-error),
+    .select-shell select,
+    .input-demo textarea,
+    .demo-navbar,
+    .dropdown-menu,
+    .choice-chips button,
+    .notification-preview,
+    .modal,
+    .toast,
+    .player-play,
+    .pagination button.active
+  ) {
+  box-shadow: var(--ui-shadow);
+}
+:root[data-theme="light"] .field-error,
+:root[data-theme="light"] .button-minor-actions .button.danger {
+  color: var(--ui-error);
+}
+:root[data-theme="light"] .button.success-button {
+  background: linear-gradient(115deg, #596858, #526d61);
+  color: #fff;
+  border-color: #526d6155;
+}
+:root[data-theme="light"] input[type="range"]::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 3px var(--canvas),
+    0 1px 3px #30263826;
+}
+:root[data-theme="light"] input[type="range"]::-moz-range-thumb {
+  box-shadow:
+    0 0 0 3px var(--canvas),
+    0 1px 3px #30263826;
+}

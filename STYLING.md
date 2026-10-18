@@ -23,3 +23,9 @@ Use native state attributes (`disabled`, `aria-pressed`, `aria-selected`, `aria-
 Existing studies now share icon buttons, labels, metadata and avatars. Existing controls opt into the same `.ui-rim` effect. Specialized geometry such as a switch thumb, player waveform or optical edge remains in its component stylesheet; the original styles are being migrated incrementally.
 
 The six new studies use these primitives without their own color palettes or independent surface definitions. Muted Prism stays the default finish. Reduced motion and the global motion switch retain a static edge highlight.
+
+## Color modes
+
+The header switches `data-theme` on the document root between `dark` (default) and `light`. The choice is saved under `rift-theme`; storage failures leave the switch functional in memory. A small head script applies a saved choice before React renders. Native controls use the matching `color-scheme`, and the browser theme color follows the choice.
+
+`src/theme.css` owns the light semantic tokens and material adjustments. `src/palette.css` centralizes existing neutral colors, retaining their exact dark values and providing light equivalents for the older controls. New components should use semantic `--ui-*` tokens rather than adding hex-named neutral tokens. The material selector and color mode are independent; no per-component theme prop is needed. Preset JSON includes the color mode.

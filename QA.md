@@ -45,3 +45,7 @@ Animated rim pass: Muted Prism uses a masked 1px conic reflection on hover, focu
 28 specimens total. Browser DOM interaction probes verified multiselect search and Enter selection; calendar month navigation and date selection; inline validation followed by a valid save; document duplication, archive and restore; all three setup steps and restart; local file selection and removal. Shared classes replace repeated icon-button, label, metadata and avatar rules in the previous nine studies. Animated rims now opt in through one `.ui-rim` class.
 
 Responsive checks on all 28 specimens: 320×850, 390×844 and 768×1024 have no document or specimen horizontal overflow. Desktop 1440×1000 visual inspection covers the new aligned rows. No physical-device or Safari verification.
+
+## Dark and light modes
+
+The header toggle changes all shared theme tokens, legacy neutral tokens, Muted Prism surfaces, hero treatment, dialogs and native color scheme. Browser probes checked dark → light → dark, persisted light mode after navigation/reload, matching browser theme color, keyboard Space activation, and an open About modal in light mode. All 28 specimens and header actions fit at 320×850, 390×844 and 768×1024; desktop light hero and older/newer control groups were inspected at 1440×1000. Saved mode is applied in the head before React renders. Dark remains the default with no saved preference. No Safari or physical-device verification.

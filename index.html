@@ -4,6 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#080809" />
+    <script>
+      try {
+        const theme =
+          localStorage.getItem("rift-theme") === "light" ? "light" : "dark";
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+        document.querySelector('meta[name="theme-color"]').content =
+          theme === "light" ? "#f4f3f1" : "#080809";
+      } catch {}
+    </script>
     <meta
       name="description"
       content="RIFT. A React and TypeScript component library with shared styles, Muted Prism surfaces and considered motion."
