@@ -20,7 +20,7 @@ Vite prints the local URL. The production build is a static `dist/` directory; n
 
 An open canvas with loose components, composed on three shared columns and four row baselines, separated by spacing, fine rules and small labels. Filtered collections reflow into a compact grid. On desktop, pan the surface, zoom, and drag each group by its grip (arrow keys also work; Shift increases the step). On mobile, the same components form a naturally scrolling layout.
 
-13 interactive specimens, with more than 30 individual controls and states:
+22 interactive specimens, with more than 30 individual controls and states:
 
 - Compact material controls with pointer-reactive edges, illumination and Frost / Smoke / Obsidian finishes.
 - Sliders, switches, async action button, secondary/destructive/disabled actions, like toggle and quantity stepper.
@@ -59,3 +59,5 @@ Native buttons, inputs, radio groups and modal dialogs provide keyboard behavior
 TypeScript strict checks and production build pass. Browser verification in the T3 Chromium preview covers narrow mobile and desktop layouts, actual form validation and success, category filters, favorite persistence, settings, keyboard search, confirmation modal, Escape/focus restoration, and the hold-to-commit cancel/success paths. See `QA.md` for measured viewport sizes and limits. No claim of complete WCAG conformance or field Core Web Vitals is made.
 
 Muted Prism is the default global component finish. The material selector switches the whole canvas between Muted Prism, Obsidian, Smoke and Frost. Exported presets include the selected finish; resetting restores Muted Prism. Refraction uses CSS gradients and existing pointer illumination, with no raster assets or extra animation loops.
+
+Nine additional studies extend the canvas with compact tabs, workspace navigation, contextual view actions, searchable property selection, inline filters, OKLCH tokens, inbox, comments and bulk actions. The generated Muted Prism hero is self-hosted and respects reduced-motion. See HERO-PROMPT.md for artwork provenance.

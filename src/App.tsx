@@ -52,6 +52,8 @@ import {
   Toggle,
 } from "./ui";
 
+import { AdditionalStudy, additionalStudies } from "./Studies";
+
 type Category = "all" | "controls" | "navigation" | "surfaces" | "feedback";
 const categories: { id: Category; label: string }[] = [
   { id: "all", label: "Overview" },
@@ -98,23 +100,33 @@ const specimens = [
     title: "Hold to confirm",
     category: "controls",
   },
+  ...additionalStudies,
 ] as const;
 
 // Shared columns and row baselines keep the canvas composed even before exploration.
 const positions = {
-  optical: { x: 790, y: 150, w: 400 },
-  precision: { x: 60, y: 460, w: 340 },
-  buttons: { x: 490, y: 460, w: 340 },
-  segments: { x: 920, y: 460, w: 340 },
-  header: { x: 60, y: 970, w: 340 },
-  dock: { x: 490, y: 970, w: 340 },
-  player: { x: 920, y: 970, w: 340 },
-  inputs: { x: 60, y: 1380, w: 340 },
-  selection: { x: 490, y: 1380, w: 340 },
-  disclosure: { x: 920, y: 1380, w: 340 },
-  feedback: { x: 60, y: 1980, w: 340 },
-  dialog: { x: 490, y: 1980, w: 340 },
-  commit: { x: 920, y: 1980, w: 340 },
+  optical: { x: 60, y: 550, w: 1200 },
+  precision: { x: 60, y: 820, w: 340 },
+  buttons: { x: 490, y: 820, w: 340 },
+  segments: { x: 920, y: 820, w: 340 },
+  header: { x: 60, y: 1330, w: 340 },
+  dock: { x: 490, y: 1330, w: 340 },
+  player: { x: 920, y: 1330, w: 340 },
+  inputs: { x: 60, y: 1740, w: 340 },
+  selection: { x: 490, y: 1740, w: 340 },
+  disclosure: { x: 920, y: 1740, w: 340 },
+  feedback: { x: 60, y: 2340, w: 340 },
+  dialog: { x: 490, y: 2340, w: 340 },
+  commit: { x: 920, y: 2340, w: 340 },
+  "compact-tabs": { x: 60, y: 2860, w: 340 },
+  "workspace-nav": { x: 490, y: 2860, w: 340 },
+  "view-toolbar": { x: 920, y: 2860, w: 340 },
+  "property-menu": { x: 60, y: 3420, w: 340 },
+  "filter-builder": { x: 490, y: 3420, w: 340 },
+  "theme-mixer": { x: 920, y: 3420, w: 340 },
+  "inbox-list": { x: 60, y: 3980, w: 340 },
+  "activity-thread": { x: 490, y: 3980, w: 340 },
+  "batch-actions": { x: 920, y: 3980, w: 340 },
 };
 
 function defaultCamera() {
@@ -359,7 +371,10 @@ export default function App() {
           : "213,216,197",
   } as CSSProperties;
   return (
-    <div className={`app finish-${material.toLowerCase().replaceAll(" ", "-")} ${!motion ? "motion-off" : ""}`} style={style}>
+    <div
+      className={`app finish-${material.toLowerCase().replaceAll(" ", "-")} ${!motion ? "motion-off" : ""}`}
+      style={style}
+    >
       <a className="skip-link" href="#canvas">
         Skip to components
       </a>
@@ -496,13 +511,24 @@ export default function App() {
             } as CSSProperties
           }
         >
-          <div className="canvas-note">
+          <div className="canvas-note hero-note">
+            <img
+              className="hero-sculpture"
+              src="/images/muted-prism-hero.webp"
+              alt=""
+              width="2172"
+              height="724"
+              fetchPriority="high"
+              decoding="async"
+            />
             <p>
               Interface
               <br />
               <span>studies.</span>
             </p>
-            <small>13 interactive components. Built in React.</small>
+            <small>
+              {specimens.length} interactive components. Built in React.
+            </small>
           </div>
           {visible.map((item, visibleIndex) => (
             <Specimen
@@ -521,7 +547,9 @@ export default function App() {
               saved={saved.includes(item.id)}
               onSave={() => toggleSave(item.id)}
             >
-              {item.id === "optical" ? (
+              {additionalStudies.some((study) => study.id === item.id) ? (
+                <AdditionalStudy id={item.id} notify={notify} />
+              ) : item.id === "optical" ? (
                 <Optical material={material} onMaterialChange={setMaterial} />
               ) : item.id === "precision" ? (
                 <Precision />
@@ -799,7 +827,13 @@ export default function App() {
   );
 }
 
-function Optical({ material, onMaterialChange }: { material: string; onMaterialChange: (value: string) => void }) {
+function Optical({
+  material,
+  onMaterialChange,
+}: {
+  material: string;
+  onMaterialChange: (value: string) => void;
+}) {
   const [illuminated, setIlluminated] = useState(false);
   return (
     <div

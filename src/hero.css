@@ -1,0 +1,148 @@
+.hero-note {
+  position: relative;
+  isolation: isolate;
+  min-height: 320px;
+  width: 100%;
+  overflow: hidden;
+}
+.hero-sculpture {
+  display: block;
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 73% center;
+  pointer-events: none;
+  mask-image:
+    linear-gradient(to bottom, transparent, #000 5%, #000 65%, transparent),
+    linear-gradient(to right, transparent, #000 20%, #000 94%, transparent);
+  mask-composite: intersect;
+  animation: sculpture-reveal 1.8s ease-out both;
+}
+.hero-note > p,
+.hero-note > small {
+  position: relative;
+  z-index: 1;
+}
+.hero-note > p {
+  width: 58%;
+  margin-top: 45px;
+}
+.hero-note > small {
+  display: block;
+  width: 55%;
+  font-size: 11px;
+  line-height: 1.8;
+}
+@keyframes sculpture-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (min-width: 560px) and (max-width: 899px) {
+  .hero-note {
+    grid-column: 1 / -1;
+    max-width: none;
+    min-height: 350px;
+  }
+  .hero-note > p {
+    font-size: 54px;
+    width: 50%;
+  }
+  .hero-note > small {
+    max-width: 230px;
+  }
+}
+@media (min-width: 900px) {
+  .canvas-note.hero-note {
+    left: 60px;
+    top: 118px;
+    width: 1200px;
+    height: 400px;
+    padding: 0 0 0 0;
+  }
+  .hero-note .hero-sculpture {
+    object-position: center;
+  }
+  .hero-note > p {
+    font-size: 68px;
+    letter-spacing: -3px;
+    margin-top: 76px;
+    margin-bottom: 21px;
+  }
+  .hero-note > small {
+    font-size: 13px;
+    max-width: 340px;
+  }
+  .component-grid.freeform-board {
+    height: 4580px;
+  }
+  .freeform-board:not(.filtered-grid) .specimen-optical {
+    width: 1200px;
+  }
+  .freeform-board:not(.filtered-grid) .specimen-optical .specimen-heading {
+    padding-top: 15px;
+    padding-bottom: 20px;
+  }
+  .freeform-board:not(.filtered-grid) .specimen-optical .surface-study {
+    display: grid;
+    grid-template-columns: 370px 340px 1fr;
+    column-gap: 60px;
+    align-items: center;
+  }
+  .freeform-board:not(.filtered-grid) .specimen-optical .surface-study-label {
+    grid-column: 1;
+    margin: 0 0 12px;
+  }
+  .freeform-board:not(.filtered-grid) .specimen-optical .material-picker {
+    grid-column: 1;
+    grid-row: 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 0;
+  }
+  .freeform-board:not(.filtered-grid) .specimen-optical .surface-control {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 0;
+  }
+  .freeform-board:not(.filtered-grid) .specimen-optical .specimen-readout {
+    grid-column: 3;
+    grid-row: 2;
+    margin-top: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 9px;
+  }
+}
+@media (max-width: 559px) {
+  .hero-note > p {
+    font-size: 39px;
+    letter-spacing: -1.6px;
+    margin-top: 54px;
+  }
+  .hero-note {
+    min-height: 300px;
+    margin-bottom: -15px;
+  }
+  .hero-sculpture {
+    object-position: 74% center;
+  }
+  .hero-note > small {
+    width: 53%;
+    font-size: 10px;
+    max-width: 190px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-sculpture {
+    animation: none;
+  }
+}
+.motion-off .hero-sculpture {
+  animation: none;
+}
